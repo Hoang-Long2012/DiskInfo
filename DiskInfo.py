@@ -1,5 +1,15 @@
 import sys
 import ctypes
+import re
+Drive_Types = {
+	0: "Unknown",
+	1: "No root directory",
+	2: "USB drive",
+	3: "Local disk drive",
+	4: "Network drive",
+	5: "CD/DVD drive",
+	6: "Ram disk drive"
+}
 def get_logical_drives():
 	Mask = ctypes.windll.kernel32.GetLogicalDrives()
 	Drives = []
@@ -39,8 +49,40 @@ def getDriveType(Drive):
 	return ctypes.windll.kernel32.GetDriveTypeW(ctypes.c_wchar_p(Drive))
 def formatSize(N):
 	return f"{N / (1024 ** 3):.2f}"
-def showFull():
-	Partitions = get_logical_drives()
+def validateVolumeList(Volumes):
+	if Volumes is None:
+		return None
+	Valid = []
+	for Volume in Volumes:
+		if not isinstance(Volume, str):
+			print(f"Invalid drives: {Volume}")
+			continue
+		Volume = Volume.strip()
+		if not re.fullmatch(r"^[a-zA-Z]:\\?$", Volume):
+			print(f"Invalid drives: {Volume}")
+			continue
+		Valid.append(Volume)
+	if Valid:
+		return Valid
+	else:
+		return None
+def parseVolumeList(Volumes=None):
+	Volumes = validateVolumeList(Volumes)
+	if Volumes:
+		for Item, Volume in enumerate(Volumes):
+			if not Volume.lower().endswith("\\"):
+				Volumes[Item] = Volume + "\\"
+		return Volumes
+	else:
+		return None
+def showDriveInfo(AllDrive=True, Volumes=None):
+	if AllDrive:
+		Partitions = get_logical_drives()
+	else:
+		Partitions = parseVolumeList(Volumes)
+		if Partitions is None:
+			print("Invalid drives.")
+			sys.exit(127)
 	for Partition in Partitions:
 		Info = getVolumeInfo(Partition)
 		Drive_Type = getDriveType(Partition)
@@ -49,18 +91,7 @@ def showFull():
 			print("Label:", Info[0] or "No label")
 		else:
 			print("Label: <unavailable>")
-		if Drive_Type == 2:
-			print("Type: USB drive")
-		elif Drive_Type == 5:
-			print("Type: CD/DVD drive")
-		elif Drive_Type == 4:
-			print("Type: Network drive")
-		elif Drive_Type == 3:
-			print("Type: Local disk drive")
-		elif Drive_Type == 6:
-			print("Type: Ram disk drive")
-		else:
-			print("Type: Unknown")
+		print(f"Type: {Drive_Types.get(Drive_Type, "Unknown")}")
 		if Info:
 			print("File system:", Info[1] or "Unknown")
 		else:
@@ -81,8 +112,14 @@ def showFull():
 		except Exception as Error:
 			print("Error, cannot get drive information: ", Error)
 	sys.exit(0)
-def showAllDrive(Label=False):
-	Partitions = get_logical_drives()
+def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
+	if AllDrive:
+		Partitions = get_logical_drives()
+	else:
+		Partitions = parseVolumeList(Volumes)
+		if Partitions is None:
+			print("Invalid drives.")
+			sys.exit(127)
 	Seen = set()
 	for Partition in Partitions:
 		Volume = Partition
@@ -96,15 +133,65 @@ def showAllDrive(Label=False):
 			else:
 				print(Volume_Name)
 	sys.exit(0)
+def getVersion():
+	return "1.1"
+def showVersion():
+	print(f"DiskInfo version {getVersion()}")
+def showHelp():
+	print(f"DiskInfo version {getVersion()} - Drive Information Tool")
+	print("")
+	print("Usage:")
+	print("  diskinfo [option] [drive...]")
+	print("")
+	print("Options:")
+	print("  -i, /i, --info")
+	print("    Show detailed drive information")
+	print("    Example: diskinfo -i C:\\ D:\\")
+	print("")
+	print("  -l, /l, --letter")
+	print("    List all available drives (drive letters only)")
+	print("    Example: diskinfo -l")
+	print("")
+	print("  -n, /n, --label")
+	print("    Show drive labels with drive letters")
+	print("    Example: diskinfo.py -n C:\\")
+	print("")
+	print("  -v, /v, --version")
+	print("    Show program version")
+	print("")
+	print("  -h, /h, --help")
+	print("    Show this help message")
+	print("")
+	print("Notes:")
+	print("  - If no option is provided, the program will display all drive information")
+	print("  - Valid drive format: C:\\ or D:")
+	print("")
 def main():
 	if len(sys.argv) < 2:
-		showFull()
+		showDriveInfo()
 	else:
 		Flag = sys.argv[1]
-		if Flag.lower().startswith(("/n", "-n")):
-			showAllDrive(Label=True)
-		elif Flag.lower().startswith(("/l", "-l")):
-			showAllDrive(Label=False)
+		if Flag.lower().startswith(("/n", "--label", "-n")):
+			if len(sys.argv) < 3:
+				showDriveLabel(Label=True)
+			else:
+				showDriveLabel(AllDrive=False, Volumes=sys.argv[2:], Label=True)
+		elif Flag.lower().startswith(("/l", "--letter", "-l")):
+			if len(sys.argv) < 3:
+				showDriveLabel(Label=False)
+			else:
+				showDriveLabel(AllDrive=False, Volumes=sys.argv[2:], Label=False)
+		elif Flag.lower().startswith(("-i", "--info", "/i")):
+			if len(sys.argv) < 3:
+				showDriveInfo()
+			else:
+				showDriveInfo(AllDrive=False, Volumes=sys.argv[2:])
+		elif Flag.lower().startswith(("-v", "--version", "/v")):
+			showVersion()
+			sys.exit(0)
+		elif Flag.lower().startswith(("-h", "--help", "/h")):
+			showHelp()
+			sys.exit(0)
 		else:
 			print("Unknown option: ", Flag)
 			sys.exit(1)
