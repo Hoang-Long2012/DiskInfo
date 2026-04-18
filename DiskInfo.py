@@ -2,6 +2,8 @@ from rich import print
 import sys
 import ctypes
 import re
+import json
+import tabulate
 Drive_Types = {
 	0: "Unknown",
 	1: "No root directory",
@@ -76,48 +78,64 @@ def parseVolumeList(Volumes=None):
 		return Volumes
 	else:
 		return None
-def showDriveInfo(AllDrive=True, Volumes=None):
+def collectDriveInfo(AllDrive=True, Volumes=None):
 	if AllDrive:
 		Partitions = get_logical_drives()
 	else:
 		Partitions = parseVolumeList(Volumes)
 		if Partitions is None:
 			print("Invalid drives.")
-			sys.exit(127)
+			sys.exit(2)
+	Result = []
 	for Partition in Partitions:
-		Info = getVolumeInfo(Partition)
+		Info = getVolumeInfo(Partition) or [None, None]
 		Drive_Type = getDriveType(Partition)
-		print("Volume:", Partition.replace("\\", ""))
-		if Info:
-			print("Label:", Info[0] or "No label")
+		Usage = getDriveUsage(Partition) or {
+			"total": None,
+			"free": None,
+			"used": None,
+			"percent": None
+		}
+		Result.append({
+			"volume": Partition,
+			"label": Info[0],
+			"fs": Info[1],
+			"type": Drive_Types.get(Drive_Type, "Unknown"),
+			"total": Usage.get("total"),
+			"free": Usage.get("free"),
+			"used": Usage.get("used"),
+			"percent": Usage.get("percent")
+		})
+	return Result
+def printDriveInfo(Datas):
+	for Data in Datas:
+		print("Volume:", Data["volume"].replace("\\", ""))
+		print("Label:", Data.get("label", "No label"))
+		print(f"Type: {Data.get("type", "Unknown")}")
+		print("File system:", Data.get("fs", "Unknown"))
+		print(f"Used space: {formatSize(Data.get("used"))} GB ({Data.get("used")} Bytes)")
+		if Data.get("percent") > 90:
+			Color = "red"
+		elif Data.get("percent") == 90:
+			Color = "yellow"
 		else:
-			print("Label: <unavailable>")
-		print(f"Type: {Drive_Types.get(Drive_Type, "Unknown")}")
-		if Info:
-			print("File system:", Info[1] or "Unknown")
-		else:
-			print("File system: <unavailable>")
-		try:
-			Usage = getDriveUsage(Partition)
-			if Usage:
-				Used = Usage["used"]
-				Percent = Usage["percent"]
-				Free = Usage["free"]
-				Total = Usage["total"]
-				print(f"Used space: {formatSize(Used)} GB ({Used} Bytes)")
-				if Percent > 90:
-					Color = "red"
-				elif Percent == 90:
-					Color = "yellow"
-				else:
-					Color = "green"
-				print(f"Used percentage: [{Color}]{Percent:.2f}")
-				print(f"Free space: {formatSize(Free)} GB ({Free} Bytes)")
-				print(f"Capacity: {formatSize(Total)} GB ({Total} Bytes)")
-			else:
-				print("Disk usage: unavailable")
-		except Exception as Error:
-			print("Error, cannot get drive information: ", Error)
+			Color = "green"
+		print(f"Used percentage: [{Color}]{Data.get("percent"):.2f}%[/{Color}]")
+		print(f"Free space: {formatSize(Data.get("free"))} GB ({Data.get("free")} Bytes)")
+		print(f"Capacity: {formatSize(Data.get("total"))} GB ({Data.get("total")} Bytes)")
+		print()
+def printJsonDriveInfo(Data):
+	print(json.dumps(Data, indent=2))
+def printTableDriveInfo(Data):
+	print(tabulate.tabulate(Data, headers="keys", tablefmt="grid"))
+def showDriveInfo(AllDrive=True, Volumes=None, Mode="normal"):
+	Data = collectDriveInfo(AllDrive, Volumes)
+	if Mode.lower() == "json":
+		printJsonDriveInfo(Data)
+	elif Mode.lower() == "table":
+		printTableDriveInfo(Data)
+	else:
+		printDriveInfo(Data)
 	sys.exit(0)
 def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 	if AllDrive:
@@ -141,7 +159,7 @@ def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 				print(Volume_Name)
 	sys.exit(0)
 def getVersion():
-	return "1.2"
+	return "1.3"
 def showVersion():
 	print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -163,6 +181,14 @@ def showHelp():
 	print("    Show drive labels with drive letters")
 	print("    Example: diskinfo.py -n C:\\")
 	print("")
+	print("  --json")
+	print("    show drive info with format json.")
+	print("    Example: diskinfo --json")
+	print("")
+	print("  --table")
+	print("    show drive info with format table.")
+	print("    Example: diskinfo --table")
+	print("")
 	print("  -v, /v, --version")
 	print("    Show program version")
 	print("")
@@ -174,8 +200,15 @@ def showHelp():
 	print("  - Valid drive format: C:\\ or D:")
 	print("")
 def main():
+	Mode = "normal"
+	if "--json" in sys.argv:
+		Mode = "json"
+		sys.argv.remove("--json")
+	elif "--table" in sys.argv:
+		Mode = "table"
+		sys.argv.remove("--table")
 	if len(sys.argv) < 2:
-		showDriveInfo()
+		showDriveInfo(Mode=Mode)
 	else:
 		Flag = sys.argv[1]
 		if Flag.lower().startswith(("/n", "--label", "-n")):
@@ -190,9 +223,9 @@ def main():
 				showDriveLabel(AllDrive=False, Volumes=sys.argv[2:], Label=False)
 		elif Flag.lower().startswith(("-i", "--info", "/i")):
 			if len(sys.argv) < 3:
-				showDriveInfo()
+				showDriveInfo(Mode=Mode)
 			else:
-				showDriveInfo(AllDrive=False, Volumes=sys.argv[2:])
+				showDriveInfo(AllDrive=False, Volumes=sys.argv[2:], Mode=Mode)
 		elif Flag.lower().startswith(("-v", "--version", "/v")):
 			showVersion()
 			sys.exit(0)
