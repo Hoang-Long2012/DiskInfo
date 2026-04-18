@@ -24,7 +24,7 @@ Example: diskinfo --json
     Example: diskinfo --table  
   - -v, /v, --version  
     Show program version  
-  -h, /h, --help  
+  - -h, /h, --help  
     Show this help message  
 ## Notes:
   - If no option is provided, the program will display all drive information
