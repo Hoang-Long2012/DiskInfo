@@ -1,3 +1,4 @@
+from rich import print
 import sys
 import ctypes
 import re
@@ -104,7 +105,13 @@ def showDriveInfo(AllDrive=True, Volumes=None):
 				Free = Usage["free"]
 				Total = Usage["total"]
 				print(f"Used space: {formatSize(Used)} GB ({Used} Bytes)")
-				print(f"Used percentage: {Percent:.2f}%")
+				if Percent > 90:
+					Color = "red"
+				elif Percent == 90:
+					Color = "yellow"
+				else:
+					Color = "green"
+				print(f"Used percentage: [{Color}]{Percent:.2f}")
 				print(f"Free space: {formatSize(Free)} GB ({Free} Bytes)")
 				print(f"Capacity: {formatSize(Total)} GB ({Total} Bytes)")
 			else:
@@ -134,7 +141,7 @@ def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 				print(Volume_Name)
 	sys.exit(0)
 def getVersion():
-	return "1.1"
+	return "1.2"
 def showVersion():
 	print(f"DiskInfo version {getVersion()}")
 def showHelp():
