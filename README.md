@@ -17,10 +17,10 @@ Options:
     Show drive labels with drive letters  
     Example: diskinfo.py -n C:\  
       - --json  
-    show drive info with format json.  
-    Example: diskinfo --json  
+    Show drive info with format json.  
+Example: diskinfo --json  
   - --table  
-    show drive info with format table.  
+    Show drive info with format table.  
     Example: diskinfo --table  
   - -v, /v, --version  
     Show program version  
