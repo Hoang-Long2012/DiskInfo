@@ -6,7 +6,7 @@ A small utility to check basic information about your drive right in the command
 ## Usage:
 Usage:  
   diskinfo [option] [drive...]  
-Options:  
+### Options:
   - -i, /i, --info  
     Show detailed drive information  
     Example: diskinfo -i C:\ D:\  
