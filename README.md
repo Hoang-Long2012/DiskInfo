@@ -1,16 +1,13 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 1.3  
+Version: 1.4  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
 ## Usage:
 Usage:  
   diskinfo [option] [drive...]  
-### Options:
-  - -i, /i, --info  
-    Show detailed drive information  
-    Example: diskinfo -i C:\ D:\  
-  - -l, /l, --letter  
+### Options:  
+- -l, /l, --letter  
     List all available drives (drive letters only)  
     Example: diskinfo -l  
   - -n, /n, --label  
@@ -21,7 +18,18 @@ Usage:
 Example: diskinfo --json  
   - --table  
     Show drive info with format table.  
-    Example: diskinfo --table  
+    Example: diskinfo --table
+    - -s, /s, --sort  
+Sort drives by specified field:  
++ Usage  - Used percentage.  
++ Used   - Used space.  
++ Free   - Free space.  
++ Total  - Total capacity.  
+Default order: Descending.  
+Example: diskinfo --sort usage
+- -r, /r, --reverse  
+Reverse sort order (ascending instead of descending).  
+Example: diskinfo --sort usage --reverse
   - -v, /v, --version  
     Show program version  
   - -h, /h, --help  
