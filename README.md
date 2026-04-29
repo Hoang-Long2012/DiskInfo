@@ -1,6 +1,7 @@
+Version = 1.4
 # DiskInfo
 Name: DiskInfo  
-Version: 1.4  
+Version: {{Version}}  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
 ## Usage:
