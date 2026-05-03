@@ -1,6 +1,6 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 1.4  
+Version: 1.5  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
 ## Usage:
@@ -30,6 +30,14 @@ Example: diskinfo --sort usage
 - -r, /r, --reverse  
 Reverse sort order (ascending instead of descending).  
 Example: diskinfo --sort usage --reverse
+- -t, /t, --type  
+Filter drives by type.  
+Example: diskinfo --type usb
+- -w, /w, --watch [SECONDS]  
+Watch drives in real time and auto-refresh display.  
+SECONDS defines update interval (default: 2).  
+Press Ctrl+C to exit watch mode.  
+Example: diskinfo --watch 0.5
   - -v, /v, --version  
     Show program version  
   - -h, /h, --help  
