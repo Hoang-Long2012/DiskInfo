@@ -43,8 +43,9 @@ Example: diskinfo --watch 0.5
   - -h, /h, --help  
     Show this help message  
 ## Notes:
-  - If no option is provided, the program will display all drive information
-  - Valid drive format: C:\ or D:
+  - If no option is provided, the program will display all drive information.
+  - Valid drive format: C:\ or D:.
+  - By default, the drives are arranged in descending order.
 ## Download:
 Download at:  
 https://github.com/NguyenVuHoangLong2012/DiskInfo/releases/latest/
