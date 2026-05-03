@@ -1,11 +1,17 @@
-from rich import print, box
-import rich.table as table
-import rich.console as console
+from rich import box
+from rich.live import Live as live
+from rich.text import Text as text
+from rich.panel import Panel as panel
+from rich.console import Console as console, Group as group
+from rich.table import Table as table
+from rich.syntax import Syntax as syntax
 import sys
 import ctypes
 import re
 import json
 import argparse
+import time
+Console = console()
 Drive_Types = {
 	0: "Unknown",
 	1: "No root directory",
@@ -14,6 +20,19 @@ Drive_Types = {
 	4: "Network drive",
 	5: "CD/DVD drive",
 	6: "Ram disk drive"
+}
+Type_Alias = {
+	"usb": "USB drive",
+	"removable": "USB drive",
+	"local": "Local disk drive",
+	"disk": "Local disk drive",
+	"fixed": "Local disk drive",
+	"network": "Network drive",
+	"net": "Network drive",
+	"cd": "CD/DVD drive",
+	"dvd": "CD/DVD drive",
+	"ram": "Ram disk drive",
+	"unknown": "Unknown"
 }
 def get_logical_drives():
 	Mask = ctypes.windll.kernel32.GetLogicalDrives()
@@ -53,6 +72,8 @@ def getVolumeInfo(Drive):
 def getDriveType(Drive):
 	return ctypes.windll.kernel32.GetDriveTypeW(ctypes.c_wchar_p(Drive))
 def formatSize(N):
+	if N is None:
+		return "unknown"
 	return f"{N / (1024 ** 3):.2f}"
 def validateVolumeList(Volumes):
 	if Volumes is None:
@@ -60,11 +81,11 @@ def validateVolumeList(Volumes):
 	Valid = []
 	for Volume in Volumes:
 		if not isinstance(Volume, str):
-			print(f"Invalid drives: {Volume}")
+			Console.print(f"Invalid drives: {Volume}")
 			continue
 		Volume = Volume.strip()
 		if not re.fullmatch(r"^[a-zA-Z]:\\?$", Volume):
-			print(f"Invalid drives: {Volume}")
+			Console.print(f"Invalid drives: {Volume}")
 			continue
 		Valid.append(Volume)
 	if Valid:
@@ -86,7 +107,7 @@ def collectDriveInfo(AllDrive=True, Volumes=None):
 	else:
 		Partitions = parseVolumeList(Volumes)
 		if Partitions is None:
-			print("Invalid drives.")
+			Console.print("Invalid drives.")
 			sys.exit(2)
 	Result = []
 	for Partition in Partitions:
@@ -123,59 +144,87 @@ def sortData(Data, Type=None, Reverse=True):
 	elif Type.lower() == "total":
 		Data.sort(key=lambda x: x.get("total") or 0, reverse=Reverse)
 	return Data
+def filterDriveType(Data, Types=None):
+	if not Types:
+		return Data
+	Valid = set()
+	for Item in Types:
+		Key = Item.lower().strip()
+		if Key in Type_Alias:
+			Valid.add(Type_Alias[Key])
+	Result = []
+	for Item in Data:
+		if Item.get("type") in Valid:
+			Result.append(Item)
+	return Result
 def getColor(Data):
 	if (Data or 0) > 90:
 		Color = "red"
-	elif (Data or 0) == 90:
+	elif (Data or 0) >= 80:
 		Color = "yellow"
 	else:
 		Color = "green"
 	return Color
-def printDriveInfo(Datas):
+def renderTextDriveInfo(Datas):
+	Panels = []
 	for Data in Datas:
-		print("Drive:", Data["drive"].replace("\\", ""))
-		print("Label:", Data.get("label", "No label"))
-		print(f"Type: {Data.get("type", "Unknown")}")
-		print("File system:", Data.get("fs", "Unknown"))
+		Text = text()
+		Volume = Data["drive"].replace("\\", "")
+		Label = Data.get("label") or "No label"
+		Text.append(f"Label: {Label}\n")
+		Type = Data.get("type", "Unknown")
+		Text.append(f"Type: {Type}\n")
+		FS = Data.get("fs") or "Unknown"
+		Text.append(f"File system: {FS}\n")
 		Color = getColor(Data.get("percent"))
-		print(f"Used space: [{Color}]{formatSize(Data.get("used"))} GB ({Data.get("used")} Bytes)[/{Color}]")
-		print(f"Used percentage: [{Color}]{Data.get("percent"):.0f}%[/{Color}]")
-		print(f"Free space: [{Color}]{formatSize(Data.get("free"))} GB ({Data.get("free")} Bytes)[/{Color}]")
-		print(f"Capacity: {formatSize(Data.get("total"))} GB ({Data.get("total")} Bytes)")
-		print()
-def printJsonDriveInfo(Data, Sort=None):
-	print(json.dumps(Data, indent=2))
-def printTableDriveInfo(Data):
-	Console = console.Console()
-	Table = table.Table(title="Drive info", show_lines=False, box=box.SIMPLE, expand=False, pad_edge=True)
+		Used = Data.get("used") or 0
+		Text.append(f"Used space: {formatSize(Used)} GB ({Used} Bytes)\n", style=Color)
+		Percent = Data.get("percent") or 0
+		Text.append(f"Used percentage: {Percent:.0f}%\n", style=Color)
+		Free = Data.get("free") or 0
+		Text.append(f"Free space: {formatSize(Free)} GB ({Free} Bytes)\n", style=Color)
+		Total = Data.get("total") or 0
+		Text.append(f"Capacity: {formatSize(Total)} GB ({Total} Bytes)\n")
+		Panel = panel(Text, title=f"Drive: {Volume}", border_style=Color, box=box.SIMPLE)
+		Panels.append(Panel)
+	return group(*Panels)
+def renderJsonDriveInfo(Data):
+	return syntax(json.dumps(Data, indent=2, ensure_ascii=False), "json")
+def renderTableDriveInfo(Data):
+	Title = "Drive info"
+	Table = table(title=Title, show_lines=False, box=box.SIMPLE, expand=False, pad_edge=True, show_header=True, header_style="bold")
 	Table.add_column("Drive", justify="left")
 	Table.add_column("Used", justify="right")
 	Table.add_column("Free", justify="right")
 	Table.add_column("Usage", justify="right")
+	Table.add_row("-" * len(Title))
 	for Item in Data:
 		Color = getColor(Item.get("percent"))
-		Table.add_row(Item["drive"].replace("\\", ""), f"[{Color}]{formatSize(Item.get("used"))} GB[/{Color}]", f"[{Color}]{formatSize(Item.get("free"))} GB[/{Color}]", f"[{Color}]{Item.get("percent"):.0f}%[/{Color}]")
-	Console.print(Table)
-def showDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True):
+		Used = Item.get("used") or 0
+		Free = Item.get("free") or 0
+		Percent = Item.get("percent") or 0
+		Table.add_row(Item["drive"].replace("\\", ""), f"[{Color}]{formatSize(Used)} GB[/{Color}]", f"[{Color}]{formatSize(Free)} GB[/{Color}]", f"[{Color}]{Percent:.0f}%[/{Color}]")
+	return Table
+def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None):
 	Data = collectDriveInfo(AllDrive, Volumes)
+	Data = filterDriveType(Data, filterType)
 	if not Data:
-		print("No drive information.")
+		Console.print("No drive information.")
 		sys.exit(2)
 	Data = sortData(Data, Sort, Reverse)
 	if Mode.lower() == "json":
-		printJsonDriveInfo(Data)
+		return renderJsonDriveInfo(Data)
 	elif Mode.lower() == "table":
-		printTableDriveInfo(Data)
+		return renderTableDriveInfo(Data)
 	else:
-		printDriveInfo(Data)
-	sys.exit(0)
+		return renderTextDriveInfo(Data)
 def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 	if AllDrive:
 		Partitions = get_logical_drives()
 	else:
 		Partitions = parseVolumeList(Volumes)
 		if Partitions is None:
-			print("Invalid drives.")
+			Console.print("Invalid drives.")
 			sys.exit(127)
 	Seen = set()
 	for Partition in Partitions:
@@ -186,60 +235,70 @@ def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 			if Label:
 				Info = getVolumeInfo(Volume)
 				Label_Name = Info[0] if Info and Info[0] else "No label"
-				print(f"{Label_Name} ({Volume_Name})")
+				Console.print(f"{Label_Name} ({Volume_Name})")
 			else:
-				print(Volume_Name)
+				Console.print(Volume_Name)
 	sys.exit(0)
 def getVersion():
-	return "1.4"
+	return "1.5"
 def showVersion():
-	print(f"DiskInfo version {getVersion()}")
+	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
-	print(f"DiskInfo version {getVersion()} - Drive Information Tool")
-	print("")
-	print("Usage:")
-	print("  diskinfo [option] [drive...]")
-	print("")
-	print("Options:")
-	print("  -l, /l, --letter")
-	print("    List all available drives (drive letters only).")
-	print("    Example: diskinfo -l")
-	print("")
-	print("  -n, /n, --label")
-	print("    Show drive labels with drive letters.")
-	print("    Example: diskinfo.py -n C:\\")
-	print("")
-	print("  --json")
-	print("    Show drive info with format json.")
-	print("    Example: diskinfo --json")
-	print("")
-	print("  --table")
-	print("    Show drive info with format table.")
-	print("    Example: diskinfo --table")
-	print("")
-	print("  -s, /s, --sort [usage|used|free|total]")
-	print("    Sort drives by specified field:")
-	print("      Usage  - Used percentage.")
-	print("      Used   - Used space.")
-	print("      Free   - Free space.")
-	print("      Total  - Total capacity.")
-	print("    Default order: descending.")
-	print("    Example: diskinfo --sort usage")
-	print("")
-	print("  -r, /r, --reverse")
-	print("    Reverse sort order (ascending instead of descending).")
-	print("    Example: diskinfo --sort usage --reverse")
-	print("")
-	print("  -v, /v, --version")
-	print("    Show program version.")
-	print("")
-	print("  -h, /h, --help")
-	print("    Show this help message.")
-	print("")
-	print("Notes:")
-	print("  - If no option is provided, the program will display all drive information.")
-	print("  - Valid drive format: C:\\ or D:")
-	print("")
+	Console.print(f"DiskInfo version {getVersion()} - Drive Information Tool")
+	Console.print("")
+	Console.print("Usage:")
+	Console.print("  diskinfo [option] [drive...]")
+	Console.print("")
+	Console.print("Options:")
+	Console.print("  -l, /l, --letter")
+	Console.print("    List all available drives (drive letters only).")
+	Console.print("    Example: diskinfo -l")
+	Console.print("")
+	Console.print("  -n, /n, --label")
+	Console.print("    Show drive labels with drive letters.")
+	Console.print("    Example: diskinfo.py -n C:\\")
+	Console.print("")
+	Console.print("  --json")
+	Console.print("    Show drive info with format json.")
+	Console.print("    Example: diskinfo --json")
+	Console.print("")
+	Console.print("  --table")
+	Console.print("    Show drive info with format table.")
+	Console.print("    Example: diskinfo --table")
+	Console.print("")
+	Console.print("  -s, /s, --sort [usage|used|free|total]")
+	Console.print("    Sort drives by specified field:")
+	Console.print("      Usage  - Used percentage.")
+	Console.print("      Used   - Used space.")
+	Console.print("      Free   - Free space.")
+	Console.print("      Total  - Total capacity.")
+	Console.print("    Default order: descending.")
+	Console.print("    Example: diskinfo --sort usage")
+	Console.print("")
+	Console.print("  -r, /r, --reverse")
+	Console.print("    Reverse sort order (ascending instead of descending).")
+	Console.print("    Example: diskinfo --sort usage --reverse")
+	Console.print("")
+	Console.print("  -t, /t, --type [usb|local|cd|network|ram]")
+	Console.print("    Filter drives by type.")
+	Console.print("    Example: diskinfo --type usb")
+	Console.print("")
+	Console.print("  -w, /w, --watch [SECONDS]")
+	Console.print("    Watch drives in real time and auto-refresh display.")
+	Console.print("    SECONDS defines update interval (default: 2).")
+	Console.print("    Press Ctrl+C to exit watch mode.")
+	Console.print("    Example: diskinfo --watch 0.5")
+	Console.print("")
+	Console.print("  -v, /v, --version")
+	Console.print("    Show program version.")
+	Console.print("")
+	Console.print("  -h, /h, --help")
+	Console.print("    Show this help message.")
+	Console.print("")
+	Console.print("Notes:")
+	Console.print("  - If no option is provided, the program will display all drive information.")
+	Console.print("  - Valid drive format: C:\\ or D:")
+	Console.print("")
 def normalizeWindowsArgs(argv):
 	Normalized = []
 	for Arg in argv:
@@ -261,6 +320,8 @@ def parseArgs():
 	Parser.add_argument("-n", "--label", action="store_true")
 	Parser.add_argument("-s", "--sort", choices=["usage", "used", "free", "total"])
 	Parser.add_argument("-r", "--reverse", action="store_false")
+	Parser.add_argument("-t", "--type", nargs="+", choices=sorted(Type_Alias))
+	Parser.add_argument("-w", "--watch", nargs="?", const=2, type=float, metavar="SECONDS")
 	Parser.add_argument("-h", "--help", action="store_true")
 	Parser.add_argument("-v", "--version", action="store_true")
 	return Parser.parse_args(ArgsList)
@@ -287,6 +348,18 @@ def main():
 			showDriveLabel(AllDrive=False, Volumes=Args.drives, Label=True)
 		else:
 			showDriveLabel(Label=True)
-	showDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse)
+	if Args.watch is not None:
+		try:
+			with live(console=Console, screen=True, auto_refresh=False) as Live:
+				while True:
+					Live.update(renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type))
+					Live.refresh()
+					time.sleep(Args.watch)
+		except KeyboardInterrupt:
+			Console.print("\n[yellow]Stopping...[/yellow]")
+			sys.exit(0)
+	else:
+		Console.print(renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type))
+		sys.exit(0)
 if __name__ == "__main__":
 	main()
