@@ -297,7 +297,8 @@ def showHelp():
 	Console.print("")
 	Console.print("Notes:")
 	Console.print("  - If no option is provided, the program will display all drive information.")
-	Console.print("  - Valid drive format: C:\\ or D:")
+	Console.print("  - Valid drive format: C:\\ or D:.")
+	Console.print("  - By default, the drives are arranged in descending order.")
 	Console.print("")
 def normalizeWindowsArgs(argv):
 	Normalized = []
