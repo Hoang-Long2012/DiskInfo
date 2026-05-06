@@ -25,7 +25,7 @@ Sort drives by specified field:
 + Used   - Used space.  
 + Free   - Free space.  
 + Total  - Total capacity.  
-Default order: Descending.  
+Default order: Descending (largest/highest first).  
 Example: diskinfo --sort usage
 - -r, /r, --reverse  
 Reverse sort order (ascending instead of descending).  
