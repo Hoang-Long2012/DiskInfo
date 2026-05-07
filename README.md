@@ -46,10 +46,10 @@ Watch drives in real time and auto-refresh display.
 SECONDS defines update interval (default: 2).  
 Press Ctrl+C to exit watch mode.  
 Example: diskinfo --watch 0.5
-- -T, /T, --top [NUMBER_OF_DRIVES]
+- -T, /T, --top [NUMBER_OF_DRIVES]  
 Show top N drives after sorting.  
 Example: diskinfo --sort used --top 1
-- -u, /u, --usage [PERCENT]
+- -u, /u, --usage [PERCENT]  
 Show only drives with some usage.  
 Example: diskinfo --usage 90
   - -v, /v, --version  
@@ -58,7 +58,7 @@ Example: diskinfo --usage 90
     Show this help message  
 ## Notes:
   - If no option is provided, the program will display all drive information.
-  - Valid drive format: C:\ or D:.
+  - Valid drive format: C:\, D:/ or E:.
   - By default, the drives are arranged in descending order.
 ## Download:
 Download at:  
