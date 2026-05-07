@@ -1,8 +1,16 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 1.5  
+Version: 1.6  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
+## Features:
+- Drive usage.
+- Sort by used/free/total.
+- Filter by drive type.
+- Watch realtime.
+- JSON / Table output.
+- Top N drives.
+- Usage threshold filter.
 ## Usage:
 Usage:  
   diskinfo [option] [drive...]  
@@ -13,7 +21,7 @@ Usage:
   - -n, /n, --label  
     Show drive labels with drive letters  
     Example: diskinfo.py -n C:\  
-      - --json  
+      - -j, /j, --json  
     Show drive info with format json.  
 Example: diskinfo --json  
   - --table  
@@ -38,6 +46,12 @@ Watch drives in real time and auto-refresh display.
 SECONDS defines update interval (default: 2).  
 Press Ctrl+C to exit watch mode.  
 Example: diskinfo --watch 0.5
+- -T, /T, --top [NUMBER_OF_DRIVES]
+Show top N drives after sorting.  
+Example: diskinfo --sort used --top 1
+- -u, /u, --usage [PERCENT]
+Show only drives with some usage.  
+Example: diskinfo --usage 90
   - -v, /v, --version  
     Show program version  
   - -h, /h, --help  
