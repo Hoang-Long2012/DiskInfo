@@ -5,3 +5,5 @@
 
 # Distribution / packaging
 dist/
+build/
+*.spec
