@@ -1,6 +1,6 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 1.6  
+Version: 1.7  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
 ## Features:
