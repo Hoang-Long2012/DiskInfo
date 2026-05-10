@@ -1,0 +1,20 @@
+drive: C:\
+label: Windows
+type: Local disk drive
+fs: NTFS
+used: 56551206912
+percent: 53.01453886063364
+free: 50119921664
+total: 106671128576
+status: Healthy
+
+drive: D:\
+label: Document
+type: Local disk drive
+fs: NTFS
+used: 141989163008
+percent: 96.03715041964921
+free: 5859000320
+total: 147848163328
+status: Critical
+

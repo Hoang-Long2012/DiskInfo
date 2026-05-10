@@ -1,6 +1,6 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 1.7  
+Version: 1.8  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
 ## Features:
@@ -13,21 +13,24 @@ A small utility to check basic information about your drive right in the command
 - Usage threshold filter.
 ## Usage:
 Usage:  
-  diskinfo [option] [drive...]  
+```
+bash
+diskinfo [option] [drive...]
+```
 ### Options:  
 - -l, /l, --letter  
-    List all available drives (drive letters only)  
-    Example: diskinfo -l  
-  - -n, /n, --label  
-    Show drive labels with drive letters  
-    Example: diskinfo.py -n C:\  
-      - -j, /j, --json  
-    Show drive info with format json.  
+List all available drives (drive letters only)  
+Example: diskinfo -l  
+- -n, /n, --label  
+Show drive labels with drive letters  
+Example: diskinfo.py -n C:\  
+- -j, /j, --json  
+Show drive info with format json.  
 Example: diskinfo --json  
-  - --table  
-    Show drive info with format table.  
-    Example: diskinfo --table
-    - -s, /s, --sort  
+- --table  
+Show drive info with format table.  
+Example: diskinfo --table
+- -s, /s, --sort  
 Sort drives by specified field:  
 + Usage  - Used percentage.  
 + Used   - Used space.  
@@ -52,14 +55,21 @@ Example: diskinfo --sort used --top 1
 - -u, /u, --usage [PERCENT]  
 Show only drives with some usage.  
 Example: diskinfo --usage 90
-  - -v, /v, --version  
-    Show program version  
-  - -h, /h, --help  
-    Show this help message  
+- --no-sort  
+Disable auto sorting of top and usage.  
+Example: diskinfo --usage 90 --no-sort
+- -e, /e, --export [FILE]  
+Export the output results to a file.  
+Supported formats: CSV, JSON and TXT.  
+Example: diskinfo --export report.txt
+- -v, /v, --version  
+Show program version  
+- -h, /h, --help  
+Show help message  
 ## Notes:
-  - If no option is provided, the program will display all drive information.
-  - Valid drive format: C:\, D:/ or E:.
-  - By default, the drives are arranged in descending order.
+- If no option is provided, the program will display all drive information.
+- Valid drive format: C:\, D:/ or E:.
+- By default, the drives are arranged in descending order.
 ## Download:
 Download at:  
 https://github.com/NguyenVuHoangLong2012/DiskInfo/releases/latest/

@@ -1,13 +1,14 @@
 import core
 import constants
 import utils
+import error
 def collectDriveInfo(AllDrive=True, Volumes=None):
 	if AllDrive:
 		Partitions = core.get_logical_drives() or []
 	else:
 		Partitions = utils.parseVolumeList(Volumes)
 		if Partitions is None:
-			raise ValueError("Invalid drives.")
+			raise error.DataEmptyError(error.DataErrorCode.Invalid_Drives, "Invalid drives.")
 	Result = []
 	for Partition in Partitions:
 		try:
@@ -68,3 +69,18 @@ def filterPercent(Data, Percent=90):
 		if (Item.get("percent") or 0) >= Percent:
 			Result.append(Item)
 	return Result
+def getData(AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
+	Data = collectDriveInfo(AllDrive, Volumes)
+	Data = filterDriveType(Data, filterType)
+	if Percent is not None:
+		if Percent < 0 or Percent > 100:
+			raise error.DataOutOfLimitError(error.DataErrorCode.Usage_Limit, "Usage must be between 0 and 100.")
+		Data = filterPercent(Data, Percent)
+	if not Data:
+		raise error.DataEmptyError(error.DataErrorCode.No_Drive, "No drive information")
+	Data = sortData(Data, Sort, Reverse)
+	if isinstance(Top, int):
+		if Top <= 0:
+			raise error.DataOutOfLimitError(error.DataErrorCode.Top_Limit, "Top must be >= 1")
+		Data = Data[:Top]
+	return Data

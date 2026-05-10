@@ -8,6 +8,7 @@ from rich.progress_bar import ProgressBar
 import data
 import utils
 import core
+import error
 import json
 import sys
 Console = console()
@@ -32,26 +33,32 @@ def renderTextDriveInfo(Datas):
 		Label = Data.get("label") or "No label"
 		Top.append(f"Label: {Label}\n")
 		Type = Data.get("type", "Unknown")
-		Top.append(f"Type: {Type}\n")
+		Drive_Icon = utils.getDriveIcon(Type)
+		Top.append(f"Type: {Drive_Icon} {Type}\n")
 		FS = Data.get("fs") or "Unknown"
 		FS_Color = utils.getFsColor(FS)
-		Top.append(f"File system: {FS}\n", style=FS_Color)
+		Top.append("File system: ")
+		Top.append(f"{FS}\n", style=FS_Color)
 		Style = utils.getUsageStyle(Data.get("percent"))
 		Color = Style["color"]
 		Icon = Style["icon"]
 		Status = Data.get("status") or "unknown"
 		Used = Data.get("used") or 0
-		Top.append(f"Used space: {utils.formatSize(Used)} ({Used} Bytes)", style=Color)
+		Top.append("Used space: ")
+		Top.append(f"{utils.formatSize(Used)} ({Used} Bytes)", style=Color)
 		Percent = Data.get("percent") or 0
 		Free = Data.get("free") or 0
 		Bottom = text()
-		Bottom.append(f"Free space: {utils.formatSize(Free)} ({Free} Bytes)\n", style=Color)
+		Bottom.append("Free space: ")
+		Bottom.append(f"{utils.formatSize(Free)} ({Free} Bytes)\n", style=Color)
 		Total = Data.get("total") or 0
-		Bottom.append(f"Capacity: {utils.formatSize(Total)} ({Total} Bytes)\n")
-		Bottom.append(f"Status: {Icon} {Status}", style=Color)
-		Drive_Icon = utils.getDriveIcon(Type)
+		Bottom.append("Capacity: ")
+		Bottom.append(f"{utils.formatSize(Total)} ({Total} Bytes)\n")
+		Bottom.append("Status: ")
+		Bottom.append(f"{Icon} {Status}", style=Color)
 		Content = group(Top, makeUsageLine(Percent, Color), Bottom)
-		Panel = panel(Content, title=text(f"{Drive_Icon} Drive: {Volume}", style=Color), border_style=Color, box=box.SIMPLE)
+		Title = text.assemble(f"{Drive_Icon} Drive: ", (Volume, Color))
+		Panel = panel(Content, title=Title, border_style=Color, box=box.SIMPLE)
 		Panels.append(Panel)
 	return group(*Panels)
 def renderJsonDriveInfo(Data):
@@ -80,25 +87,21 @@ def renderTableDriveInfo(Data):
 	return Table
 def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
 	try:
-		Data = data.collectDriveInfo(AllDrive, Volumes)
-	except ValueError:
-		Console.print("Invalid drives.")
-		sys.exit(2)
-	Data = data.filterDriveType(Data, filterType)
-	if Percent is not None:
-		if Percent < 0 or Percent > 100:
+		Data = data.getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)
+	except error.DataEmptyError as Error:
+		if Error.code == error.DataErrorCode.No_Drive:
+			Console.print("No drive information")
+			sys.exit(2)
+		elif Error.code == error.DataErrorCode.Invalid_Drives:
+			Console.print("Invalid drives")
+			sys.exit(2)
+	except error.DataOutOfLimitError as Error:
+		if Error.code == error.DataErrorCode.Usage_Limit:
 			Console.print("Usage must be between 0 and 100.")
 			sys.exit(2)
-		Data = data.filterPercent(Data, Percent)
-	if not Data:
-		Console.print("No drive information.")
-		sys.exit(2)
-	Data = data.sortData(Data, Sort, Reverse)
-	if isinstance(Top, int):
-		if Top <= 0:
+		elif Error.code == error.DataErrorCode.Top_Limit:
 			Console.print("Top must be >= 1")
 			sys.exit(2)
-		Data = Data[:Top]
 	if Mode.lower() == "json":
 		return renderJsonDriveInfo(Data)
 	elif Mode.lower() == "table":

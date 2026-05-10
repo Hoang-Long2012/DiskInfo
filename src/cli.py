@@ -2,12 +2,14 @@ from rich.live import Live as live
 from rich.console import Console as console
 from constants import Type_Alias
 import render
+import export
+import error
 import sys
 import argparse
 import time
 Console = console()
 def getVersion():
-	return "1.7"
+	return "1.8"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -64,6 +66,15 @@ def showHelp():
 	Console.print("    Show only drives with some usage.")
 	Console.print("    Example: diskinfo --usage 90")
 	Console.print("")
+	Console.print("  --no-sort")
+	Console.print("    Disable auto sorting of top and usage.")
+	Console.print("    Example: diskinfo --usage 90 --no-sort")
+	Console.print("")
+	Console.print("  -e, /e, --export [FILE]")
+	Console.print("    Export the output results to a file.")
+	Console.print("    Supported formats: CSV, JSON and TXT.")
+	Console.print("    Example: diskinfo --export report.txt")
+	Console.print("")
 	Console.print("  -v, /v, --version")
 	Console.print("    Show program version.")
 	Console.print("")
@@ -100,6 +111,8 @@ def parseArgs():
 	Parser.add_argument("-w", "--watch", nargs="?", const=2, type=float, metavar="SECONDS")
 	Parser.add_argument("-T", "--top", type=int, metavar="n")
 	Parser.add_argument("-u", "--usage", type=float, metavar="PERCENT")
+	Parser.add_argument("--no-sort", action="store_true")
+	Parser.add_argument("-e", "--export", type=str, metavar="file")
 	Parser.add_argument("-h", "--help", action="store_true")
 	Parser.add_argument("-v", "--version", action="store_true")
 	return Parser.parse_args(ArgsList)
@@ -111,9 +124,11 @@ def main():
 	elif Args.table:
 		Mode = "table"
 	if Args.usage is not None and not Args.sort:
-		Args.sort = "usage"
+		if not Args.no_sort:
+			Args.sort = "usage"
 	elif Args.top and not Args.sort:
-		Args.sort = "used"
+		if not Args.no_sort:
+			Args.sort = "used"
 	if Args.help:
 		showHelp()
 		sys.exit(0)
@@ -143,6 +158,29 @@ def main():
 		except KeyboardInterrupt:
 			Console.print("\n[yellow]Stopping...[/yellow]")
 			sys.exit(0)
+	if Args.export:
+		try:
+			export.exportData(Path=Args.export, AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage)
+		except ValueError:
+			Console.print("Unsupported format")
+			sys.exit(2)
+		except error.FileWriteError:
+			Console.print(f"Cannot write '{Args.export}'")
+			sys.exit(2)
+		except error.DataEmptyError as Error:
+			if Error.code == error.DataErrorCode.Invalid_Drives:
+				Console.print("Invalid drives")
+				sys.exit(2)
+			elif Error.code == error.DataErrorCode.No_Drive:
+				Console.print("No drive information")
+				sys.exit(2)
+		except error.DataOutOfLimit as Error:
+			if Error.code == error.DataErrorCode.Top_Limit:
+				Console.print(Error.message)
+				sys.exit(2)
+			elif Error.code == error.DataErrorCode.Usage_Limit:
+				Console.print(Error.message)
+				sys.exit(2)
 	else:
 		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage))
 		sys.exit(0)
