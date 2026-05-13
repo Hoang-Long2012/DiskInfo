@@ -1,0 +1,3 @@
+rich
+PySide6
+pyinstaller
