@@ -2,7 +2,7 @@
 Name: DiskInfo  
 Version: 1.9  
 Platform: Windows  
-A small utility to check basic information about your drive right in the command line interface.
+A small utility to check basic information about your drive.
 ## Features:
 - Drive usage.
 - Sort by used/free/total.
