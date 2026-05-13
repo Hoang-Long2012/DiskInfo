@@ -1,6 +1,8 @@
 from rich.console import Console as console
 import constants
 import re
+import os
+import sys
 Console = console()
 def formatSize(N):
 	if N is None:
@@ -47,29 +49,37 @@ def parseVolumeList(Volumes=None):
 		return Volumes
 	else:
 		return None
-def getUsageStyle(Data):
-	if (Data or 0) > 90:
-		return {
-			"color": "red",
-			"icon": "🔴",
-			"status": "Critical"
-		}
-	elif (Data or 0) >= 80:
-		return {
-			"color": "yellow",
-			"icon": "🟡",
-			"status": "Warning"
-		}
+def getUsageStyle(Value, Interface="cli"):
+	Value = float(Value or 0)
+	for Level in constants.Usage_Levels:
+		if Value >= Level["min"]:
+			Key = Level["key"]
+			if Interface == "cli":
+				Color = constants.CLI_Status_Colors.get(Key, "white")
+			else:
+				Color = constants.GUI_Status_Colors.get(Key, "#ffffff")
+			return {
+				"color": Color,
+				"icon": Level["icon"],
+				"status": Level["label"],
+				"key": Key
+			}
+def getDriveIcon(Type, Interface="cli"):
+	if Interface == "cli":
+		return constants.CLI_Drive_Icons.get(Type) or "❓"
 	else:
-		return {
-			"color": "green",
-			"icon": "🟢",
-			"status": "Healthy"
-		}
-def getDriveIcon(Type):
-	return constants.Drive_Icons.get(Type) or "❓"
-def getFsColor(Fs):
+		return constants.GUI_Drive_Icons.get(Type) or "SP_DriveHDIcon"
+def getFsColor(Fs, Interface="cli"):
 	if not Fs:
-		return "grey50"
+		if Interface == "cli":
+			return "grey50"
+		else:
+			return "#aaaaaa"
 	Key = str(Fs).strip()
-	return constants.FS_Colors.get(Key, constants.FS_Colors.get(Key.upper(), "white"))
+	if Interface == "cli":
+		return constants.CLI_FS_Colors.get(Key, constants.CLI_FS_Colors.get(Key.upper(), "white"))
+	else:
+		return constants.GUI_FS_Colors.get(Key, constants.GUI_FS_Colors.get(Key.upper(), "#aaaaaa"))
+def getFilePath(Name):
+	Base = os.path.dirname(os.path.abspath(sys.argv[0]))
+	return os.path.join(Base, Name)

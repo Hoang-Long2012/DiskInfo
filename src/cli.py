@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "1.8"
+	return "1.9"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -34,6 +34,11 @@ def showHelp():
 	Console.print("  --table")
 	Console.print("    Show drive info with format table.")
 	Console.print("    Example: diskinfo --table")
+	Console.print("")
+	Console.print("  --simple")
+	Console.print("    Show a compact/minimal view of drive information.")
+	Console.print("    Works with normal and table display modes.")
+	Console.print("    Example: diskinfo --table --simple")
 	Console.print("")
 	Console.print("  -s, /s, --sort [usage|used|free|total]")
 	Console.print("    Sort drives by specified field:")
@@ -72,7 +77,7 @@ def showHelp():
 	Console.print("")
 	Console.print("  -e, /e, --export [FILE]")
 	Console.print("    Export the output results to a file.")
-	Console.print("    Supported formats: CSV, JSON and TXT.")
+	Console.print("    Supported formats: CSV, JSON, TXT, Markdown and INI.")
 	Console.print("    Example: diskinfo --export report.txt")
 	Console.print("")
 	Console.print("  -v, /v, --version")
@@ -103,6 +108,7 @@ def parseArgs():
 	Parser.add_argument("drives", nargs="*")
 	Parser.add_argument("-j", "--json", action="store_true")
 	Parser.add_argument("--table", action="store_true")
+	Parser.add_argument("--simple", action="store_true")
 	Parser.add_argument("-l", "--letter", action="store_true")
 	Parser.add_argument("-n", "--label", action="store_true")
 	Parser.add_argument("-s", "--sort", choices=["usage", "used", "free", "total"])
@@ -174,7 +180,7 @@ def main():
 			elif Error.code == error.DataErrorCode.No_Drive:
 				Console.print("No drive information")
 				sys.exit(2)
-		except error.DataOutOfLimit as Error:
+		except error.DataOutOfLimitError as Error:
 			if Error.code == error.DataErrorCode.Top_Limit:
 				Console.print(Error.message)
 				sys.exit(2)
@@ -182,7 +188,7 @@ def main():
 				Console.print(Error.message)
 				sys.exit(2)
 	else:
-		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage))
+		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple))
 		sys.exit(0)
 if __name__ == "__main__":
 	main()

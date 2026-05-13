@@ -7,15 +7,6 @@ Drive_Types = {
 	5: "CD/DVD drive",
 	6: "Ram disk drive"
 }
-Drive_Icons = {
-	"Unknown": "❓",
-	"No root directory": "🚫",
-	"USB drive": "🔌",
-	"Local disk drive": "💽",
-	"Network drive": "🌐",
-	"CD/DVD drive": "💿",
-	"Ram disk drive": "⚡"
-}
 Type_Alias = {
 	"usb": "USB drive",
 	"removable": "USB drive",
@@ -29,7 +20,36 @@ Type_Alias = {
 	"ram": "Ram disk drive",
 	"unknown": "Unknown"
 }
-FS_Colors = {
+Usage_Levels = [
+	{
+		"min": 90,
+		"key": "critical",
+		"label": "Critical",
+		"icon": "🔴"
+	},
+	{
+		"min": 80,
+		"key": "warning",
+		"label": "Warning",
+		"icon": "🟡"
+	},
+	{
+		"min": 0,
+		"key": "healthy",
+		"label": "Healthy",
+		"icon": "🟢"
+	}
+]
+CLI_Drive_Icons = {
+	"Unknown": "❓",
+	"No root directory": "🚫",
+	"USB drive": "🔌",
+	"Local disk drive": "💽",
+	"Network drive": "🌐",
+	"CD/DVD drive": "💿",
+	"Ram disk drive": "⚡"
+}
+CLI_FS_Colors = {
 	"NTFS": "cyan",
 	"FAT32": "yellow",
 	"exFAT": "green",
@@ -51,3 +71,41 @@ FS_Colors = {
 	"RAW": "red",
 	"Unknown": "grey50"
 }
+CLI_Status_Colors = {
+	"critical": "red",
+	"warning": "yellow",
+	"healthy": "green"
+}
+GUI_Drive_Icons = {
+	"USB drive": "SP_DriveFDIcon",
+	"Local disk drive": "SP_DriveHDIcon",
+	"Network drive": "SP_DriveNetIcon",
+	"CD/DVD drive": "SP_DriveCDIcon",
+	"Ram disk drive": "SP_DriveHDIcon",
+	"Unknown": "SP_DriveHDIcon"
+}
+GUI_FS_Colors = {
+	"NTFS": "#00ffff",
+	"FAT32": "#ffff00",
+	"EXFAT": "#00ff00",
+	"RAW": "#ff0000",
+	"Unknown": "#aaaaaa"
+}
+GUI_Status_Colors = {
+	"healthy": "#00cc66",
+	"warning": "#ffaa00",
+	"critical": "#ff3333"
+}
+GUI_Headers = {
+	"drive": "Drive",
+	"label": "Label",
+	"type": "Type",
+	"fs": "File System",
+	"used": "Used",
+	"free": "Free",
+	"total": "Capacity",
+	"percent": "Usage %",
+	"status": "Status"
+}
+Center_Columns = ["used", "free", "total", "percent", "status"]
+Color_Columns = ["used", "free"]

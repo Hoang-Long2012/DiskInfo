@@ -1,6 +1,6 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 1.8  
+Version: 1.9  
 Platform: Windows  
 A small utility to check basic information about your drive right in the command line interface.
 ## Features:
@@ -14,22 +14,25 @@ A small utility to check basic information about your drive right in the command
 ## Usage:
 Usage:  
 ```
-bash
 diskinfo [option] [drive...]
 ```
 ### Options:  
 - -l, /l, --letter  
 List all available drives (drive letters only)  
-Example: diskinfo -l  
+Example: diskinfo -l
 - -n, /n, --label  
 Show drive labels with drive letters  
-Example: diskinfo.py -n C:\  
+Example: diskinfo.py -n C:\
 - -j, /j, --json  
 Show drive info with format json.  
-Example: diskinfo --json  
+Example: diskinfo --json
 - --table  
 Show drive info with format table.  
 Example: diskinfo --table
+- --simple  
+Show a compact/minimal view of drive information.  
+Works with normal and table display modes.  
+Example: diskinfo --table --simple
 - -s, /s, --sort  
 Sort drives by specified field:  
 + Usage  - Used percentage.  
@@ -60,7 +63,7 @@ Disable auto sorting of top and usage.
 Example: diskinfo --usage 90 --no-sort
 - -e, /e, --export [FILE]  
 Export the output results to a file.  
-Supported formats: CSV, JSON and TXT.  
+Supported formats: CSV, JSON, TXT, Markdown and INI.  
 Example: diskinfo --export report.txt
 - -v, /v, --version  
 Show program version  
@@ -72,4 +75,4 @@ Show help message
 - By default, the drives are arranged in descending order.
 ## Download:
 Download at:  
-https://github.com/NguyenVuHoangLong2012/DiskInfo/releases/latest/
+https://github.com/Hoang-Long2012/DiskInfo/releases/latest/

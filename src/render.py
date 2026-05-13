@@ -25,7 +25,7 @@ def makeUsageBar(Percent, Color):
 	Grid.add_column(no_wrap=True)
 	Grid.add_row(ProgressBar(total=100, completed=Percent, width=20, complete_style=Color), text(f"{Percent:.0f}%", style=Color))
 	return Grid
-def renderTextDriveInfo(Datas):
+def renderTextDriveInfo(Datas, Simple=False):
 	Panels = []
 	for Data in Datas:
 		Top = text()
@@ -34,26 +34,31 @@ def renderTextDriveInfo(Datas):
 		Top.append(f"Label: {Label}\n")
 		Type = Data.get("type", "Unknown")
 		Drive_Icon = utils.getDriveIcon(Type)
-		Top.append(f"Type: {Drive_Icon} {Type}\n")
+		if not Simple:
+			Top.append(f"Type: {Drive_Icon} {Type}\n")
 		FS = Data.get("fs") or "Unknown"
 		FS_Color = utils.getFsColor(FS)
-		Top.append("File system: ")
-		Top.append(f"{FS}\n", style=FS_Color)
+		if not Simple:
+			Top.append("File system: ")
+			Top.append(f"{FS}\n", style=FS_Color)
 		Style = utils.getUsageStyle(Data.get("percent"))
 		Color = Style["color"]
 		Icon = Style["icon"]
 		Status = Data.get("status") or "unknown"
 		Used = Data.get("used") or 0
-		Top.append("Used space: ")
-		Top.append(f"{utils.formatSize(Used)} ({Used} Bytes)", style=Color)
+		if not Simple:
+			Top.append("Used space: ")
+			Top.append(f"{utils.formatSize(Used)} ({Used} Bytes)", style=Color)
 		Percent = Data.get("percent") or 0
 		Free = Data.get("free") or 0
 		Bottom = text()
-		Bottom.append("Free space: ")
-		Bottom.append(f"{utils.formatSize(Free)} ({Free} Bytes)\n", style=Color)
+		if not Simple:
+			Bottom.append("Free space: ")
+			Bottom.append(f"{utils.formatSize(Free)} ({Free} Bytes)\n", style=Color)
 		Total = Data.get("total") or 0
-		Bottom.append("Capacity: ")
-		Bottom.append(f"{utils.formatSize(Total)} ({Total} Bytes)\n")
+		if not Simple:
+			Bottom.append("Capacity: ")
+			Bottom.append(f"{utils.formatSize(Total)} ({Total} Bytes)\n")
 		Bottom.append("Status: ")
 		Bottom.append(f"{Icon} {Status}", style=Color)
 		Content = group(Top, makeUsageLine(Percent, Color), Bottom)
@@ -63,13 +68,14 @@ def renderTextDriveInfo(Datas):
 	return group(*Panels)
 def renderJsonDriveInfo(Data):
 	return syntax(json.dumps(Data, indent=2, ensure_ascii=False), "json")
-def renderTableDriveInfo(Data):
+def renderTableDriveInfo(Data, Simple=False):
 	Title = text("Drive info", style="bold")
 	Table = table(title=Title, title_justify="center", show_lines=False, box=box.SIMPLE, expand=False, pad_edge=False, show_header=True, header_style="bold")
 	Table.add_column("Drive", justify="left")
 	Table.add_column("Label", justify="left")
-	Table.add_column("Used", justify="center")
-	Table.add_column("Free", justify="center")
+	if not Simple:
+		Table.add_column("Used", justify="center")
+		Table.add_column("Free", justify="center")
 	Table.add_column("Usage", justify="right")
 	Table.add_column("Status", justify="right")
 	for Item in Data:
@@ -83,9 +89,12 @@ def renderTableDriveInfo(Data):
 		Used = Item.get("used") or 0
 		Free = Item.get("free") or 0
 		Percent = Item.get("percent") or 0
-		Table.add_row(text(f"{Drive_Icon} {Volume}", style=Color), text(Label), text(f"{utils.formatSize(Used)}", style=Color), text(f"{utils.formatSize(Free)}", style=Color), makeUsageBar(Percent, Color), text(f"{Icon} {Status}", style=Color))
+		if not Simple:
+			Table.add_row(text(f"{Drive_Icon} {Volume}", style=Color), text(Label), text(f"{utils.formatSize(Used)}", style=Color), text(f"{utils.formatSize(Free)}", style=Color), makeUsageBar(Percent, Color), text(f"{Icon} {Status}", style=Color))
+		else:
+			Table.add_row(text(f"{Drive_Icon} {Volume}", style=Color), text(Label), makeUsageBar(Percent, Color), text(f"{Icon} {Status}", style=Color))
 	return Table
-def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
+def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Simple=False):
 	try:
 		Data = data.getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)
 	except error.DataEmptyError as Error:
@@ -105,9 +114,9 @@ def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Rever
 	if Mode.lower() == "json":
 		return renderJsonDriveInfo(Data)
 	elif Mode.lower() == "table":
-		return renderTableDriveInfo(Data)
+		return renderTableDriveInfo(Data, Simple)
 	else:
-		return renderTextDriveInfo(Data)
+		return renderTextDriveInfo(Data, Simple)
 def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 	if AllDrive:
 		Partitions = core.get_logical_drives() or []
