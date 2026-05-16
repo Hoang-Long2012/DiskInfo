@@ -75,4 +75,6 @@ Show help message
 - By default, the drives are arranged in descending order.
 ## Download:
 Download at:  
-https://github.com/Hoang-Long2012/DiskInfo/releases/latest/
+https://github.com/Hoang-Long2012/DiskInfo/releases/latest/  
+And read changelog at:  
+https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md
