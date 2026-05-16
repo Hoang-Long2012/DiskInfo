@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "1.9"
+	return "2.0"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -77,7 +77,7 @@ def showHelp():
 	Console.print("")
 	Console.print("  -e, /e, --export [FILE]")
 	Console.print("    Export the output results to a file.")
-	Console.print("    Supported formats: CSV, JSON, TXT, Markdown and INI.")
+	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML and Yaml.")
 	Console.print("    Example: diskinfo --export report.txt")
 	Console.print("")
 	Console.print("  -v, /v, --version")
@@ -158,7 +158,7 @@ def main():
 		try:
 			with live(console=Console, screen=True, auto_refresh=False) as Live:
 				while True:
-					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage))
+					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple))
 					Live.refresh()
 					time.sleep(Args.watch)
 		except KeyboardInterrupt:

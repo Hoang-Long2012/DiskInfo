@@ -63,7 +63,7 @@ Disable auto sorting of top and usage.
 Example: diskinfo --usage 90 --no-sort
 - -e, /e, --export [FILE]  
 Export the output results to a file.  
-Supported formats: CSV, JSON, TXT, Markdown and INI.  
+Supported formats: CSV, JSON, TXT, Markdown, INI, XML and Yaml.  
 Example: diskinfo --export report.txt
 - -v, /v, --version  
 Show program version  

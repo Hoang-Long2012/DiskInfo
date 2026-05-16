@@ -399,7 +399,7 @@ class MainWindow(QT.QMainWindow):
 		self.Auto_Refresh.setChecked(Enabled)
 		self.Auto_Refresh.setIcon(self.style().standardIcon(Icon))
 	def exportFile(self):
-		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini)", "Text Files (*.txt)")
+		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml)", "Text Files (*.txt)")
 		if not Path:
 			return None
 		Ext = File_Type.split("*")[-1].replace(")", "")

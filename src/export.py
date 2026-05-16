@@ -1,6 +1,9 @@
 from data import getData
+from xml.dom.minidom import parseString
 import csv
 import json
+import dicttoxml
+import yaml
 import os
 import error
 def validateData(Data):
@@ -68,12 +71,31 @@ def exportINI(Data, Path):
 				File.write("\n")
 	except Exception as Error:
 		raise error.FileWriteError("Cannot write INI file") from Error
+def exportXML(Data, Path):
+	validateData(Data)
+	XML_Bytes = dicttoxml.dicttoxml(Data, custom_root="drives", item_func=lambda x: "disk", attr_type=False)
+	Dom = parseString(XML_Bytes)
+	Pretty_XML = Dom.toprettyxml(indent="\t")
+	try:
+		with open(Path, "w", encoding="utf-8") as File:
+			File.write(Pretty_XML)
+	except Exception as Error:
+		raise error.FileWriteError("Cannot write INI file") from Error
+def exportYaml(Data, Path):
+	validateData(Data)
+	try:
+		with open(Path, "w", encoding="utf-8") as File:
+			yaml.dump(Data, File, allow_unicode=True)
+	except Exception as Error:
+		raise error.FileWriteError("Cannot write INI file") from Error
 Formats = {
 	".csv": exportCSV,
 	".json": exportJSON,
 	".txt": exportTXT,
 	".md": exportMarkdown,
-	".ini": exportINI
+	".ini": exportINI,
+	".xml": exportXML,
+	".yaml": exportYaml
 }
 def exportData(Path, AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
 	Data = getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)

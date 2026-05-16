@@ -31,7 +31,10 @@ def renderTextDriveInfo(Datas, Simple=False):
 		Top = text()
 		Volume = Data["drive"].replace("\\", "")
 		Label = Data.get("label") or "No label"
-		Top.append(f"Label: {Label}\n")
+		if not Simple:
+			Top.append(f"Label: {Label}\n")
+		else:
+			Top.append(f"Label: {Label}")
 		Type = Data.get("type", "Unknown")
 		Drive_Icon = utils.getDriveIcon(Type)
 		if not Simple:
