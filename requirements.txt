@@ -1,0 +1,5 @@
+rich
+PySide6
+pyinstaller
+dicttoxml
+pyyaml
