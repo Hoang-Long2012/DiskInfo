@@ -1,5 +1,5 @@
 from PySide6.QtGui import QColor, QBrush, QDesktopServices, QAction, QActionGroup, QStandardItemModel, QStandardItem
-from PySide6.QtCore import QTimer, Qt, QUrl, QFileInfo, QPropertyAnimation, QEasingCurve
+from PySide6.QtCore import QTimer, Qt, QUrl, QFileInfo, QPropertyAnimation, QEasingCurve, QEvent
 from cli import getVersion
 from datetime import datetime
 import PySide6.QtWidgets as QT
@@ -43,6 +43,13 @@ class MainWindow(QT.QMainWindow):
 			self.Table.setFocus()
 			return None
 		super().keyPressEvent(Event)
+	def eventFilter(self, Object, Event):
+		if Event.type() == QEvent.KeyPress:
+			if Event.key() in (Qt.Key_Return, Qt.Key_Enter):
+				if isinstance(Object, QT.QToolButton):
+					Object.click()
+					return True
+		return super().eventFilter(Object, Event)
 	def buildMenu(self):
 		self.Menu = self.menuBar()
 		self.Menu.setNativeMenuBar(True)
@@ -212,6 +219,7 @@ class MainWindow(QT.QMainWindow):
 			Button = self.Toolbar.widgetForAction(Action)
 			if Button:
 				Button.setFocusPolicy(Qt.StrongFocus)
+				Button.installEventFilter(self)
 	def buildStatusBar(self):
 		self.Status = self.statusBar()
 		self.Drive_Label = QT.QLabel("Drives: 0")
@@ -397,6 +405,7 @@ class MainWindow(QT.QMainWindow):
 		self.animateRefresh()
 		self.loadData(self.Sort, self.Reverse, self.Type, self.Top, self.Percent)
 		self.updateLastRefresh()
+		self.Table.setFocus()
 	def updateLastRefresh(self):
 		Time = datetime.now().strftime("%H:%M:%S")
 		self.Refresh_Label.setText(f"Last refresh: {Time}")
@@ -575,7 +584,7 @@ class AccessibleModel(QStandardItemModel):
 		if Role == Qt.AccessibleTextRole:
 			Header = self.headerData(Index.column(), Qt.Horizontal, Qt.DisplayRole)
 			Value = super().data(Index, Qt.DisplayRole)
-			if Header and Value:
+			if Header is not None and Value is not None:
 				return f"{Header}: {Value}"
 			return Value
 		return super().data(Index, Role)
