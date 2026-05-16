@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "2.1"
+	return "2.2"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
