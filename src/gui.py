@@ -164,6 +164,10 @@ class MainWindow(QT.QMainWindow):
 		Readme.setIcon(self.style().standardIcon(QT.QStyle.SP_FileIcon))
 		Readme.triggered.connect(self.readme)
 		self.Help_Menu.addAction(Readme)
+		Changelog = QAction("&Changelog", self.Help_Menu)
+		Changelog.setIcon(self.style().standardIcon(QT.QStyle.SP_FileDialogDetailedView))
+		Changelog.triggered.connect(self.changelog)
+		self.Help_Menu.addAction(Changelog)
 		Homepage = QAction("&Homepage", self.Help_Menu)
 		Homepage.setIcon(self.style().standardIcon(QT.QStyle.SP_DirLinkIcon))
 		Homepage.triggered.connect(self.homepage)
@@ -429,6 +433,11 @@ class MainWindow(QT.QMainWindow):
 			os.startfile(utils.getFilePath("README.MD"))
 		except Exception:
 			QT.QMessageBox.warning(self, "Error", "Cannot open README.md")
+	def changelog(self):
+		try:
+			os.startfile(utils.getFilePath("CHANGELOG.MD"))
+		except Exception:
+			QT.QMessageBox.warning(self, "Error", "Cannot open CHANGELOG.md")
 	def license(self):
 		try:
 			os.startfile(utils.getFilePath("LICENSE"))
