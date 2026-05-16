@@ -1,5 +1,11 @@
 # Changelog
 
+## DiskInfo version 2.1
+- Add support for export format XLSX (Excel file).
+- Improved gui accessibility.
+
+---
+
 ## DiskInfo version 2.0
 - Add XML and Yaml format support for export.
 - Improved output with --simple.
