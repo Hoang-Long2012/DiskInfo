@@ -1,5 +1,12 @@
 # Changelog
 
+## DiskInfo version 2.2
+- Add status bar to gui.
+- Add simple display mode to the gui.
+- Improved gui accessibility.
+
+---
+
 ## DiskInfo version 2.1
 - Add support for export format XLSX (Excel file).
 - Improved gui accessibility.
