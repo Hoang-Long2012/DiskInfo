@@ -1,5 +1,7 @@
 from data import getData
 from xml.dom.minidom import parseString
+from openpyxl import Workbook as workbook
+from openpyxl.styles import Font, Alignment
 import csv
 import json
 import dicttoxml
@@ -88,6 +90,46 @@ def exportYaml(Data, Path):
 			yaml.dump(Data, File, allow_unicode=True)
 	except Exception as Error:
 		raise error.FileWriteError("Cannot write INI file") from Error
+def exportXLSX(Data, Path):
+	validateData(Data)
+	try:
+		Workbook = workbook()
+		Worksheet = Workbook.active
+		Worksheet.title = "DiskInfo"
+		if not Data:
+			Worksheet.append(["No data"])
+			Workbook.save(Path)
+			return None
+		Fields = []
+		Seen = set()
+		for Item in Data:
+			for Key in Item.keys():
+				if Key not in Seen:
+					Fields.append(Key)
+					Seen.add(Key)
+		Worksheet.append(Fields)
+		for Col in range(1, len(Fields) + 1):
+			Cell = Worksheet.cell(row=1, column=Col)
+			Cell.font = Font(bold=True)
+			Cell.alignment = Alignment(horizontal="center")
+		for Item in Data:
+			Row = []
+			for Key in Fields:
+				Value = Item.get(Key, "")
+				Row.append(Value)
+			Worksheet.append(Row)
+		for Col in Worksheet.columns:
+			Max_Len = 0
+			Col_Letter = Col[0].column_letter
+			for Cell in Col:
+				try:
+					Max_Len = max(Max_Len, len(str(Cell.value)))
+				except:
+					pass
+			Worksheet.column_dimensions[Col_Letter].width = Max_Len + 2
+		Workbook.save(Path)
+	except Exception as Error:
+		raise error.FileWriteError("Cannot write XLSX file") from Error
 Formats = {
 	".csv": exportCSV,
 	".json": exportJSON,
@@ -95,7 +137,8 @@ Formats = {
 	".md": exportMarkdown,
 	".ini": exportINI,
 	".xml": exportXML,
-	".yaml": exportYaml
+	".yaml": exportYaml,
+	".xlsx": exportXLSX
 }
 def exportData(Path, AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
 	Data = getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)

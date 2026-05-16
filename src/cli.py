@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "2.0"
+	return "2.1"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -77,7 +77,7 @@ def showHelp():
 	Console.print("")
 	Console.print("  -e, /e, --export [FILE]")
 	Console.print("    Export the output results to a file.")
-	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML and Yaml.")
+	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML, Yaml and XLSX.")
 	Console.print("    Example: diskinfo --export report.txt")
 	Console.print("")
 	Console.print("  -v, /v, --version")

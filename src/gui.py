@@ -188,7 +188,7 @@ class MainWindow(QT.QMainWindow):
 		self.Toolbar.addAction(self.Auto_Refresh)
 	def buildTable(self):
 		self.Table = QT.QTableView()
-		self.Model = QStandardItemModel()
+		self.Model = AccessibleModel()
 		self.Table.setModel(self.Model)
 		self.Table.setSortingEnabled(False)
 		self.Table.setAlternatingRowColors(True)
@@ -220,6 +220,7 @@ class MainWindow(QT.QMainWindow):
 				background:#2a2a2a;
 			}
 		""")
+		self.Table.setAccessibleName("Drive info")
 		self.Header = self.Table.horizontalHeader()
 		self.Header.setSectionResizeMode(QT.QHeaderView.ResizeToContents)
 		self.Header.setStretchLastSection(True)
@@ -227,6 +228,7 @@ class MainWindow(QT.QMainWindow):
 		self.Header.setHighlightSections(False)
 		self.Header.sectionClicked.connect(self.onHeaderClicked)
 		self.Header.setSortIndicatorShown(True)
+		self.Header.setAccessibleName("Header")
 		self.setCentralWidget(self.Table)
 	def loadData(self, Sort=None, Reverse=True, Type=None, Top=None, Percent=None):
 		Datas = None
@@ -255,6 +257,7 @@ class MainWindow(QT.QMainWindow):
 			Cell.setIcon(Icon)
 			Cell.setForeground(QBrush(QColor(Style["color"])))
 			Cell.setText(Text.replace("\\", ""))
+			Drive = Text.replace("\\", "")
 		elif Key == "fs":
 			Color = utils.getFsColor(Value, "gui")
 			Cell.setForeground(QBrush(QColor(Color)))
@@ -310,8 +313,8 @@ class MainWindow(QT.QMainWindow):
 				if Key not in Seen:
 					Seen.add(Key)
 					Columns.append(Key)
-		Headers = [constants.GUI_Headers.get(Key, Key.replace("_", " ").title()) for Key in Columns]
-		self.Model.setHorizontalHeaderLabels(Headers)
+		self.Headers = [constants.GUI_Headers.get(Key, Key.replace("_", " ").title()) for Key in Columns]
+		self.Model.setHorizontalHeaderLabels(self.Headers)
 		for RowIndex, Item in enumerate(Datas):
 			Row = []
 			for Key in Columns:
@@ -403,7 +406,7 @@ class MainWindow(QT.QMainWindow):
 		self.Auto_Refresh.setChecked(Enabled)
 		self.Auto_Refresh.setIcon(self.style().standardIcon(Icon))
 	def exportFile(self):
-		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml)", "Text Files (*.txt)")
+		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx)", "Text Files (*.txt)")
 		if not Path:
 			return None
 		Ext = File_Type.split("*")[-1].replace(")", "")
@@ -490,6 +493,17 @@ Project Homepage
 			I = self.Model.index(Row, Col)
 			Values.append("" if I.data() is None else str(I.data()))
 		QT.QApplication.clipboard().setText("\n".join(Values))
+class AccessibleModel(QStandardItemModel):
+	def data(self, Index, Role):
+		if not Index.isValid():
+			return super().data(Index, Role)
+		if Role == Qt.AccessibleTextRole:
+			Header = self.headerData(Index.column(), Qt.Horizontal, Qt.DisplayRole)
+			Value = super().data(Index, Qt.DisplayRole)
+			if Header and Value:
+				return f"{Header}: {Value}"
+			return Value
+		return super().data(Index, Role)
 def main():
 	App = QT.QApplication(sys.argv)
 	App.setApplicationName("DiskInfo")

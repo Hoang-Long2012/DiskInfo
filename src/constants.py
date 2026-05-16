@@ -101,8 +101,8 @@ GUI_Headers = {
 	"label": "Label",
 	"type": "Type",
 	"fs": "File System",
-	"used": "Used",
-	"free": "Free",
+	"used": "Used space",
+	"free": "Free space",
 	"total": "Capacity",
 	"percent": "Usage %",
 	"status": "Status"
