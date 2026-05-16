@@ -109,3 +109,9 @@ GUI_Headers = {
 }
 Center_Columns = ["used", "free", "total", "percent", "status"]
 Color_Columns = ["used", "free"]
+GUI_Simple_Columns = [
+	"drive",
+	"label",
+	"percent",
+	"status"
+]

@@ -20,6 +20,7 @@ class MainWindow(QT.QMainWindow):
 		self.Type = None
 		self.Top = None
 		self.Percent = None
+		self.Simple = False
 		self.Current_Timeout = 0
 		self.IconProvider = QT.QFileIconProvider()
 		self.buildMenu()
@@ -156,6 +157,10 @@ class MainWindow(QT.QMainWindow):
 		Percent.setIcon(self.style().standardIcon(QT.QStyle.SP_DialogApplyButton))
 		Percent.triggered.connect(self.setUsage)
 		self.View_Menu.addAction(Percent)
+		self.Simple_Mode = QAction("&Simple", self.View_Menu)
+		self.Simple_Mode.setCheckable(True)
+		self.Simple_Mode.triggered.connect(self.setSimple)
+		self.View_Menu.addAction(self.Simple_Mode)
 	def buildHelpMenu(self):
 		self.Help_Menu = self.Menu.addMenu("&Help")
 		About = QAction("&About", self.Help_Menu)
@@ -189,6 +194,7 @@ class MainWindow(QT.QMainWindow):
 		self.Toolbar.addAction(self.Exit)
 		self.Toolbar.addSeparator()
 		self.Toolbar.addAction(self.Auto_Refresh)
+		self.Toolbar.addAction(self.Simple_Mode)
 	def buildStatusBar(self):
 		self.Status = self.statusBar()
 		self.Drive_Label = QT.QLabel("Drives: 0")
@@ -312,7 +318,7 @@ class MainWindow(QT.QMainWindow):
 		Color = Item.data(Qt.UserRole + 1) or "#00aa55"
 		Bar = AnimatedProgressBar()
 		Bar.setRange(0, 100)
-		Bar.setValue(Value)
+		Bar.setAnimatedValue(Value)
 		Bar.setFormat(f"{Value}%")
 		Bar.setTextVisible(True)
 		Bar.setAlignment(Qt.AlignCenter)
@@ -347,6 +353,9 @@ class MainWindow(QT.QMainWindow):
 		Seen = set()
 		for Item in Datas:
 			for Key in Item.keys():
+				if self.Simple:
+					if Key not in constants.GUI_Simple_Columns:
+						continue
 				if Key not in Seen:
 					Seen.add(Key)
 					self.Columns.append(Key)
@@ -536,6 +545,9 @@ Project Homepage
 			I = self.Model.index(Row, Col)
 			Values.append("" if I.data() is None else str(I.data()))
 		QT.QApplication.clipboard().setText("\n".join(Values))
+	def setSimple(self, Enabled):
+		self.Simple = Enabled
+		self.refreshData()
 class AccessibleModel(QStandardItemModel):
 	def data(self, Index, Role):
 		if not Index.isValid():
