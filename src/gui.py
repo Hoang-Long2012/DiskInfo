@@ -1,6 +1,7 @@
 from PySide6.QtGui import QColor, QBrush, QDesktopServices, QAction, QActionGroup, QStandardItemModel, QStandardItem
-from PySide6.QtCore import QTimer, Qt, QUrl, QFileInfo
+from PySide6.QtCore import QTimer, Qt, QUrl, QFileInfo, QPropertyAnimation, QEasingCurve
 from cli import getVersion
+from datetime import datetime
 import PySide6.QtWidgets as QT
 import sys
 import data
@@ -19,10 +20,12 @@ class MainWindow(QT.QMainWindow):
 		self.Type = None
 		self.Top = None
 		self.Percent = None
+		self.Current_Timeout = 0
 		self.IconProvider = QT.QFileIconProvider()
 		self.buildMenu()
 		self.buildToolbar()
 		self.buildTable()
+		self.buildStatusBar()
 		self.loadData()
 		self.Timer = QTimer()
 		self.Timer.timeout.connect(self.refreshData)
@@ -186,6 +189,24 @@ class MainWindow(QT.QMainWindow):
 		self.Toolbar.addAction(self.Exit)
 		self.Toolbar.addSeparator()
 		self.Toolbar.addAction(self.Auto_Refresh)
+	def buildStatusBar(self):
+		self.Status = self.statusBar()
+		self.Drive_Label = QT.QLabel("Drives: 0")
+		self.Total_Label = QT.QLabel("Total: 0")
+		self.Used_Label = QT.QLabel("Used: 0")
+		self.Free_Label = QT.QLabel("Free: 0")
+		self.Filter_Label = QT.QLabel("Filter: All")
+		self.Auto_Label = QT.QLabel("Auto refresh: Off")
+		self.Timeout_Label = QT.QLabel("Timeout: Disabled")
+		self.Refresh_Label = QT.QLabel("Last refresh: Never")
+		self.Status.addPermanentWidget(self.Drive_Label)
+		self.Status.addPermanentWidget(self.Total_Label)
+		self.Status.addPermanentWidget(self.Used_Label)
+		self.Status.addPermanentWidget(self.Free_Label)
+		self.Status.addPermanentWidget(self.Filter_Label)
+		self.Status.addPermanentWidget(self.Auto_Label)
+		self.Status.addPermanentWidget(self.Timeout_Label)
+		self.Status.addPermanentWidget(self.Refresh_Label)
 	def buildTable(self):
 		self.Table = QT.QTableView()
 		self.Model = AccessibleModel()
@@ -230,6 +251,16 @@ class MainWindow(QT.QMainWindow):
 		self.Header.setSortIndicatorShown(True)
 		self.Header.setAccessibleName("Header")
 		self.setCentralWidget(self.Table)
+		self.Opacity = QT.QGraphicsOpacityEffect()
+		self.Table.setGraphicsEffect(self.Opacity)
+		self.Fade_Animation = QPropertyAnimation(self.Opacity, b"opacity")
+		self.Fade_Animation.setDuration(250)
+		self.Fade_Animation.setEasingCurve(QEasingCurve.InOutQuad)
+	def animateRefresh(self):
+		self.Fade_Animation.stop()
+		self.Fade_Animation.setStartValue(0.3)
+		self.Fade_Animation.setEndValue(1.0)
+		self.Fade_Animation.start()
 	def loadData(self, Sort=None, Reverse=True, Type=None, Top=None, Percent=None):
 		Datas = None
 		try:
@@ -257,7 +288,6 @@ class MainWindow(QT.QMainWindow):
 			Cell.setIcon(Icon)
 			Cell.setForeground(QBrush(QColor(Style["color"])))
 			Cell.setText(Text.replace("\\", ""))
-			Drive = Text.replace("\\", "")
 		elif Key == "fs":
 			Color = utils.getFsColor(Value, "gui")
 			Cell.setForeground(QBrush(QColor(Color)))
@@ -280,7 +310,7 @@ class MainWindow(QT.QMainWindow):
 	def createProgressBar(self, Item):
 		Value = Item.data(Qt.UserRole) or 0
 		Color = Item.data(Qt.UserRole + 1) or "#00aa55"
-		Bar = QT.QProgressBar()
+		Bar = AnimatedProgressBar()
 		Bar.setRange(0, 100)
 		Bar.setValue(Value)
 		Bar.setFormat(f"{Value}%")
@@ -306,29 +336,41 @@ class MainWindow(QT.QMainWindow):
 		self.Model.clear()
 		if not Datas:
 			return None
-		Columns = []
+		self.Drive_Label.setText(f"Drives: {len(Datas)}")
+		Total_Size = sum(Item.get("total", 0) for Item in Datas)
+		self.Total_Label.setText(f"Total: {utils.formatSize(Total_Size)}")
+		Used_Size = sum(Item.get("used", 0) for Item in Datas)
+		self.Used_Label.setText(f"Used: {utils.formatSize(Used_Size)}")
+		Free_Size = sum(Item.get("free", 0) for Item in Datas)
+		self.Free_Label.setText(f"Free: {utils.formatSize(Free_Size)}")
+		self.Columns = []
 		Seen = set()
 		for Item in Datas:
 			for Key in Item.keys():
 				if Key not in Seen:
 					Seen.add(Key)
-					Columns.append(Key)
-		self.Headers = [constants.GUI_Headers.get(Key, Key.replace("_", " ").title()) for Key in Columns]
+					self.Columns.append(Key)
+		self.Headers = [constants.GUI_Headers.get(Key, Key.replace("_", " ").title()) for Key in self.Columns]
 		self.Model.setHorizontalHeaderLabels(self.Headers)
 		for RowIndex, Item in enumerate(Datas):
 			Row = []
-			for Key in Columns:
+			for Key in self.Columns:
 				Value = Item.get(Key, "")
 				Row.append(self.makeCell(Key, Value, Item))
 			self.Model.appendRow(Row)
-			if "percent" in Columns:
-				Col = Columns.index("percent")
+			if "percent" in self.Columns:
+				Col = self.Columns.index("percent")
 				Item = Row[Col]
 				Index = self.Model.index(RowIndex, Col)
 				self.Table.setIndexWidget(Index, self.createProgressBar(Item))
 		self.Table.resizeColumnsToContents()
 	def refreshData(self):
+		self.animateRefresh()
 		self.loadData(self.Sort, self.Reverse, self.Type, self.Top, self.Percent)
+		self.updateLastRefresh()
+	def updateLastRefresh(self):
+		Time = datetime.now().strftime("%H:%M:%S")
+		self.Refresh_Label.setText(f"Last refresh: {Time}")
 	def showContextMenu(self, Pos):
 		Menu = QT.QMenu(self)
 		Copy_Cell = QAction("Copy Cell", self)
@@ -343,15 +385,7 @@ class MainWindow(QT.QMainWindow):
 		Menu.addAction(self.Export)
 		Menu.exec(self.Table.viewport().mapToGlobal(Pos))
 	def onHeaderClicked(self, Index):
-		Column_Map = {
-			0: "usage",
-			1: "label",
-			2: "used",
-			3: "free",
-			4: "total",
-			5: "status"
-		}
-		Key = Column_Map.get(Index)
+		Key = self.Columns[Index]
 		if not Key:
 			return None
 		if self.Sort == Key:
@@ -370,8 +404,10 @@ class MainWindow(QT.QMainWindow):
 		self.Reverse = value
 		self.refreshData()
 	def setType(self, mode):
+		Text = mode.title() if mode else "All"
 		self.Type = mode
 		self.refreshData()
+		self.Filter_Label.setText(f"Filter: {Text}")
 	def setTop(self):
 		Input, OK = QT.QInputDialog.getInt(self, "Top", "Top drives:", 5, 0, 100)
 		if OK:
@@ -391,6 +427,7 @@ class MainWindow(QT.QMainWindow):
 	def setTimer(self):
 		Input, OK = QT.QInputDialog.getDouble(self, "Auto refresh", "Seconds:", 2, 0, 60, 2)
 		if OK:
+			self.Current_Timeout = Input
 			if Input == 0:
 				self.Timer.stop()
 				self.updateAutoActions(False)
@@ -403,8 +440,14 @@ class MainWindow(QT.QMainWindow):
 			self.updateAutoActions(self.Timer.isActive())
 	def updateAutoActions(self, Enabled):
 		Icon = QT.QStyle.SP_MediaPause if Enabled else QT.QStyle.SP_MediaPlay
+		Text = "On" if Enabled else "Off"
 		self.Auto_Refresh.setChecked(Enabled)
 		self.Auto_Refresh.setIcon(self.style().standardIcon(Icon))
+		self.Auto_Label.setText(f"Auto refresh: {Text}")
+		if not self.Current_Timeout == 0:
+			self.Timeout_Label.setText(f"Timeout: {self.Current_Timeout:g}s")
+		else:
+			self.Timeout_Label.setText(f"Timeout: Disabled")
 	def exportFile(self):
 		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx)", "Text Files (*.txt)")
 		if not Path:
@@ -504,6 +547,17 @@ class AccessibleModel(QStandardItemModel):
 				return f"{Header}: {Value}"
 			return Value
 		return super().data(Index, Role)
+class AnimatedProgressBar(QT.QProgressBar):
+	def __init__(self):
+		super().__init__()
+		self.Animation = QPropertyAnimation(self, b"value")
+		self.Animation.setDuration(400)
+		self.Animation.setEasingCurve(QEasingCurve.OutCubic)
+	def setAnimatedValue(self, Value):
+		self.Animation.stop()
+		self.Animation.setStartValue(self.value())
+		self.Animation.setEndValue(Value)
+		self.Animation.start()
 def main():
 	App = QT.QApplication(sys.argv)
 	App.setApplicationName("DiskInfo")
