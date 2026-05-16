@@ -30,6 +30,19 @@ class MainWindow(QT.QMainWindow):
 		self.loadData()
 		self.Timer = QTimer()
 		self.Timer.timeout.connect(self.refreshData)
+	def keyPressEvent(self, Event):
+		if Event.key() == Qt.Key_F6:
+			self.Toolbar.setFocus()
+			Actions = self.Toolbar.actions()
+			if Actions:
+				Button = self.Toolbar.widgetForAction(Actions[0])
+				if Button:
+					Button.setFocus()
+			return None
+		elif Event.key() == Qt.Key_Escape:
+			self.Table.setFocus()
+			return None
+		super().keyPressEvent(Event)
 	def buildMenu(self):
 		self.Menu = self.menuBar()
 		self.Menu.setNativeMenuBar(True)
@@ -186,7 +199,7 @@ class MainWindow(QT.QMainWindow):
 		self.Help_Menu.addAction(License)
 	def buildToolbar(self):
 		self.Toolbar = self.addToolBar("Main")
-		self.Toolbar.setFocusPolicy(Qt.NoFocus)
+		self.Toolbar.setFocusPolicy(Qt.StrongFocus)
 		self.Toolbar.setMovable(False)
 		self.Toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 		self.Toolbar.addAction(self.Refresh)
@@ -195,6 +208,10 @@ class MainWindow(QT.QMainWindow):
 		self.Toolbar.addSeparator()
 		self.Toolbar.addAction(self.Auto_Refresh)
 		self.Toolbar.addAction(self.Simple_Mode)
+		for Action in self.Toolbar.actions():
+			Button = self.Toolbar.widgetForAction(Action)
+			if Button:
+				Button.setFocusPolicy(Qt.StrongFocus)
 	def buildStatusBar(self):
 		self.Status = self.statusBar()
 		self.Drive_Label = QT.QLabel("Drives: 0")
@@ -368,10 +385,13 @@ class MainWindow(QT.QMainWindow):
 				Row.append(self.makeCell(Key, Value, Item))
 			self.Model.appendRow(Row)
 			if "percent" in self.Columns:
-				Col = self.Columns.index("percent")
-				Item = Row[Col]
-				Index = self.Model.index(RowIndex, Col)
-				self.Table.setIndexWidget(Index, self.createProgressBar(Item))
+				try:
+					Col = self.Columns.index("percent")
+					Item = Row[Col]
+					Index = self.Model.index(RowIndex, Col)
+					self.Table.setIndexWidget(Index, self.createProgressBar(Item))
+				except IndexError:
+					pass
 		self.Table.resizeColumnsToContents()
 	def refreshData(self):
 		self.animateRefresh()
