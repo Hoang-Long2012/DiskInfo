@@ -1,24 +1,24 @@
 name: Auto Release
 
 on:
-	push:
-		tags:
-			- "*"
+  push:
+    tags:
+      - "*"
 
 jobs:
-	release:
-		runs-on: ubuntu-latest
+  release:
+    runs-on: ubuntu-latest
 
-		permissions:
-			contents: write
+    permissions:
+      contents: write
 
-		steps:
-			- name: Checkout
-				uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-			- name: Create Release
-				uses: softprops/action-gh-release@v2
-				with:
-					body: "Please read CHANGELOG.md for changes."
-					files: |
-						release/DiskInfo.zip
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "Please read CHANGELOG.md for changes."
+          files: |
+            release/DiskInfo.zip
