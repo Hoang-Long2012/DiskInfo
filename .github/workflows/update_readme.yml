@@ -1,0 +1,49 @@
+name: Update README Version
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check tag is on main
+        run: |
+          git fetch origin main
+          git branch -r --contains $GITHUB_SHA | grep origin/main
+
+      - name: Switch to main
+        run: |
+          git checkout main
+          git pull origin main
+
+      - name: Validate tag
+        run: |
+          echo "$GITHUB_REF_NAME" | grep -Ei "[0-9]"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - run: python tools/update_readme.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add README.md
+          git diff --cached --quiet && exit 0
+
+          git commit -m "Update README version to $GITHUB_REF_NAME"
+          git push origin main
