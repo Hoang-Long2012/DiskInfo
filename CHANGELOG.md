@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 2.3
+- Add HTML export format support.
+
+---
+
 ## DiskInfo version 2.2
 - Add status bar to gui.
 - Add simple display mode to the gui.

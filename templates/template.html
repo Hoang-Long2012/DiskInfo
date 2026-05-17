@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DiskInfo Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	body {
+		background:#121212;
+		color:white;
+		font-family:Arial;
+	}
+	table {
+		width:100%;
+		border-collapse:collapse;
+	}
+	th, td {
+		border:1px solid #333;
+		padding:8px;
+		text-align:center;
+	}
+	th {
+		background:#222;
+	}
+	.bar {
+		width:100%;
+		background:#333;
+		height:10px;
+		border-radius:5px;
+		overflow:hidden;
+	}
+	.fill {
+		height:100%;
+		background:#00cc66;
+	}
+</style>
+</head>
+<body>
+	<h1>DiskInfo Report</h1>
+<br>
+<table>
+	<caption>Drive info:</caption>
+	<tr>
+		<th>Drive</th>
+		<th>Label</th>
+		<th>Type</th>
+		<th>FS</th>
+		<th>Used</th>
+		<th>Free</th>
+		<th>Total</th>
+		<th>Usage</th>
+		<th>Status</th>
+	</tr>
+	{% for item in data %}
+	<tr>
+		<td>{{ item.drive.replace("\\\\", "") | e }}</td>
+		<td>{{ item.label | e or "No label" }}</td>
+		<td>{{ item.type | e}}</td>
+		<td>{{ item.fs | e }}</td>
+		<td>{{ item.used | e }}</td>
+		<td>{{ item.free | e }}</td>
+		<td>{{ item.total | e }}</td>
+		<td>
+			<div class="bar">
+				<div class="fill" style="width:{{ item.percent }}%"></div>
+			</div>
+		{{ "%.1f"|format(item.percent or 0) }}%
+		</td>
+		<td>{{ item.status | e }}</td>
+	</tr>
+	{% endfor %}
+</table>
+</body>
+</html>

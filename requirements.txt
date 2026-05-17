@@ -1,6 +1,7 @@
 rich
-PySide6
+pyside6
 pyinstaller
 dicttoxml
 pyyaml
 openpyxl
+jinja2

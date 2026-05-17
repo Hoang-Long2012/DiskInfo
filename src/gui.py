@@ -59,19 +59,19 @@ class MainWindow(QT.QMainWindow):
 		self.buildHelpMenu()
 	def buildFileMenu(self):
 		self.File_Menu = self.Menu.addMenu("&File")
-		self.Export = QAction("&Export", self.File_Menu)
+		self.Export = QAction("&Export", self)
 		self.Export.setShortcut("Ctrl+E")
 		self.Export.setIcon(self.style().standardIcon(QT.QStyle.SP_DialogSaveButton))
 		self.Export.triggered.connect(self.exportFile)
 		self.File_Menu.addAction(self.Export)
-		self.Exit = QAction("Exit", self.File_Menu)
+		self.Exit = QAction("Exit", self)
 		self.Exit.setShortcut("Alt+F4")
 		self.Exit.setIcon(self.style().standardIcon(QT.QStyle.SP_DialogCloseButton))
 		self.Exit.triggered.connect(self.exitApp)
 		self.File_Menu.addAction(self.Exit)
 	def buildViewMenu(self):
 		self.View_Menu = self.Menu.addMenu("&View")
-		self.Refresh = QAction("&Refresh", self.View_Menu)
+		self.Refresh = QAction("&Refresh", self)
 		self.Refresh.setShortcut("F5")
 		self.Refresh.setIcon(self.style().standardIcon(QT.QStyle.SP_BrowserReload))
 		self.Refresh.triggered.connect(self.refreshData)
@@ -161,7 +161,7 @@ class MainWindow(QT.QMainWindow):
 		Type_Menu.addAction(Unknown)
 		Type_Group.addAction(Unknown)
 		self.View_Menu.addMenu(Type_Menu)
-		self.Auto_Refresh = QAction("&Auto refresh", self.View_Menu)
+		self.Auto_Refresh = QAction("&Auto refresh", self)
 		self.Auto_Refresh.setCheckable(True)
 		self.Auto_Refresh.setShortcut("Ctrl+R")
 		self.Auto_Refresh.setIcon(self.style().standardIcon(QT.QStyle.SP_MediaPlay))
@@ -177,8 +177,10 @@ class MainWindow(QT.QMainWindow):
 		Percent.setIcon(self.style().standardIcon(QT.QStyle.SP_DialogApplyButton))
 		Percent.triggered.connect(self.setUsage)
 		self.View_Menu.addAction(Percent)
-		self.Simple_Mode = QAction("&Simple", self.View_Menu)
+		self.Simple_Mode = QAction("&Simple", self)
+		self.Simple_Mode.setShortcut("F8")
 		self.Simple_Mode.setCheckable(True)
+		self.Simple_Mode.setIcon(self.style().standardIcon(QT.QStyle.SP_FileDialogListView))
 		self.Simple_Mode.triggered.connect(self.setSimple)
 		self.View_Menu.addAction(self.Simple_Mode)
 	def buildHelpMenu(self):
@@ -487,7 +489,7 @@ class MainWindow(QT.QMainWindow):
 		else:
 			self.Timeout_Label.setText(f"Timeout: Disabled")
 	def exportFile(self):
-		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx)", "Text Files (*.txt)")
+		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx);;Web Files (*.html)", "Text Files (*.txt)")
 		if not Path:
 			return None
 		Ext = File_Type.split("*")[-1].replace(")", "")
@@ -575,8 +577,12 @@ Project Homepage
 			Values.append("" if I.data() is None else str(I.data()))
 		QT.QApplication.clipboard().setText("\n".join(Values))
 	def setSimple(self, Enabled):
+		Icon = QT.QStyle.SP_FileDialogDetailedView if Enabled else QT.QStyle.SP_FileDialogListView
+		Text = "Detailed" if Enabled else "Simple"
 		self.Simple = Enabled
 		self.refreshData()
+		self.Simple_Mode.setText(Text)
+		self.Simple_Mode.setIcon(self.style().standardIcon(Icon))
 class AccessibleModel(QStandardItemModel):
 	def data(self, Index, Role):
 		if not Index.isValid():

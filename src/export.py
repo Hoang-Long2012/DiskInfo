@@ -1,17 +1,11 @@
 from data import getData
-from xml.dom.minidom import parseString
-from openpyxl import Workbook as workbook
-from openpyxl.styles import Font, Alignment
-import csv
-import json
-import dicttoxml
-import yaml
 import os
 import error
 def validateData(Data):
 	if not isinstance(Data, list) or not Data:
 		raise error.DataEmptyError(error.DataErrorCode.Invalid_Drives, f"Data is empty or invalid")
 def exportCSV(Data, Path):
+	import csv
 	validateData(Data)
 	Fields = []
 	Seen = set()
@@ -29,6 +23,7 @@ def exportCSV(Data, Path):
 	except Exception as Error:
 		raise error.FileWriteError("Cannot write CSV file") from Error
 def exportJSON(Data, Path):
+	import json
 	validateData(Data)
 	try:
 		with open(Path, "w", encoding="utf-8") as File:
@@ -74,6 +69,8 @@ def exportINI(Data, Path):
 	except Exception as Error:
 		raise error.FileWriteError("Cannot write INI file") from Error
 def exportXML(Data, Path):
+	from xml.dom.minidom import parseString
+	import dicttoxml
 	validateData(Data)
 	XML_Bytes = dicttoxml.dicttoxml(Data, custom_root="drives", item_func=lambda x: "disk", attr_type=False)
 	Dom = parseString(XML_Bytes)
@@ -82,15 +79,18 @@ def exportXML(Data, Path):
 		with open(Path, "w", encoding="utf-8") as File:
 			File.write(Pretty_XML)
 	except Exception as Error:
-		raise error.FileWriteError("Cannot write INI file") from Error
+		raise error.FileWriteError("Cannot write XML file") from Error
 def exportYaml(Data, Path):
+	import yaml
 	validateData(Data)
 	try:
 		with open(Path, "w", encoding="utf-8") as File:
 			yaml.dump(Data, File, allow_unicode=True)
 	except Exception as Error:
-		raise error.FileWriteError("Cannot write INI file") from Error
+		raise error.FileWriteError("Cannot write Yaml file") from Error
 def exportXLSX(Data, Path):
+	from openpyxl import Workbook as workbook
+	from openpyxl.styles import Font, Alignment
 	validateData(Data)
 	try:
 		Workbook = workbook()
@@ -130,6 +130,17 @@ def exportXLSX(Data, Path):
 		Workbook.save(Path)
 	except Exception as Error:
 		raise error.FileWriteError("Cannot write XLSX file") from Error
+def exportHTML(Data, Path):
+	from jinja2 import Environment, FileSystemLoader
+	validateData(Data)
+	ENV = Environment(loader=FileSystemLoader("templates"))
+	Template = ENV.get_template("template.html")
+	HTML = Template.render(data=Data)
+	try:
+		with open(Path, "w", encoding="utf-8") as File:
+			File.write(HTML)
+	except Exception as e:
+		raise error.FileWriteError("Cannot write HTML file") from e
 Formats = {
 	".csv": exportCSV,
 	".json": exportJSON,
@@ -138,7 +149,8 @@ Formats = {
 	".ini": exportINI,
 	".xml": exportXML,
 	".yaml": exportYaml,
-	".xlsx": exportXLSX
+	".xlsx": exportXLSX,
+	".html": exportHTML
 }
 def exportData(Path, AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
 	Data = getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)
