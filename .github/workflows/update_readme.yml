@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: "3.14"
 
-      - run: python tools/update_readme.py
+      - run: python .github/tools/update_readme.py
 
       - name: Commit changes
         run: |
