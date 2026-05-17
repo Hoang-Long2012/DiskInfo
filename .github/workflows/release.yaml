@@ -19,7 +19,7 @@ jobs:
           lfs: true
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.3.2
         with:
           name: DiskInfo version ${{ github.ref_name }}
           body: "Please read CHANGELOG.md for changes."
