@@ -15,10 +15,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          name: DiskInfo version ${{ github.ref_name }}
           body: "Please read CHANGELOG.md for changes."
           files: |
             release/DiskInfo.zip
