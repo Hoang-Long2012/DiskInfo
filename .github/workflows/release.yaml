@@ -21,14 +21,14 @@ jobs:
         with:
           lfs: true
 
-- name: Extract changelog
-  id: changelog
-  run: |
-    awk '/^## DiskInfo version '"${GITHUB_REF_NAME}"'/{flag=1;next}/^---/{flag=0}flag' CHANGELOG.md > RELEASE_NOTES.txt
+      - name: Extract changelog
+        id: changelog
+        run: |
+          awk '/^## DiskInfo version '"${GITHUB_REF_NAME}"'/{flag=1;next}/^---/{flag=0}flag' CHANGELOG.md > RELEASE_NOTES.txt
 
-    echo "notes<<EOF" >> $GITHUB_OUTPUT
-    cat RELEASE_NOTES.txt >> $GITHUB_OUTPUT
-    echo "EOF" >> $GITHUB_OUTPUT
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          cat RELEASE_NOTES.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
     
       - name: Create Release
         uses: softprops/action-gh-release@v2.3.2
