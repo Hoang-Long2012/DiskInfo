@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 2.4
+- Add support for TOML export format.
+
+---
+
 ## DiskInfo version 2.3
 - Add HTML export format support.
 

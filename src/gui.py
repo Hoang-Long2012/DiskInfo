@@ -489,7 +489,7 @@ class MainWindow(QT.QMainWindow):
 		else:
 			self.Timeout_Label.setText(f"Timeout: Disabled")
 	def exportFile(self):
-		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx);;Web Files (*.html)", "Text Files (*.txt)")
+		Path, File_Type = QT.QFileDialog.getSaveFileName(self, "Export", "Report.txt", "Text Files (*.txt);;CSV Files (*.csv);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx);;Web Files (*.html);;Toml Files (*.toml)", "Text Files (*.txt)")
 		if not Path:
 			return None
 		Ext = File_Type.split("*")[-1].replace(")", "")

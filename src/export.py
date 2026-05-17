@@ -141,6 +141,17 @@ def exportHTML(Data, Path):
 			File.write(HTML)
 	except Exception as e:
 		raise error.FileWriteError("Cannot write HTML file") from e
+def exportTOML(Data, Path):
+	import toml
+	validateData(Data)
+	try:
+		Output = {
+			"drives": Data
+		}
+		with open(Path, "w", encoding="utf-8") as File:
+			toml.dump(Output, File)
+	except Exception as Error:
+		raise error.FileWriteError("Cannot write TOML file") from Error
 Formats = {
 	".csv": exportCSV,
 	".json": exportJSON,
@@ -150,7 +161,8 @@ Formats = {
 	".xml": exportXML,
 	".yaml": exportYaml,
 	".xlsx": exportXLSX,
-	".html": exportHTML
+	".html": exportHTML,
+	".toml": exportTOML
 }
 def exportData(Path, AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
 	Data = getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)

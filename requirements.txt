@@ -5,3 +5,4 @@ dicttoxml
 pyyaml
 openpyxl
 jinja2
+toml
