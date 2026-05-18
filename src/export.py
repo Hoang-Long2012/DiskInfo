@@ -1,6 +1,7 @@
 from data import getData
 import os
 import error
+import utils
 def validateData(Data):
 	if not isinstance(Data, list) or not Data:
 		raise error.DataEmptyError(error.DataErrorCode.Invalid_Drives, f"Data is empty or invalid")
@@ -133,7 +134,7 @@ def exportXLSX(Data, Path):
 def exportHTML(Data, Path):
 	from jinja2 import Environment, FileSystemLoader
 	validateData(Data)
-	ENV = Environment(loader=FileSystemLoader("templates"))
+	ENV = Environment(loader=FileSystemLoader(utils.getFilePath("templates")))
 	Template = ENV.get_template("template.html")
 	HTML = Template.render(data=Data)
 	try:

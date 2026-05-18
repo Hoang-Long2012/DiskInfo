@@ -404,6 +404,10 @@ class MainWindow(QT.QMainWindow):
 					pass
 		self.Table.resizeColumnsToContents()
 	def refreshData(self):
+		if self.Percent is not None and not self.Sort:
+			self.Sort = "usage"
+		if self.Top and not self.Sort:
+			self.Sort = "used"
 		self.animateRefresh()
 		self.loadData(self.Sort, self.Reverse, self.Type, self.Top, self.Percent)
 		self.updateLastRefresh()

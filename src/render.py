@@ -25,7 +25,7 @@ def makeUsageBar(Percent, Color):
 	Grid.add_column(no_wrap=True)
 	Grid.add_row(ProgressBar(total=100, completed=Percent, width=20, complete_style=Color), text(f"{Percent:.0f}%", style=Color))
 	return Grid
-def renderTextDriveInfo(Datas, Simple=False):
+def renderTextDriveInfo(Datas, Simple=False, Bytes=True):
 	Panels = []
 	for Data in Datas:
 		Top = text()
@@ -49,19 +49,22 @@ def renderTextDriveInfo(Datas, Simple=False):
 		Icon = Style["icon"]
 		Status = Data.get("status") or "unknown"
 		Used = Data.get("used") or 0
+		Used_STR = f"{utils.formatSize(Used)} ({Used} Bytes)" if Bytes else f"{utils.formatSize(Used)}"
 		if not Simple:
 			Top.append("Used space: ")
-			Top.append(f"{utils.formatSize(Used)} ({Used} Bytes)", style=Color)
+			Top.append(Used_STR, style=Color)
 		Percent = Data.get("percent") or 0
 		Free = Data.get("free") or 0
+		Free_STR = f"{utils.formatSize(Free)} ({Free} Bytes)\n" if Bytes else f"{utils.formatSize(Free)}\n"
 		Bottom = text()
 		if not Simple:
 			Bottom.append("Free space: ")
-			Bottom.append(f"{utils.formatSize(Free)} ({Free} Bytes)\n", style=Color)
+			Bottom.append(Free_STR, style=Color)
 		Total = Data.get("total") or 0
+		Total_STR = f"{utils.formatSize(Total)} ({Total} Bytes)\n" if Bytes else f"{utils.formatSize(Total)}\n"
 		if not Simple:
 			Bottom.append("Capacity: ")
-			Bottom.append(f"{utils.formatSize(Total)} ({Total} Bytes)\n")
+			Bottom.append(Total_STR)
 		Bottom.append("Status: ")
 		Bottom.append(f"{Icon} {Status}", style=Color)
 		Content = group(Top, makeUsageLine(Percent, Color), Bottom)
@@ -97,7 +100,7 @@ def renderTableDriveInfo(Data, Simple=False):
 		else:
 			Table.add_row(text(f"{Drive_Icon} {Volume}", style=Color), text(Label), makeUsageBar(Percent, Color), text(f"{Icon} {Status}", style=Color))
 	return Table
-def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Simple=False):
+def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Simple=False, Bytes=True):
 	try:
 		Data = data.getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)
 	except error.DataEmptyError as Error:
@@ -119,7 +122,7 @@ def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Rever
 	elif Mode.lower() == "table":
 		return renderTableDriveInfo(Data, Simple)
 	else:
-		return renderTextDriveInfo(Data, Simple)
+		return renderTextDriveInfo(Data, Simple, Bytes)
 def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 	if AllDrive:
 		Partitions = core.get_logical_drives() or []

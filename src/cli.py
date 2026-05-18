@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "2.4"
+	return "2.5"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -25,7 +25,11 @@ def showHelp():
 	Console.print("")
 	Console.print("  -n, /n, --label")
 	Console.print("    Show drive labels with drive letters.")
-	Console.print("    Example: diskinfo.py -n C:\\")
+	Console.print("    Example: diskinfo -n C:\\")
+	Console.print("")
+	Console.print("  --no-bytes")
+	Console.print("    Hide the bytes in output text mode.")
+	Console.print("    Example: diskinfo --no-bytes")
 	Console.print("")
 	Console.print("  -j, /j, --json")
 	Console.print("    Show drive info with format json.")
@@ -106,6 +110,7 @@ def parseArgs():
 	ArgsList = normalizeWindowsArgs(sys.argv[1:])
 	Parser = argparse.ArgumentParser(add_help=False)
 	Parser.add_argument("drives", nargs="*")
+	Parser.add_argument("--no-bytes", action="store_false", default=True)
 	Parser.add_argument("-j", "--json", action="store_true")
 	Parser.add_argument("--table", action="store_true")
 	Parser.add_argument("--simple", action="store_true")
@@ -158,7 +163,7 @@ def main():
 		try:
 			with live(console=Console, screen=True, auto_refresh=False) as Live:
 				while True:
-					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple))
+					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple, Bytes=Args.no_bytes))
 					Live.refresh()
 					time.sleep(Args.watch)
 		except KeyboardInterrupt:
@@ -188,7 +193,7 @@ def main():
 				Console.print(Error.message)
 				sys.exit(2)
 	else:
-		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple))
+		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple, Bytes=Args.no_bytes))
 		sys.exit(0)
 if __name__ == "__main__":
 	main()

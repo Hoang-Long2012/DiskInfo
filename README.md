@@ -22,7 +22,10 @@ List all available drives (drive letters only)
 Example: diskinfo -l
 - -n, /n, --label  
 Show drive labels with drive letters  
-Example: diskinfo.py -n C:\
+Example: diskinfo -n C:\
+- --no-bytes  
+Hide the bytes in output text mode.  
+Example: diskinfo --no-bytes
 - -j, /j, --json  
 Show drive info with format json.  
 Example: diskinfo --json

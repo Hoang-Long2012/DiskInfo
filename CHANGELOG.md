@@ -1,5 +1,11 @@
 # Changelog
 
+## DiskInfo version 2.5
+- Made some internal code modifications.
+- Added --no-bytes to hide bytes values ​​in output text mode.
+
+---
+
 ## DiskInfo version 2.4
 - Add support for TOML export format.
 
