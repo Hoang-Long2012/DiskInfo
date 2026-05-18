@@ -64,6 +64,12 @@ Example: diskinfo --usage 90
 - --no-sort  
 Disable auto sorting of top and usage.  
 Example: diskinfo --usage 90 --no-sort
+- -S, /S, --summary  
+  Show summary information about drives.  
+Example: diskinfo --summary
+- -E, /E, --exclude [DRIVE...]  
+Exclude specific drives.  
+Example: diskinfo --exclude C: D:
 - -e, /e, --export [FILE]  
 Export the output results to a file.  
 Supported formats: CSV, JSON, TXT, Markdown, INI, XML and Yaml.  

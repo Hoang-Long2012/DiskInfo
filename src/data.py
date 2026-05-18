@@ -69,8 +69,24 @@ def filterPercent(Data, Percent=90):
 		if (Item.get("percent") or 0) >= Percent:
 			Result.append(Item)
 	return Result
-def getData(AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
+def filterExclude(Data, Exclude=None):
+	Exclude = utils.parseVolumeList(Exclude)
+	if not Exclude:
+		return Data
+	Seen = set()
+	for Drive in Exclude:
+		if not isinstance(Drive, str):
+			continue
+		Seen.add(Drive)
+	Result = []
+	for Item in Data:
+		Drive = (Item.get("drive") or "").upper()
+		if Drive not in Seen:
+			Result.append(Item)
+	return Result
+def getData(AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Exclude=None):
 	Data = collectDriveInfo(AllDrive, Volumes)
+	Data = filterExclude(Data, Exclude)
 	Data = filterDriveType(Data, filterType)
 	if Percent is not None:
 		if Percent < 0 or Percent > 100:

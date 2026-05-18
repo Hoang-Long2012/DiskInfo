@@ -165,8 +165,8 @@ Formats = {
 	".html": exportHTML,
 	".toml": exportTOML
 }
-def exportData(Path, AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None):
-	Data = getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)
+def exportData(Path, AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Exclude=None):
+	Data = getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent, Exclude=Exclude)
 	Path = os.path.abspath(Path.strip())
 	_, Ext = os.path.splitext(Path)
 	Exporter = Formats.get(Ext.lower())

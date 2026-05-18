@@ -100,9 +100,9 @@ def renderTableDriveInfo(Data, Simple=False):
 		else:
 			Table.add_row(text(f"{Drive_Icon} {Volume}", style=Color), text(Label), makeUsageBar(Percent, Color), text(f"{Icon} {Status}", style=Color))
 	return Table
-def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Simple=False, Bytes=True):
+def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Exclude=None, Simple=False, Bytes=True):
 	try:
-		Data = data.getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent)
+		Data = data.getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent, Exclude=Exclude)
 	except error.DataEmptyError as Error:
 		if Error.code == error.DataErrorCode.No_Drive:
 			Console.print("No drive information")
@@ -147,3 +147,40 @@ def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 		except Exception:
 			continue
 	sys.exit(0)
+def renderDriveSummary(AllDrive=True, Volumes=None, Sort=None, Reverse=True, filterType=None, Top=None, Percent=None, Exclude=None, Simple=False):
+	try:
+		Data = data.getData(AllDrive=AllDrive, Volumes=Volumes, Sort=Sort, Reverse=Reverse, filterType=filterType, Top=Top, Percent=Percent, Exclude=Exclude)
+	except error.DataEmptyError as Error:
+		if Error.code == error.DataErrorCode.No_Drive:
+			Console.print("No drive information")
+			sys.exit(2)
+		elif Error.code == error.DataErrorCode.Invalid_Drives:
+			Console.print("Invalid drives")
+			sys.exit(2)
+	except error.DataOutOfLimitError as Error:
+		if Error.code == error.DataErrorCode.Usage_Limit:
+			Console.print("Usage must be between 0 and 100.")
+			sys.exit(2)
+		elif Error.code == error.DataErrorCode.Top_Limit:
+			Console.print("Top must be >= 1")
+			sys.exit(2)
+	Text = text()
+	Total = len(Data)
+	Text.append(f"Drives: {Total}\n")
+	Used = sum(X.get("used", 0) for X in Data)
+	Text.append(f"Used: {utils.formatSize(Used)}\n")
+	Free = sum(X.get("free", 0) for X in Data)
+	Text.append(f"Free: {utils.formatSize(Free)}\n")
+	Capacity = sum(X.get("total", 0) for X in Data)
+	if Simple:
+		Text.append(f"Capacity: {utils.formatSize(Capacity)}")
+	else:
+		Text.append(f"Capacity: {utils.formatSize(Capacity)}\n")
+	if not Simple:
+		Max_Drive = max(Data, key=lambda X: X.get("percent", 0), default=None)
+		Min_Drive = min(Data, key=lambda X: X.get("percent", 0), default=None)
+		Max_Drive = Max_Drive["drive"]
+		Min_Drive = Min_Drive["drive"]
+		Text.append(f"Most used: {Max_Drive}\n")
+		Text.append(f"Least used: {Min_Drive}")
+	return panel(Text, title="Summary", box=box.SIMPLE)

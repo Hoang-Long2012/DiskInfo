@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "2.5"
+	return "2.6"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -79,6 +79,14 @@ def showHelp():
 	Console.print("    Disable auto sorting of top and usage.")
 	Console.print("    Example: diskinfo --usage 90 --no-sort")
 	Console.print("")
+	Console.print("  -S, /S, --summary")
+	Console.print("    Show summary information about drives.")
+	Console.print("    Example: diskinfo --summary")
+	Console.print("")
+	Console.print("  -E, /E, --exclude [DRIVE...]")
+	Console.print("    Exclude specific drives.")
+	Console.print("    Example: diskinfo --exclude C: D:")
+	Console.print("")
 	Console.print("  -e, /e, --export [FILE]")
 	Console.print("    Export the output results to a file.")
 	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML, Yaml, XLSX, HTML and TOML.")
@@ -123,6 +131,8 @@ def parseArgs():
 	Parser.add_argument("-T", "--top", type=int, metavar="n")
 	Parser.add_argument("-u", "--usage", type=float, metavar="PERCENT")
 	Parser.add_argument("--no-sort", action="store_true")
+	Parser.add_argument("-S", "--summary", action="store_true")
+	Parser.add_argument("-E", "--exclude", nargs="+", metavar="DRIVE")
 	Parser.add_argument("-e", "--export", type=str, metavar="file")
 	Parser.add_argument("-h", "--help", action="store_true")
 	Parser.add_argument("-v", "--version", action="store_true")
@@ -163,7 +173,7 @@ def main():
 		try:
 			with live(console=Console, screen=True, auto_refresh=False) as Live:
 				while True:
-					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple, Bytes=Args.no_bytes))
+					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes))
 					Live.refresh()
 					time.sleep(Args.watch)
 		except KeyboardInterrupt:
@@ -171,7 +181,7 @@ def main():
 			sys.exit(0)
 	if Args.export:
 		try:
-			export.exportData(Path=Args.export, AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage)
+			export.exportData(Path=Args.export, AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude)
 		except ValueError:
 			Console.print("Unsupported format")
 			sys.exit(2)
@@ -192,8 +202,11 @@ def main():
 			elif Error.code == error.DataErrorCode.Usage_Limit:
 				Console.print(Error.message)
 				sys.exit(2)
+	if Args.summary:
+		Console.print(render.renderDriveSummary(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple))
+		sys.exit(0)
 	else:
-		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Simple=Args.simple, Bytes=Args.no_bytes))
+		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes))
 		sys.exit(0)
 if __name__ == "__main__":
 	main()

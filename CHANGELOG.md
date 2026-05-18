@@ -1,5 +1,12 @@
 # Changelog
 
+## DiskInfo version 2.6
+- Added option to hide or show bytes for gui.
+- Added -E; /E; --exclude, you can now use -E; /E; --exclude to tell DiskInfo to ignore drives you don't want to see.
+- Added -S, /S, --summary, you can now use -S, /S, --summary to see complete summary information about all your drives.
+
+---
+
 ## DiskInfo version 2.5
 - Made some internal code modifications.
 - Added --no-bytes to hide bytes values ​​in output text mode.

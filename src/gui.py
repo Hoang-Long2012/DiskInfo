@@ -21,6 +21,7 @@ class MainWindow(QT.QMainWindow):
 		self.Top = None
 		self.Percent = None
 		self.Simple = False
+		self.Bytes = True
 		self.Current_Timeout = 0
 		self.IconProvider = QT.QFileIconProvider()
 		self.buildMenu()
@@ -183,6 +184,11 @@ class MainWindow(QT.QMainWindow):
 		self.Simple_Mode.setIcon(self.style().standardIcon(QT.QStyle.SP_FileDialogListView))
 		self.Simple_Mode.triggered.connect(self.setSimple)
 		self.View_Menu.addAction(self.Simple_Mode)
+		self.Show_Bytes = QAction("&Show bytes", self)
+		self.Show_Bytes.setCheckable(True)
+		self.Show_Bytes.setChecked(True)
+		self.Show_Bytes.triggered.connect(self.setShowBytes)
+		self.View_Menu.addAction(self.Show_Bytes)
 	def buildHelpMenu(self):
 		self.Help_Menu = self.Menu.addMenu("&Help")
 		About = QAction("&About", self.Help_Menu)
@@ -217,6 +223,7 @@ class MainWindow(QT.QMainWindow):
 		self.Toolbar.addSeparator()
 		self.Toolbar.addAction(self.Auto_Refresh)
 		self.Toolbar.addAction(self.Simple_Mode)
+		self.Toolbar.addAction(self.Show_Bytes)
 		for Action in self.Toolbar.actions():
 			Button = self.Toolbar.widgetForAction(Action)
 			if Button:
@@ -297,7 +304,7 @@ class MainWindow(QT.QMainWindow):
 	def loadData(self, Sort=None, Reverse=True, Type=None, Top=None, Percent=None):
 		Datas = None
 		try:
-			Datas = data.getData(Sort=Sort, Reverse=Reverse, filterType=[Type] if Type else None, Top=Top, Percent=Percent)
+			Datas = data.getData(Sort=Sort, Reverse=Reverse, filterType=[Type] if Type else None, Top=Top, Percent=Percent, Exclude=None)
 		except error.DataEmptyError as Error:
 			if Error.code == error.DataErrorCode.Invalid_Drives:
 				QT.QMessageBox.critical(self, "Error", "Invalid drives")
@@ -334,9 +341,11 @@ class MainWindow(QT.QMainWindow):
 			Cell.setText(f"{Percent:.0f}%")
 		elif Key in constants.Color_Columns:
 			Cell.setForeground(QBrush(QColor(Style["color"])))
-			Cell.setText(f"{utils.formatSize(Value)} ({Value} Bytes)")
+			Size = f"{utils.formatSize(Value)} ({Value} Bytes)" if self.Bytes else f"{utils.formatSize(Value)}"
+			Cell.setText(Size)
 		elif Key == "total":
-			Cell.setText(f"{utils.formatSize(Value)} ({Value} Bytes)")
+			Size = f"{utils.formatSize(Value)} ({Value} Bytes)" if self.Bytes else f"{utils.formatSize(Value)}"
+			Cell.setText(Size)
 		if Key in constants.Center_Columns:
 			Cell.setTextAlignment(Qt.AlignCenter)
 		return Cell
@@ -500,7 +509,7 @@ class MainWindow(QT.QMainWindow):
 		if not Path.lower().endswith(Ext):
 			Path += Ext
 		try:
-			export.exportData(Path, Sort=self.Sort, Reverse=self.Reverse, filterType=[self.Type] if self.Type else None, Top=self.Top, Percent=self.Percent)
+			export.exportData(Path, Sort=self.Sort, Reverse=self.Reverse, filterType=[self.Type] if self.Type else None, Top=self.Top, Percent=self.Percent, Exclude=None)
 			QT.QMessageBox.information(self, "Success", f"Export completed.\nExported to {Path}")
 		except ValueError:
 			QT.QMessageBox.critical(self, "Error", "Unsupported format")
@@ -587,6 +596,9 @@ Project Homepage
 		self.refreshData()
 		self.Simple_Mode.setText(Text)
 		self.Simple_Mode.setIcon(self.style().standardIcon(Icon))
+	def setShowBytes(self, Enabled):
+		self.Bytes = Enabled
+		self.refreshData()
 class AccessibleModel(QStandardItemModel):
 	def data(self, Index, Role):
 		if not Index.isValid():
