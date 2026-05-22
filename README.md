@@ -83,7 +83,11 @@ Show help message
 - Valid drive format: C:\, D:/ or E:.
 - By default, the drives are arranged in descending order.
 ## Download:
-Download at:  
+You can install DiskInfo by:
+```
+winget install HoangLong.DiskInfo
+```
+Or download at:  
 https://github.com/Hoang-Long2012/DiskInfo/releases/latest/  
 And read changelog at:  
 https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md
