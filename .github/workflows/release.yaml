@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+          fetch-depth: 0
 
       - name: Check tag is on main
         run: |
@@ -31,6 +32,18 @@ jobs:
           git checkout main
           git pull origin main
 
+      - name: Check ZIP
+        run: |
+          echo "Current commit:"
+          git rev-parse HEAD
+
+          echo "Tag commit:"
+          git rev-list -n 1 $GITHUB_REF_NAME
+
+          echo "ZIP info:"
+          ls -lh release/DiskInfo.zip
+          md5sum release/DiskInfo.zip
+    
       - name: Validate tag
         run: |
           echo "$GITHUB_REF_NAME" | grep -Ei "[0-9]"
