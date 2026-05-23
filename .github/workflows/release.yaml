@@ -27,11 +27,6 @@ jobs:
           git fetch origin main
           git branch -r --contains $GITHUB_SHA | grep origin/main
 
-      - name: Switch to main
-        run: |
-          git checkout main
-          git pull origin main
-
       - name: Check ZIP
         run: |
           echo "Current commit:"
