@@ -1,0 +1,41 @@
+name: Update Winget
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  winget:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate tag
+        run: |
+          echo "${{ github.event.release.tag_name }}" | grep -Ei "[0-9]"
+
+      - name: Install Komac
+        run: |
+          curl -L https://github.com/russellbanks/Komac/releases/latest/download/komac-x86_64-unknown-linux-musl.tar.gz \
+            -o komac.tar.gz
+
+          tar -xzf komac.tar.gz
+          chmod +x komac
+          sudo mv komac /usr/local/bin/
+
+      - name: Submit manifest
+        env:
+          GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+
+          URL="https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
+
+          komac update \
+            --identifier HoangLong.DiskInfo \
+            --version "$TAG" \
+            --urls "$URL" \
+            --submit
