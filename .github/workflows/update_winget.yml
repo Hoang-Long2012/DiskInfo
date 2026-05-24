@@ -5,34 +5,27 @@ on:
     tags:
       - "*"
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   winget:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Validate tag
-        shell: pwsh
-        run: |
-          echo $env:GITHUB_REF_NAME | Select-String "[0-9]"
+      - uses: actions/checkout@v4
 
-      - name: Install Komac
-        shell: pwsh
-        run: |
-          winget install --id RussellBanks.Komac --exact --accept-package-agreements --accept-source-agreements
-          $KomacPath = "C:\Users\runneradmin\AppData\Local\Microsoft\WinGet\Links\komac.exe"
-          echo "KOMAC_PATH=$KomacPath" >> $env:GITHUB_ENV
-          & $KomacPath --version
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: komac
 
       - name: Submit manifest
-        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
         run: |
-          $TAG = $env:GITHUB_REF_NAME
+          TAG="${GITHUB_REF_NAME}"
 
-          $URL = "https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
+          URL="https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
 
-          & $env:KOMAC_PATH update --identifier HoangLong.DiskInfo --version $TAG --urls $URL --submit
+          komac update \
+            --identifier HoangLong.DiskInfo \
+            --version "$TAG" \
+            --urls "$URL" \
+            --submit
