@@ -1,5 +1,14 @@
 # Changelog
 
+## DiskInfo version 2.7:
+- --no-bytes will now also apply to --summary.
+- Now the Show bytes option in the gui will also be applied to the status bar.
+- Added -b; /b; --beep, now when you use --beep DiskInfo will beep when it detects a drive with usage at or above 90%. Currently only applies to text mode and table mode.
+- Added layout submenu in the gui  view menu used to hide or show the toolbar and status bar.
+- Cleans up and cleans up the code, resolves some potential bugs, and resolves code duplications.
+
+---
+
 ## DiskInfo version 2.6
 - Added option to hide or show bytes for gui.
 - Added -E; /E; --exclude, you can now use -E; /E; --exclude to tell DiskInfo to ignore drives you don't want to see.

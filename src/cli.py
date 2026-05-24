@@ -1,6 +1,6 @@
 from rich.live import Live as live
 from rich.console import Console as console
-from constants import Type_Alias
+from constants import Type_Alias, Sort_Keys
 import render
 import export
 import error
@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "2.6"
+	return "2.7"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -92,6 +92,10 @@ def showHelp():
 	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML, Yaml, XLSX, HTML and TOML.")
 	Console.print("    Example: diskinfo --export report.txt")
 	Console.print("")
+	Console.print("  -b, /b, --beep")
+	Console.print("    Beep when have a drive almost full.")
+	Console.print("    Example: diskinfo --beep")
+	Console.print("")
 	Console.print("  -v, /v, --version")
 	Console.print("    Show program version.")
 	Console.print("")
@@ -124,7 +128,7 @@ def parseArgs():
 	Parser.add_argument("--simple", action="store_true")
 	Parser.add_argument("-l", "--letter", action="store_true")
 	Parser.add_argument("-n", "--label", action="store_true")
-	Parser.add_argument("-s", "--sort", choices=["usage", "used", "free", "total"])
+	Parser.add_argument("-s", "--sort", choices=sorted(Sort_Keys))
 	Parser.add_argument("-r", "--reverse", action="store_false")
 	Parser.add_argument("-t", "--type", nargs="+", choices=sorted(Type_Alias))
 	Parser.add_argument("-w", "--watch", nargs="?", const=2, type=float, metavar="SECONDS")
@@ -134,6 +138,7 @@ def parseArgs():
 	Parser.add_argument("-S", "--summary", action="store_true")
 	Parser.add_argument("-E", "--exclude", nargs="+", metavar="DRIVE")
 	Parser.add_argument("-e", "--export", type=str, metavar="file")
+	Parser.add_argument("-b", "--beep", action="store_true")
 	Parser.add_argument("-h", "--help", action="store_true")
 	Parser.add_argument("-v", "--version", action="store_true")
 	return Parser.parse_args(ArgsList)
@@ -173,7 +178,7 @@ def main():
 		try:
 			with live(console=Console, screen=True, auto_refresh=False) as Live:
 				while True:
-					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes))
+					Live.update(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes, Beep=Args.beep))
 					Live.refresh()
 					time.sleep(Args.watch)
 		except KeyboardInterrupt:
@@ -203,10 +208,10 @@ def main():
 				Console.print(Error.message)
 				sys.exit(2)
 	if Args.summary:
-		Console.print(render.renderDriveSummary(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple))
+		Console.print(render.renderDriveSummary(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes))
 		sys.exit(0)
 	else:
-		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes))
+		Console.print(render.renderDriveInfo(AllDrive=(len(Args.drives) == 0), Volumes=Args.drives if Args.drives else None, Mode=Mode, Sort=Args.sort, Reverse=Args.reverse, filterType=Args.type, Top=Args.top, Percent=Args.usage, Exclude=Args.exclude, Simple=Args.simple, Bytes=Args.no_bytes, Beep=Args.beep))
 		sys.exit(0)
 if __name__ == "__main__":
 	main()

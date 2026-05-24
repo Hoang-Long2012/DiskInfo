@@ -31,7 +31,7 @@ def collectDriveInfo(AllDrive=True, Volumes=None):
 				"total": Usage.get("total"),
 				"status": utils.getUsageStyle(Usage.get("percent"))["status"]
 			})
-		except Exception:
+		except OSError:
 			continue
 	return Result
 def sortData(Data, Type=None, Reverse=True):
@@ -39,14 +39,7 @@ def sortData(Data, Type=None, Reverse=True):
 		return Data
 	if not Type:
 		return Data
-	if Type.lower() == "usage":
-		Data.sort(key=lambda x: x.get("percent") or 0, reverse=Reverse)
-	elif Type.lower() == "used":
-		Data.sort(key=lambda x: x.get("used") or 0, reverse=Reverse)
-	elif Type.lower() == "free":
-		Data.sort(key=lambda x: x.get("free") or 0, reverse=Reverse)
-	elif Type.lower() == "total":
-		Data.sort(key=lambda x: x.get("total") or 0, reverse=Reverse)
+	Data.sort(key=lambda x: x.get(constants.Sort_Keys.get(Type)) or 0, reverse=Reverse)
 	return Data
 def filterDriveType(Data, Types=None):
 	if not Types:

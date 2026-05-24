@@ -1,4 +1,4 @@
-from PySide6.QtGui import QColor, QBrush, QDesktopServices, QAction, QActionGroup, QStandardItemModel, QStandardItem
+from PySide6.QtGui import QColor, QBrush, QDesktopServices, QAction, QActionGroup, QStandardItemModel, QStandardItem, QAccessible
 from PySide6.QtCore import QTimer, Qt, QUrl, QFileInfo, QPropertyAnimation, QEasingCurve, QEvent
 from cli import getVersion
 from datetime import datetime
@@ -54,10 +54,17 @@ class MainWindow(QT.QMainWindow):
 	def buildMenu(self):
 		self.Menu = self.menuBar()
 		self.Menu.setNativeMenuBar(True)
-		self.Menu.setFocusPolicy(Qt.NoFocus)
+		self.Menu.setFocusPolicy(Qt.StrongFocus)
+		self.Menu.setVisible(True)
 		self.buildFileMenu()
 		self.buildViewMenu()
 		self.buildHelpMenu()
+	def createExportAction(self, Parent):
+		Action = QAction("Export", Parent)
+		Action.setIcon(self.Export.icon())
+		Action.setShortcut(self.Export.shortcut())
+		Action.triggered.connect(self.exportFile)
+		return Action
 	def buildFileMenu(self):
 		self.File_Menu = self.Menu.addMenu("&File")
 		self.Export = QAction("&Export", self)
@@ -65,7 +72,7 @@ class MainWindow(QT.QMainWindow):
 		self.Export.setIcon(self.style().standardIcon(QT.QStyle.SP_DialogSaveButton))
 		self.Export.triggered.connect(self.exportFile)
 		self.File_Menu.addAction(self.Export)
-		self.Exit = QAction("Exit", self)
+		self.Exit = QAction("&Exit", self)
 		self.Exit.setShortcut("Alt+F4")
 		self.Exit.setIcon(self.style().standardIcon(QT.QStyle.SP_DialogCloseButton))
 		self.Exit.triggered.connect(self.exitApp)
@@ -189,6 +196,18 @@ class MainWindow(QT.QMainWindow):
 		self.Show_Bytes.setChecked(True)
 		self.Show_Bytes.triggered.connect(self.setShowBytes)
 		self.View_Menu.addAction(self.Show_Bytes)
+		Layout_Menu = QT.QMenu("&Layout", self.View_Menu)
+		Toolbar = QAction("&Toolbar", Layout_Menu)
+		Toolbar.setCheckable(True)
+		Toolbar.setChecked(True)
+		Toolbar.triggered.connect(self.showToolbar)
+		Layout_Menu.addAction(Toolbar)
+		Status_Bar = QAction("&Status bar", Layout_Menu)
+		Status_Bar.setCheckable(True)
+		Status_Bar.setChecked(True)
+		Status_Bar.triggered.connect(self.showStatusBar)
+		Layout_Menu.addAction(Status_Bar)
+		self.View_Menu.addMenu(Layout_Menu)
 	def buildHelpMenu(self):
 		self.Help_Menu = self.Menu.addMenu("&Help")
 		About = QAction("&About", self.Help_Menu)
@@ -212,11 +231,16 @@ class MainWindow(QT.QMainWindow):
 		License.setIcon(self.style().standardIcon(QT.QStyle.SP_FileDialogInfoView))
 		License.triggered.connect(self.license)
 		self.Help_Menu.addAction(License)
+	def showToolbar(self, Enabled):
+		self.Toolbar.setVisible(Enabled)
+	def showStatusBar(self, Enabled):
+		self.Status.setVisible(Enabled)
 	def buildToolbar(self):
 		self.Toolbar = self.addToolBar("Main")
 		self.Toolbar.setFocusPolicy(Qt.StrongFocus)
 		self.Toolbar.setMovable(False)
 		self.Toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+		self.Toolbar.setVisible(True)
 		self.Toolbar.addAction(self.Refresh)
 		self.Toolbar.addAction(self.Export)
 		self.Toolbar.addAction(self.Exit)
@@ -231,6 +255,7 @@ class MainWindow(QT.QMainWindow):
 				Button.installEventFilter(self)
 	def buildStatusBar(self):
 		self.Status = self.statusBar()
+		self.Status.setVisible(True)
 		self.Drive_Label = QT.QLabel("Drives: 0")
 		self.Total_Label = QT.QLabel("Total: 0")
 		self.Used_Label = QT.QLabel("Used: 0")
@@ -289,8 +314,14 @@ class MainWindow(QT.QMainWindow):
 		self.Header.setHighlightSections(False)
 		self.Header.sectionClicked.connect(self.onHeaderClicked)
 		self.Header.setSortIndicatorShown(True)
-		self.Header.setAccessibleName("Header")
-		self.setCentralWidget(self.Table)
+		self.Drive_Icon_Label = QT.QLabel()
+		self.Drive_Icon_Label.setPixmap(self.style().standardIcon(QT.QStyle.SP_DriveHDIcon).pixmap(24, 24))
+		Container = QT.QWidget()
+		Layout = QT.QVBoxLayout(Container)
+		Layout.setContentsMargins(0, 0, 0, 0)
+		Layout.addWidget(self.Drive_Icon_Label)
+		Layout.addWidget(self.Table)
+		self.setCentralWidget(Container)
 		self.Opacity = QT.QGraphicsOpacityEffect()
 		self.Table.setGraphicsEffect(self.Opacity)
 		self.Fade_Animation = QPropertyAnimation(self.Opacity, b"opacity")
@@ -334,7 +365,10 @@ class MainWindow(QT.QMainWindow):
 		elif Key == "status":
 			Cell.setForeground(QBrush(QColor(Style["color"])))
 		elif Key == "percent":
-			Percent = int(Value)
+			try:
+				Percent = int(Value or 0)
+			except (TypeError, ValueError):
+				Percent = 0
 			Cell.setForeground(QBrush(QColor(Style["color"])))
 			Cell.setData(Percent, Qt.UserRole)
 			Cell.setData(Style["color"], Qt.UserRole + 1)
@@ -380,11 +414,14 @@ class MainWindow(QT.QMainWindow):
 			return None
 		self.Drive_Label.setText(f"Drives: {len(Datas)}")
 		Total_Size = sum(Item.get("total", 0) for Item in Datas)
-		self.Total_Label.setText(f"Total: {utils.formatSize(Total_Size)}")
+		Total_STR = f"{utils.formatSize(Total_Size)} ({Total_Size} Bytes)" if self.Bytes else utils.formatSize(Total_Size)
+		self.Total_Label.setText(f"Total: {Total_STR}")
 		Used_Size = sum(Item.get("used", 0) for Item in Datas)
-		self.Used_Label.setText(f"Used: {utils.formatSize(Used_Size)}")
+		Used_STR = f"{utils.formatSize(Used_Size)} ({Used_Size} Bytes)" if self.Bytes else utils.formatSize(Used_Size)
+		self.Used_Label.setText(f"Used: {Used_STR}")
 		Free_Size = sum(Item.get("free", 0) for Item in Datas)
-		self.Free_Label.setText(f"Free: {utils.formatSize(Free_Size)}")
+		Free_STR = f"{utils.formatSize(Free_Size)} ({Free_Size} Bytes)" if self.Bytes else utils.formatSize(Free_Size)
+		self.Free_Label.setText(f"Free: {Free_STR}")
 		self.Columns = []
 		Seen = set()
 		for Item in Datas:
@@ -435,7 +472,7 @@ class MainWindow(QT.QMainWindow):
 		Menu.addAction(Copy_Cell)
 		Menu.addAction(Copy_Row)
 		Menu.addAction(Copy_Column)
-		Menu.addAction(self.Export)
+		Menu.addAction(self.createExportAction(Menu))
 		Menu.exec(self.Table.viewport().mapToGlobal(Pos))
 	def onHeaderClicked(self, Index):
 		Key = self.Columns[Index]
@@ -625,6 +662,7 @@ def main():
 	App = QT.QApplication(sys.argv)
 	App.setApplicationName("DiskInfo")
 	App.setApplicationVersion(getVersion())
+	QAccessible.setActive(True)
 	Window = MainWindow()
 	Window.show()
 	Window.raise_()

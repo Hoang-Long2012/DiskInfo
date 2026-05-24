@@ -40,6 +40,12 @@ Usage_Levels = [
 		"icon": "🟢"
 	}
 ]
+Sort_Keys = {
+	"usage": "percent",
+	"used": "used",
+	"free": "free",
+	"total": "total"
+}
 CLI_Drive_Icons = {
 	"Unknown": "❓",
 	"No root directory": "🚫",

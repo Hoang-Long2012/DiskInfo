@@ -74,6 +74,9 @@ Example: diskinfo --exclude C: D:
 Export the output results to a file.  
 Supported formats: CSV, JSON, TXT, Markdown, INI, XML and Yaml.  
 Example: diskinfo --export report.txt
+- -b, /b, --beep  
+Beep when have a drive almost full.  
+Example: diskinfo --beep
 - -v, /v, --version  
 Show program version  
 - -h, /h, --help  

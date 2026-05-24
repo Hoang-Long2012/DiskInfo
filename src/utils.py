@@ -1,4 +1,5 @@
 from rich.console import Console as console
+from winsound import MessageBeep as messageBeep
 import constants
 import re
 import os
@@ -83,3 +84,5 @@ def getFsColor(Fs, Interface="cli"):
 def getFilePath(Name):
 	Base = os.path.dirname(os.path.abspath(sys.argv[0]))
 	return os.path.join(Base, Name)
+def beep():
+	messageBeep(-1)
