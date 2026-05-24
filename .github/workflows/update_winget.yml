@@ -1,9 +1,9 @@
 name: Update Winget
 
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - "*"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -30,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
         run: |
-          TAG="${{ github.event.release.tag_name }}"
+          TAG="${GITHUB_REF_NAME}"
 
           URL="https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
 
