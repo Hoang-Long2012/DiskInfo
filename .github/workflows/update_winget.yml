@@ -10,32 +10,30 @@ env:
 
 jobs:
   winget:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Validate tag
+        shell: pwsh
         run: |
-          echo "${GITHUB_REF_NAME}" | grep -Ei "[0-9]"
+          echo $env:GITHUB_REF_NAME | Select-String "[0-9]"
 
       - name: Install Komac
+        shell: pwsh
         run: |
-          curl -L https://github.com/russellbanks/Komac/releases/latest/download/komac-x86_64-unknown-linux-musl.tar.gz \
-            -o komac.tar.gz
-
-          tar -xzf komac.tar.gz
-          chmod +x komac
-          sudo mv komac /usr/local/bin/
+          winget install --id RussellBanks.Komac --exact --accept-package-agreements --accept-source-agreements
 
       - name: Submit manifest
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
         run: |
-          TAG="${GITHUB_REF_NAME}"
+          $TAG = $env:GITHUB_REF_NAME
 
-          URL="https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
+          $URL = "https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
 
-          komac update \
-            --identifier HoangLong.DiskInfo \
-            --version "$TAG" \
-            --urls "$URL" \
+          komac update `
+            --identifier HoangLong.DiskInfo `
+            --version $TAG `
+            --urls $URL `
             --submit
