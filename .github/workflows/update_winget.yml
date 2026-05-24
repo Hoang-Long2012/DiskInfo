@@ -22,8 +22,7 @@ jobs:
         shell: pwsh
         run: |
           winget install --id RussellBanks.Komac --exact --accept-package-agreements --accept-source-agreements
-          $KomacPath = Get-ChildItem "C:\Users\runneradmin\AppData\Local\Microsoft\WinGet\Packages" -Recurse -Filter komac.exe |
-          Select-Object -First 1 -ExpandProperty FullName
+          $KomacPath = "C:\Users\runneradmin\AppData\Local\Microsoft\WinGet\Links\komac.exe"
           echo "KOMAC_PATH=$KomacPath" >> $env:GITHUB_ENV
           & $KomacPath --version
 
@@ -36,8 +35,4 @@ jobs:
 
           $URL = "https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
 
-          & $env:KOMAC_PATH update `
-            --identifier HoangLong.DiskInfo `
-            --version $TAG `
-            --urls $URL `
-            --submit
+          & $env:KOMAC_PATH update --identifier HoangLong.DiskInfo --version $TAG --urls $URL --submit
