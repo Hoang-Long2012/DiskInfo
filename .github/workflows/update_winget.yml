@@ -24,8 +24,7 @@ jobs:
 
           URL="https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
 
-          komac update \
-            --identifier HoangLong.DiskInfo \
+          komac update HoangLong.DiskInfo \
             --version "$TAG" \
             --urls "$URL" \
             --submit
