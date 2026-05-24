@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Validate tag
         run: |
-          echo "${{ github.event.release.tag_name }}" | grep -Ei "[0-9]"
+          echo "${GITHUB_REF_NAME}" | grep -Ei "[0-9]"
 
       - name: Install Komac
         run: |
