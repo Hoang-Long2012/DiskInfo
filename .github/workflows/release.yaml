@@ -60,6 +60,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2.3.2
         with:
+          token: ${{ secrets.WINGET_TOKEN }}
           name: DiskInfo version ${{ github.ref_name }}
           body: ${{ steps.changelog.outputs.notes }}
           files: |
