@@ -2,7 +2,10 @@
 Name: DiskInfo  
 Version: 2.8  
 Platform: Windows  
-A small utility to check basic information about your drive.
+A small utility to check basic information about your drive
+
+---
+
 ## Features:
 - Drive usage.
 - Sort by used/free/total.
@@ -11,11 +14,17 @@ A small utility to check basic information about your drive.
 - JSON / Table output.
 - Top N drives.
 - Usage threshold filter.
+
+---
+
 ## Usage:
 Usage:  
 ```
 diskinfo [option] [drive...]
 ```
+
+---
+
 ### Options:  
 - -l, /l, --letter  
 List all available drives (drive letters only)  
@@ -81,16 +90,28 @@ Example: diskinfo --beep
 Show program version  
 - -h, /h, --help  
 Show help message  
+
+---
+
 ## Notes:
 - If no option is provided, the program will display all drive information.
 - Valid drive format: C:\, D:/ or E:.
 - By default, the drives are arranged in descending order.
+
+---
+
 ## Download:
 You can install DiskInfo by:
 ```
 winget install HoangLong.DiskInfo
+
 ```
+
 Or download:  
 [At here](https://github.com/Hoang-Long2012/DiskInfo/releases/latest/)  
 You can read changelog in CHANGELOG.md or:  
-[Click to here](https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md)
+[Click to here](https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md)  
+
+---
+
+© Copyright (c) 2026 Hoang-Long2012
