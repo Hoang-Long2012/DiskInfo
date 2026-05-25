@@ -90,7 +90,7 @@ You can install DiskInfo by:
 ```
 winget install HoangLong.DiskInfo
 ```
-Or download at:  
-https://github.com/Hoang-Long2012/DiskInfo/releases/latest/  
-And read changelog at:  
-https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md
+Or download:  
+[At here](https://github.com/Hoang-Long2012/DiskInfo/releases/latest/)  
+You can read changelog in CHANGELOG.md or or:  
+[Click to here](https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md)
