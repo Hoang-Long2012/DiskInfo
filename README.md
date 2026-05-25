@@ -104,9 +104,7 @@ Show help message
 You can install DiskInfo by:
 ```
 winget install HoangLong.DiskInfo
-
 ```
-
 Or download:  
 [At here](https://github.com/Hoang-Long2012/DiskInfo/releases/latest/)  
 You can read changelog in CHANGELOG.md or:  
