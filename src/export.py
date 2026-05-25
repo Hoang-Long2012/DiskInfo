@@ -140,8 +140,8 @@ def exportHTML(Data, Path):
 	try:
 		with open(Path, "w", encoding="utf-8") as File:
 			File.write(HTML)
-	except Exception as e:
-		raise error.FileWriteError("Cannot write HTML file") from e
+	except Exception as Error:
+		raise error.FileWriteError("Cannot write HTML file") from Error
 def exportTOML(Data, Path):
 	import toml
 	validateData(Data)

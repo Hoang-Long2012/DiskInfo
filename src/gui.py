@@ -567,18 +567,18 @@ class MainWindow(QT.QMainWindow):
 	def readme(self):
 		try:
 			os.startfile(utils.getFilePath("README.MD"))
-		except Exception:
-			QT.QMessageBox.warning(self, "Error", "Cannot open README.md")
+		except Exception as Error:
+			QT.QMessageBox.error(self, "Error", f"Cannot open README.md\n{Error}")
 	def changelog(self):
 		try:
 			os.startfile(utils.getFilePath("CHANGELOG.MD"))
-		except Exception:
-			QT.QMessageBox.warning(self, "Error", "Cannot open CHANGELOG.md")
+		except Exception as Error:
+			QT.QMessageBox.error(self, "Error", f"Cannot open CHANGELOG.md\n{Error}")
 	def license(self):
 		try:
 			os.startfile(utils.getFilePath("LICENSE"))
-		except Exception:
-			QT.QMessageBox.warning(self, "Error", "Cannot open LICENSE")
+		except Exception as Error:
+			QT.QMessageBox.error(self, "Error", f"Cannot open LICENSE\n{Error}")
 	def about(self):
 		Box = QT.QMessageBox(self)
 		Box.setWindowTitle("About DiskInfo")
