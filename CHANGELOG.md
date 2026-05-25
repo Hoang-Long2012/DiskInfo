@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 2.9
+- Fix ghost drive bug, when you ask DiskInfo to get information about a drive that does not exist or is not mounted, DiskInfo will now report a clear error instead of displaying meaningless information as before.
+
+---
+
 ## DiskInfo version 2.8
 - Fix bug cannot open README.md, LICENSE and CHANGELOG.md.
 

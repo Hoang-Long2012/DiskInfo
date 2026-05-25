@@ -33,6 +33,16 @@ def validateVolumeList(Volumes):
 		if not re.fullmatch(r"^[a-zA-Z]:[/\\]?$", Volume):
 			Invalid.append(Volume)
 			continue
+		if not os.path.exists(Volume):
+			Invalid.append(Volume)
+			continue
+		try:
+			os.listdir(Volume)
+			Valid.append(Volume)
+			continue
+		except Exception:
+			Invalid.append(Volume)
+			continue
 		Valid.append(Volume)
 	if Invalid:
 		Invalid_Drives = ", ".join(Invalid)
