@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 2.8
+- Fix bug cannot open README.md, LICENSE and CHANGELOG.md.
+
+---
+
 ## DiskInfo version 2.7:
 - --no-bytes will now also apply to --summary.
 - Now the Show bytes option in the gui will also be applied to the status bar.
