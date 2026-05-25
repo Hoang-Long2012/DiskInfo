@@ -83,8 +83,8 @@ def getFsColor(Fs, Interface="cli"):
 		return constants.GUI_FS_Colors.get(Key, constants.GUI_FS_Colors.get(Key.upper(), "#aaaaaa"))
 def getBasePath():
 	if getattr(sys, "frozen", False):
-		return os.path.abspath(os.path.dirname(sys.executable))
-	return os.path.abspath(os.path.dirname(__file__))
+		return os.path.abspath(sys.executable)
+	return os.path.abspath(__file__)
 def getFilePath(Name):
 	Base = os.path.dirname(os.path.abspath(getBasePath()))
 	return os.path.join(Base, Name)
