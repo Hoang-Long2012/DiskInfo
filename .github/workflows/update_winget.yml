@@ -29,6 +29,7 @@ jobs:
           komac update HoangLong.DiskInfo \
             --version "$TAG" \
             --urls "$URL" \
+            --architecture x64 \
             --submit
 
       - name: Clone winget-pkgs fork
