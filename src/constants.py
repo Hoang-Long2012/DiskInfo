@@ -1,3 +1,4 @@
+Domain = "diskinfo"
 Drive_Types = {
 	0: "Unknown",
 	1: "No root directory",
