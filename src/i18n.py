@@ -10,6 +10,15 @@ def loadLanguages():
 		if os.path.isfile(Mo_Path):
 			Languages.append(Lang)
 	return Languages
+def loadLanguage():
+	if not os.path.isfile(utils.getFilePath("lang.txt")):
+		with open(utils.getFilePath("lang.txt"), "w", encoding="utf-8") as File:
+			File.write("en")
+	with open(utils.getFilePath("lang.txt"), "r", encoding="utf-8") as File:
+		return File.read()
+def saveLanguage(Lang):
+	with open(utils.getFilePath("lang.txt"), "w", encoding="utf-8") as File:
+		File.write(Lang)
 class InitTranslation:
 	def __init__(self, Lang):
 		self.Translation = gettext.translation(Domain, localedir=utils.getFilePath("locale"), languages=[Lang] if not isinstance(Lang, list) else Lang, fallback=True)
