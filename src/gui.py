@@ -272,7 +272,7 @@ class MainWindow(QT.QMainWindow):
 	def showStatusBar(self, Enabled):
 		self.Status.setVisible(Enabled)
 	def buildToolbar(self):
-		self.Toolbar = self.addToolBar("Main")
+		self.Toolbar = self.addToolBar(self._("Main"))
 		self.Toolbar.setFocusPolicy(Qt.StrongFocus)
 		self.Toolbar.setMovable(False)
 		self.Toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)

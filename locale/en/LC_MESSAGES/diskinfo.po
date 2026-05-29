@@ -1,0 +1,364 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-29 17:54+0700\n"
+"PO-Revision-Date: 2026-05-29 18:03+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: gui.py:31
+#, python-brace-format
+msgid "DiskInfo version {version}"
+msgstr ""
+
+#: gui.py:78 gui.py:578
+msgid "Export"
+msgstr ""
+
+#: gui.py:84
+msgid "&File"
+msgstr ""
+
+#: gui.py:85
+msgid "&Export"
+msgstr ""
+
+#: gui.py:90
+msgid "&Exit"
+msgstr ""
+
+#: gui.py:96
+msgid "&View"
+msgstr ""
+
+#: gui.py:97
+msgid "&Refresh"
+msgstr ""
+
+#: gui.py:102
+msgid "&Sort by"
+msgstr ""
+
+#: gui.py:106 gui.py:198
+msgid "&Usage"
+msgstr ""
+
+#: gui.py:111
+msgid "&Used"
+msgstr ""
+
+#: gui.py:116
+msgid "&Free"
+msgstr ""
+
+#: gui.py:121
+msgid "&Total"
+msgstr ""
+
+#: gui.py:128
+msgid "&Ascending"
+msgstr ""
+
+#: gui.py:133
+msgid "&Descending"
+msgstr ""
+
+#: gui.py:140
+msgid "&Type"
+msgstr ""
+
+#: gui.py:144
+msgid "&All"
+msgstr ""
+
+#: gui.py:150
+msgid "&USB"
+msgstr ""
+
+#: gui.py:156
+msgid "&Local disk"
+msgstr ""
+
+#: gui.py:162
+msgid "&Network disk"
+msgstr ""
+
+#: gui.py:168
+msgid "&CD / DVD Drive"
+msgstr ""
+
+#: gui.py:174
+msgid "&Ram disk"
+msgstr ""
+
+#: gui.py:180
+msgid "&Unknown"
+msgstr ""
+
+#: gui.py:187
+msgid "&Auto refresh"
+msgstr ""
+
+#: gui.py:193
+msgid "&Top"
+msgstr ""
+
+#: gui.py:203
+msgid "&Simple"
+msgstr ""
+
+#: gui.py:209
+msgid "&Show bytes"
+msgstr ""
+
+#: gui.py:214
+msgid "&Layout"
+msgstr ""
+
+#: gui.py:215
+msgid "&Toolbar"
+msgstr ""
+
+#: gui.py:220
+msgid "&Status bar"
+msgstr ""
+
+#: gui.py:226
+msgid "&Language"
+msgstr ""
+
+#: gui.py:248
+msgid "&Help"
+msgstr ""
+
+#: gui.py:249
+msgid "&About"
+msgstr ""
+
+#: gui.py:253
+msgid "&Readme"
+msgstr ""
+
+#: gui.py:258
+msgid "&Changelog"
+msgstr ""
+
+#: gui.py:262
+msgid "&Homepage"
+msgstr ""
+
+#: gui.py:266
+msgid "&License"
+msgstr ""
+
+#: gui.py:275
+msgid "Main"
+msgstr ""
+
+#: gui.py:295 gui.py:451
+#, python-brace-format
+msgid "Drives: {drives}"
+msgstr ""
+
+#: gui.py:296 gui.py:454
+#, python-brace-format
+msgid "Total: {total}"
+msgstr ""
+
+#: gui.py:297 gui.py:457
+#, python-brace-format
+msgid "Used: {used}"
+msgstr ""
+
+#: gui.py:298 gui.py:460
+#, python-brace-format
+msgid "Free: {free}"
+msgstr ""
+
+#: gui.py:299 gui.py:533
+msgid "All"
+msgstr ""
+
+#: gui.py:299 gui.py:536
+#, python-brace-format
+msgid "Filter: {filter}"
+msgstr ""
+
+#: gui.py:300 gui.py:569
+msgid "Off"
+msgstr ""
+
+#: gui.py:300 gui.py:572
+#, python-brace-format
+msgid "Auto refresh: {state}"
+msgstr ""
+
+#: gui.py:301 gui.py:576
+msgid "Disabled"
+msgstr ""
+
+#: gui.py:301 gui.py:576
+#, python-brace-format
+msgid "Timeout: {timeout}"
+msgstr ""
+
+#: gui.py:302
+msgid "Never"
+msgstr ""
+
+#: gui.py:302 gui.py:499
+#, python-brace-format
+msgid "Last refresh: {last_refresh}"
+msgstr ""
+
+#: gui.py:345
+msgid "Drive info"
+msgstr ""
+
+#: gui.py:377 gui.py:593
+msgid "Invalid drives"
+msgstr ""
+
+#: gui.py:379 gui.py:595
+msgid "No drive information"
+msgstr ""
+
+#: gui.py:433 gui.py:546
+msgid "Usage"
+msgstr ""
+
+#: gui.py:434
+#, python-brace-format
+msgid "{value} percent used"
+msgstr ""
+
+#: gui.py:502
+msgid "Copy &Cell"
+msgstr ""
+
+#: gui.py:503
+msgid "Copy &Row"
+msgstr ""
+
+#: gui.py:504
+msgid "Copy &Column"
+msgstr ""
+
+#: gui.py:538
+msgid "Top"
+msgstr ""
+
+#: gui.py:538
+msgid "Top drives:"
+msgstr ""
+
+#: gui.py:546
+msgid "Minimum usage %:"
+msgstr ""
+
+#: gui.py:554
+msgid "Auto refresh"
+msgstr ""
+
+#: gui.py:554
+msgid "Seconds:"
+msgstr ""
+
+#: gui.py:569
+msgid "On"
+msgstr ""
+
+#: gui.py:574
+#, python-brace-format
+msgid "Timeout: {timeout}s"
+msgstr ""
+
+#: gui.py:586 gui.py:677
+msgid "Success"
+msgstr ""
+
+#: gui.py:586
+#, python-brace-format
+msgid ""
+"Export completed.\n"
+"Exported to {path}"
+msgstr ""
+
+#: gui.py:588 gui.py:590 gui.py:593 gui.py:595 gui.py:598 gui.py:600 gui.py:607
+#: gui.py:612 gui.py:617
+msgid "Error"
+msgstr ""
+
+#: gui.py:588
+msgid "Unsupported format"
+msgstr ""
+
+#: gui.py:590
+#, python-brace-format
+msgid "Cannot write {path}"
+msgstr ""
+
+#: gui.py:607
+#, python-brace-format
+msgid ""
+"Cannot open README.md\n"
+"{error}"
+msgstr ""
+
+#: gui.py:612
+#, python-brace-format
+msgid ""
+"Cannot open CHANGELOG.md\n"
+"{error}"
+msgstr ""
+
+#: gui.py:617
+#, python-brace-format
+msgid ""
+"Cannot open LICENSE\n"
+"{error}"
+msgstr ""
+
+#: gui.py:620
+msgid "About DiskInfo"
+msgstr ""
+
+#: gui.py:624
+#, python-brace-format
+msgid ""
+"\n"
+"<h2>DiskInfo version {version}</h2>\n"
+"<p>Simple disk information viewer for Windows.</p>\n"
+"<p><b>Author:</b> Hoang Long</p>\n"
+"<p>\n"
+"<a href=\"https://github.com/Hoang-Long2012/DiskInfo\">\n"
+"Project Homepage\n"
+"</a>\n"
+"</p>\n"
+msgstr ""
+
+#: gui.py:667
+msgid "Detailed"
+msgstr ""
+
+#: gui.py:667
+msgid "Simple"
+msgstr ""
+
+#: gui.py:677
+msgid ""
+"Language changed successfully.\n"
+"Please restart app to apply language change."
+msgstr ""

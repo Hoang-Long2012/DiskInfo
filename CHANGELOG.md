@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 3.0
+- Added multi language for gui. There are currently two languages: en and vi.
+
+---
+
 ## DiskInfo version 2.9
 - Fix ghost drive bug, when you ask DiskInfo to get information about a drive that does not exist or is not mounted, DiskInfo will now report a clear error instead of displaying meaningless information as before.
 

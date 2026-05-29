@@ -1,0 +1,383 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: DiskInfo phiên bản 3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-29 17:54+0700\n"
+"PO-Revision-Date: 2026-05-29 17:58+0700\n"
+"Last-Translator: \n"
+"Language-Team: Tiếng Việt\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: gui.py:31
+#, python-brace-format
+msgid "DiskInfo version {version}"
+msgstr "DiskInfo phiên bản {version}"
+
+#: gui.py:78 gui.py:578
+msgid "Export"
+msgstr "Xuất"
+
+#: gui.py:84
+msgid "&File"
+msgstr "&Tệp"
+
+#: gui.py:85
+msgid "&Export"
+msgstr "&Xuất"
+
+#: gui.py:90
+msgid "&Exit"
+msgstr "&Thoát"
+
+#: gui.py:96
+msgid "&View"
+msgstr "&Xem"
+
+#: gui.py:97
+msgid "&Refresh"
+msgstr "&Làm mới"
+
+#: gui.py:102
+msgid "&Sort by"
+msgstr "&Sắp xếp theo"
+
+#: gui.py:106 gui.py:198
+msgid "&Usage"
+msgstr "&Mức độ sử dụng"
+
+#: gui.py:111
+msgid "&Used"
+msgstr "&Đã sử dụng"
+
+#: gui.py:116
+msgid "&Free"
+msgstr "&Còn lại"
+
+#: gui.py:121
+msgid "&Total"
+msgstr "&Tổng cộng"
+
+#: gui.py:128
+msgid "&Ascending"
+msgstr "&Tăng dần"
+
+#: gui.py:133
+msgid "&Descending"
+msgstr "&Giảm dần"
+
+#: gui.py:140
+msgid "&Type"
+msgstr "&Loại"
+
+#: gui.py:144
+msgid "&All"
+msgstr "&Tất cả"
+
+#: gui.py:150
+msgid "&USB"
+msgstr "&USB"
+
+#: gui.py:156
+msgid "&Local disk"
+msgstr "&Ổ đĩa cục bộ"
+
+#: gui.py:162
+msgid "&Network disk"
+msgstr "&Ổ đĩa mạng"
+
+#: gui.py:168
+msgid "&CD / DVD Drive"
+msgstr "&Ổ đĩa CD / DVD"
+
+#: gui.py:174
+msgid "&Ram disk"
+msgstr "&Ổ đĩa ram"
+
+#: gui.py:180
+msgid "&Unknown"
+msgstr "&Không xác định"
+
+#: gui.py:187
+msgid "&Auto refresh"
+msgstr "&Tự động làm mới"
+
+#: gui.py:193
+msgid "&Top"
+msgstr "&Đứng đầu"
+
+#: gui.py:203
+msgid "&Simple"
+msgstr "&Đơn giản"
+
+#: gui.py:209
+msgid "&Show bytes"
+msgstr "&Hiển thị bytes"
+
+#: gui.py:214
+msgid "&Layout"
+msgstr "&Bố cục"
+
+#: gui.py:215
+msgid "&Toolbar"
+msgstr "&Thanh công cụ"
+
+#: gui.py:220
+msgid "&Status bar"
+msgstr "&Thanh trạng thái"
+
+#: gui.py:226
+msgid "&Language"
+msgstr "&Ngôn ngữ"
+
+#: gui.py:248
+msgid "&Help"
+msgstr "&Trợ giúp"
+
+#: gui.py:249
+msgid "&About"
+msgstr "&Về DiskInfo"
+
+#: gui.py:253
+msgid "&Readme"
+msgstr "&Hướng dẫn"
+
+#: gui.py:258
+msgid "&Changelog"
+msgstr "&Nhật ký thay đổi"
+
+#: gui.py:262
+msgid "&Homepage"
+msgstr "&Trang chủ"
+
+#: gui.py:266
+msgid "&License"
+msgstr "&Giấy phép"
+
+#: gui.py:275
+msgid "Main"
+msgstr "Chính"
+
+#: gui.py:295 gui.py:451
+#, python-brace-format
+msgid "Drives: {drives}"
+msgstr "Ổ đĩa: {drives}"
+
+#: gui.py:296 gui.py:454
+#, python-brace-format
+msgid "Total: {total}"
+msgstr "Tổng cộng: {total}"
+
+#: gui.py:297 gui.py:457
+#, python-brace-format
+msgid "Used: {used}"
+msgstr "Đã sử dụng: {used}"
+
+#: gui.py:298 gui.py:460
+#, python-brace-format
+msgid "Free: {free}"
+msgstr "Còn lại {free}"
+
+#: gui.py:299 gui.py:533
+msgid "All"
+msgstr "Tất cả"
+
+#: gui.py:299 gui.py:536
+#, python-brace-format
+msgid "Filter: {filter}"
+msgstr "Lọc: {filter}"
+
+#: gui.py:300 gui.py:569
+msgid "Off"
+msgstr "Tắt"
+
+#: gui.py:300 gui.py:572
+#, python-brace-format
+msgid "Auto refresh: {state}"
+msgstr "Tự động làm mới: {state}"
+
+#: gui.py:301 gui.py:576
+msgid "Disabled"
+msgstr "Đã tắt"
+
+#: gui.py:301 gui.py:576
+#, python-brace-format
+msgid "Timeout: {timeout}"
+msgstr "Thời gian làm mới {timeout}"
+
+#: gui.py:302
+msgid "Never"
+msgstr "Chưa bao giờ"
+
+#: gui.py:302 gui.py:499
+#, python-brace-format
+msgid "Last refresh: {last_refresh}"
+msgstr "Làm mới lần cuối: {last_refresh}"
+
+#: gui.py:345
+msgid "Drive info"
+msgstr "Thông tin ổ đĩa"
+
+#: gui.py:377 gui.py:593
+msgid "Invalid drives"
+msgstr "Ổ đĩa không hợp lệ"
+
+#: gui.py:379 gui.py:595
+msgid "No drive information"
+msgstr "Không có thông tin ổ đĩa"
+
+#: gui.py:433 gui.py:546
+msgid "Usage"
+msgstr "Mức độ sử dụng"
+
+#: gui.py:434
+#, python-brace-format
+msgid "{value} percent used"
+msgstr "{value} phần trăm được sử dụng"
+
+#: gui.py:502
+msgid "Copy &Cell"
+msgstr "Sao chép &Ô"
+
+#: gui.py:503
+msgid "Copy &Row"
+msgstr "Sao chép &hàng"
+
+#: gui.py:504
+msgid "Copy &Column"
+msgstr "Sao chép &Cột"
+
+#: gui.py:538
+msgid "Top"
+msgstr "Đứng đầu"
+
+#: gui.py:538
+msgid "Top drives:"
+msgstr "Ổ đĩa đứng đầu:"
+
+#: gui.py:546
+msgid "Minimum usage %:"
+msgstr "% sử dụng tối thiểu:"
+
+#: gui.py:554
+msgid "Auto refresh"
+msgstr "Tự động làm mới"
+
+#: gui.py:554
+msgid "Seconds:"
+msgstr "Giây:"
+
+#: gui.py:569
+msgid "On"
+msgstr "Bật"
+
+#: gui.py:574
+#, python-brace-format
+msgid "Timeout: {timeout}s"
+msgstr "Thời gian làm mới: {timeout}s"
+
+#: gui.py:586 gui.py:677
+msgid "Success"
+msgstr "Thành công"
+
+#: gui.py:586
+#, python-brace-format
+msgid ""
+"Export completed.\n"
+"Exported to {path}"
+msgstr ""
+"Đã xuất thành công.\n"
+"Đã xuất tới {path}"
+
+#: gui.py:588 gui.py:590 gui.py:593 gui.py:595 gui.py:598 gui.py:600 gui.py:607
+#: gui.py:612 gui.py:617
+msgid "Error"
+msgstr "Lỗi"
+
+#: gui.py:588
+msgid "Unsupported format"
+msgstr "Định dạng này không được hỗ trợ"
+
+#: gui.py:590
+#, python-brace-format
+msgid "Cannot write {path}"
+msgstr "Không thể ghi vào {path}"
+
+#: gui.py:607
+#, python-brace-format
+msgid ""
+"Cannot open README.md\n"
+"{error}"
+msgstr ""
+"Không thể mở README.md\n"
+"{error}"
+
+#: gui.py:612
+#, python-brace-format
+msgid ""
+"Cannot open CHANGELOG.md\n"
+"{error}"
+msgstr ""
+"Không thể mở CHANGELOG.md\n"
+"{error}"
+
+#: gui.py:617
+#, python-brace-format
+msgid ""
+"Cannot open LICENSE\n"
+"{error}"
+msgstr ""
+"Không thể mở GIẤY PHÉP\n"
+"{error}"
+
+#: gui.py:620
+msgid "About DiskInfo"
+msgstr "Về DiskInfo"
+
+#: gui.py:624
+#, python-brace-format
+msgid ""
+"\n"
+"<h2>DiskInfo version {version}</h2>\n"
+"<p>Simple disk information viewer for Windows.</p>\n"
+"<p><b>Author:</b> Hoang Long</p>\n"
+"<p>\n"
+"<a href=\"https://github.com/Hoang-Long2012/DiskInfo\">\n"
+"Project Homepage\n"
+"</a>\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<h2>Phiên bản DiskInfo {version}</h2>\n"
+"<p>Trình xem thông tin ổ đĩa đơn giản dành cho Windows.</p>\n"
+"<p><b>Tác giả:</b> Hoàng Long</p>\n"
+"<p>\n"
+"<a href=\"https://github.com/Hoang-Long2012/DiskInfo\">\n"
+"Trang chủ dự án\n"
+"</a>\n"
+"</p>\n"
+
+#: gui.py:667
+msgid "Detailed"
+msgstr "Chi tiết"
+
+#: gui.py:667
+msgid "Simple"
+msgstr "Đơn giản"
+
+#: gui.py:677
+msgid ""
+"Language changed successfully.\n"
+"Please restart app to apply language change."
+msgstr ""
+"Đã thay đổi ngôn ngữ thành công.\n"
+"Vui lòng khởi động lại ứng dụng để áp dụng thay đổi ngôn ngữ."
