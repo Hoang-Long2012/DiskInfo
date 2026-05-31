@@ -5,6 +5,9 @@ on:
     types:
       - published
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   winget:
     runs-on: windows-latest
