@@ -32,5 +32,5 @@ jobs:
             --version $Tag `
             --release-notes-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md `
             --submit `
-            --token $env:WINGET_TOKEN `
+            --token $env:WINGETCREATE_GITHUB_TOKEN `
             HoangLong.DiskInfo
