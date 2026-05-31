@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 17:54+0700\n"
-"PO-Revision-Date: 2026-05-29 18:03+0700\n"
+"POT-Creation-Date: 2026-05-31 16:18+0700\n"
+"PO-Revision-Date: 2026-05-31 16:24+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -17,6 +17,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
+
+#: constants.py:109
+msgid "Drive"
+msgstr ""
+
+#: constants.py:110
+msgid "Label"
+msgstr ""
+
+#: constants.py:111
+msgid "Type"
+msgstr ""
+
+#: constants.py:112
+msgid "File System"
+msgstr ""
+
+#: constants.py:113
+msgid "Used space"
+msgstr ""
+
+#: constants.py:114
+msgid "Free space"
+msgstr ""
+
+#: constants.py:115
+msgid "Capacity"
+msgstr ""
+
+#: constants.py:116
+msgid "Usage %"
+msgstr ""
+
+#: constants.py:117
+msgid "Status"
+msgstr ""
+
+#: constants.py:122
+msgid "drive"
+msgstr ""
+
+#: constants.py:123
+msgid "label"
+msgstr ""
+
+#: constants.py:124
+msgid "percent"
+msgstr ""
+
+#: constants.py:125
+msgid "status"
+msgstr ""
 
 #: gui.py:31
 #, python-brace-format

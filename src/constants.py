@@ -1,4 +1,6 @@
 Domain = "diskinfo"
+def N_(Text):
+	return Text
 Drive_Types = {
 	0: "Unknown",
 	1: "No root directory",
@@ -104,21 +106,21 @@ GUI_Status_Colors = {
 	"critical": "#ff3333"
 }
 GUI_Headers = {
-	"drive": "Drive",
-	"label": "Label",
-	"type": "Type",
-	"fs": "File System",
-	"used": "Used space",
-	"free": "Free space",
-	"total": "Capacity",
-	"percent": "Usage %",
-	"status": "Status"
+	"drive": N_("Drive"),
+	"label": N_("Label"),
+	"type": N_("Type"),
+	"fs": N_("File System"),
+	"used": N_("Used space"),
+	"free": N_("Free space"),
+	"total": N_("Capacity"),
+	"percent": N_("Usage %"),
+	"status": N_("Status")
 }
 Center_Columns = ["used", "free", "total", "percent", "status"]
 Color_Columns = ["used", "free"]
 GUI_Simple_Columns = [
-	"drive",
-	"label",
-	"percent",
-	"status"
+	N_("drive"),
+	N_("label"),
+	N_("percent"),
+	N_("status")
 ]

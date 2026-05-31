@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DiskInfo phiên bản 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 17:54+0700\n"
-"PO-Revision-Date: 2026-05-29 17:58+0700\n"
+"POT-Creation-Date: 2026-05-31 16:18+0700\n"
+"PO-Revision-Date: 2026-05-31 16:30+0700\n"
 "Last-Translator: \n"
 "Language-Team: Tiếng Việt\n"
 "Language: vi\n"
@@ -17,6 +17,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
+
+#: constants.py:109
+msgid "Drive"
+msgstr "Ổ đĩa"
+
+#: constants.py:110
+msgid "Label"
+msgstr "Nhãn"
+
+#: constants.py:111
+msgid "Type"
+msgstr "Loại"
+
+#: constants.py:112
+msgid "File System"
+msgstr "Hệ thống tệp tin"
+
+#: constants.py:113
+msgid "Used space"
+msgstr "Đã sử dụng"
+
+#: constants.py:114
+msgid "Free space"
+msgstr "Còn trống"
+
+#: constants.py:115
+msgid "Capacity"
+msgstr "Tổng"
+
+#: constants.py:116
+msgid "Usage %"
+msgstr "Mức độ sử dụng"
+
+#: constants.py:117
+msgid "Status"
+msgstr "Trạng thái"
+
+#: constants.py:122
+msgid "drive"
+msgstr "ổ đĩa"
+
+#: constants.py:123
+msgid "label"
+msgstr "nhãn"
+
+#: constants.py:124
+msgid "percent"
+msgstr "phần trăm"
+
+#: constants.py:125
+msgid "status"
+msgstr "trạng thái"
 
 #: gui.py:31
 #, python-brace-format
