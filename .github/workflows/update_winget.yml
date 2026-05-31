@@ -27,7 +27,7 @@ jobs:
           $Tag = "${{ github.event.release.tag_name }}"
           $Url = "https://github.com/${{ github.repository }}/releases/download/$Tag/DiskInfo.zip"
 
-          wingetcreate update HoangLong.DiskInfo `
+          .\wingetcreate.exe update HoangLong.DiskInfo `
             --version $Tag `
             --urls $Url `
             --release-note-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md `
