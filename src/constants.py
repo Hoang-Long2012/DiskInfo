@@ -1,6 +1,6 @@
-Domain = "diskinfo"
 def N_(Text):
 	return Text
+Domain = "diskinfo"
 Drive_Types = {
 	0: "Unknown",
 	1: "No root directory",
@@ -124,3 +124,17 @@ GUI_Simple_Columns = [
 	N_("percent"),
 	N_("status")
 ]
+GUI_Status_Labels = {
+	"Critical": N_("Critical"),
+	"Warning": N_("Warning"),
+	"Healthy": N_("Healthy")
+}
+GUI_Drive_Types = {
+	"Unknown": N_("Unknown"),
+	"No root directory": N_("No root directory"),
+	"USB drive": N_("USB drive"),
+	"Local disk drive": N_("Local disk drive"),
+	"Network drive": N_("Network drive"),
+	"CD/DVD drive": N_("CD/DVD drive"),
+	"Ram disk drive": N_("Ram disk drive")
+}

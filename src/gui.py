@@ -395,11 +395,14 @@ class MainWindow(QT.QMainWindow):
 			Cell.setIcon(Icon)
 			Cell.setForeground(QBrush(QColor(Style["color"])))
 			Cell.setText(Text.replace("\\", ""))
+		elif Key == "type":
+			Cell.setText(self._(constants.GUI_Drive_Types.get(Text)) or self._("Unknown"))
 		elif Key == "fs":
 			Color = utils.getFsColor(Value, "gui")
 			Cell.setForeground(QBrush(QColor(Color)))
 		elif Key == "status":
 			Cell.setForeground(QBrush(QColor(Style["color"])))
+			Cell.setText(self._(constants.GUI_Status_Labels.get(Text)) or self._("Unknown"))
 		elif Key == "percent":
 			try:
 				Percent = int(Value or 0)

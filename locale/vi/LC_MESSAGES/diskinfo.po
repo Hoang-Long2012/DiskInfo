@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DiskInfo phiên bản 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 16:18+0700\n"
-"PO-Revision-Date: 2026-05-31 16:30+0700\n"
+"POT-Creation-Date: 2026-05-31 17:12+0700\n"
+"PO-Revision-Date: 2026-05-31 17:19+0700\n"
 "Last-Translator: \n"
 "Language-Team: Tiếng Việt\n"
 "Language: vi\n"
@@ -70,12 +70,52 @@ msgstr "phần trăm"
 msgid "status"
 msgstr "trạng thái"
 
+#: constants.py:128
+msgid "Critical"
+msgstr "Nguy hiểm"
+
+#: constants.py:129
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#: constants.py:130
+msgid "Healthy"
+msgstr "Khỏe mạnh"
+
+#: constants.py:133 gui.py:399 gui.py:405
+msgid "Unknown"
+msgstr "Không xác định"
+
+#: constants.py:134
+msgid "No root directory"
+msgstr "Không có thư mục mount gốc"
+
+#: constants.py:135
+msgid "USB drive"
+msgstr "Ổ đĩa USB"
+
+#: constants.py:136
+msgid "Local disk drive"
+msgstr "Ổ đĩa cục bộ"
+
+#: constants.py:137
+msgid "Network drive"
+msgstr "Ổ đĩa mạng"
+
+#: constants.py:138
+msgid "CD/DVD drive"
+msgstr "Ổ đĩa CD / DVD"
+
+#: constants.py:139
+msgid "Ram disk drive"
+msgstr "Ổ đĩa ram"
+
 #: gui.py:31
 #, python-brace-format
 msgid "DiskInfo version {version}"
 msgstr "DiskInfo phiên bản {version}"
 
-#: gui.py:78 gui.py:578
+#: gui.py:78 gui.py:581
 msgid "Export"
 msgstr "Xuất"
 
@@ -219,49 +259,49 @@ msgstr "&Giấy phép"
 msgid "Main"
 msgstr "Chính"
 
-#: gui.py:295 gui.py:451
+#: gui.py:295 gui.py:454
 #, python-brace-format
 msgid "Drives: {drives}"
 msgstr "Ổ đĩa: {drives}"
 
-#: gui.py:296 gui.py:454
+#: gui.py:296 gui.py:457
 #, python-brace-format
 msgid "Total: {total}"
 msgstr "Tổng cộng: {total}"
 
-#: gui.py:297 gui.py:457
+#: gui.py:297 gui.py:460
 #, python-brace-format
 msgid "Used: {used}"
 msgstr "Đã sử dụng: {used}"
 
-#: gui.py:298 gui.py:460
+#: gui.py:298 gui.py:463
 #, python-brace-format
 msgid "Free: {free}"
 msgstr "Còn lại {free}"
 
-#: gui.py:299 gui.py:533
+#: gui.py:299 gui.py:536
 msgid "All"
 msgstr "Tất cả"
 
-#: gui.py:299 gui.py:536
+#: gui.py:299 gui.py:539
 #, python-brace-format
 msgid "Filter: {filter}"
 msgstr "Lọc: {filter}"
 
-#: gui.py:300 gui.py:569
+#: gui.py:300 gui.py:572
 msgid "Off"
 msgstr "Tắt"
 
-#: gui.py:300 gui.py:572
+#: gui.py:300 gui.py:575
 #, python-brace-format
 msgid "Auto refresh: {state}"
 msgstr "Tự động làm mới: {state}"
 
-#: gui.py:301 gui.py:576
+#: gui.py:301 gui.py:579
 msgid "Disabled"
 msgstr "Đã tắt"
 
-#: gui.py:301 gui.py:576
+#: gui.py:301 gui.py:579
 #, python-brace-format
 msgid "Timeout: {timeout}"
 msgstr "Thời gian làm mới {timeout}"
@@ -270,7 +310,7 @@ msgstr "Thời gian làm mới {timeout}"
 msgid "Never"
 msgstr "Chưa bao giờ"
 
-#: gui.py:302 gui.py:499
+#: gui.py:302 gui.py:502
 #, python-brace-format
 msgid "Last refresh: {last_refresh}"
 msgstr "Làm mới lần cuối: {last_refresh}"
@@ -279,69 +319,69 @@ msgstr "Làm mới lần cuối: {last_refresh}"
 msgid "Drive info"
 msgstr "Thông tin ổ đĩa"
 
-#: gui.py:377 gui.py:593
+#: gui.py:377 gui.py:596
 msgid "Invalid drives"
 msgstr "Ổ đĩa không hợp lệ"
 
-#: gui.py:379 gui.py:595
+#: gui.py:379 gui.py:598
 msgid "No drive information"
 msgstr "Không có thông tin ổ đĩa"
 
-#: gui.py:433 gui.py:546
+#: gui.py:436 gui.py:549
 msgid "Usage"
 msgstr "Mức độ sử dụng"
 
-#: gui.py:434
+#: gui.py:437
 #, python-brace-format
 msgid "{value} percent used"
 msgstr "{value} phần trăm được sử dụng"
 
-#: gui.py:502
+#: gui.py:505
 msgid "Copy &Cell"
 msgstr "Sao chép &Ô"
 
-#: gui.py:503
+#: gui.py:506
 msgid "Copy &Row"
 msgstr "Sao chép &hàng"
 
-#: gui.py:504
+#: gui.py:507
 msgid "Copy &Column"
 msgstr "Sao chép &Cột"
 
-#: gui.py:538
+#: gui.py:541
 msgid "Top"
 msgstr "Đứng đầu"
 
-#: gui.py:538
+#: gui.py:541
 msgid "Top drives:"
 msgstr "Ổ đĩa đứng đầu:"
 
-#: gui.py:546
+#: gui.py:549
 msgid "Minimum usage %:"
 msgstr "% sử dụng tối thiểu:"
 
-#: gui.py:554
+#: gui.py:557
 msgid "Auto refresh"
 msgstr "Tự động làm mới"
 
-#: gui.py:554
+#: gui.py:557
 msgid "Seconds:"
 msgstr "Giây:"
 
-#: gui.py:569
+#: gui.py:572
 msgid "On"
 msgstr "Bật"
 
-#: gui.py:574
+#: gui.py:577
 #, python-brace-format
 msgid "Timeout: {timeout}s"
 msgstr "Thời gian làm mới: {timeout}s"
 
-#: gui.py:586 gui.py:677
+#: gui.py:589 gui.py:680
 msgid "Success"
 msgstr "Thành công"
 
-#: gui.py:586
+#: gui.py:589
 #, python-brace-format
 msgid ""
 "Export completed.\n"
@@ -350,21 +390,21 @@ msgstr ""
 "Đã xuất thành công.\n"
 "Đã xuất tới {path}"
 
-#: gui.py:588 gui.py:590 gui.py:593 gui.py:595 gui.py:598 gui.py:600 gui.py:607
-#: gui.py:612 gui.py:617
+#: gui.py:591 gui.py:593 gui.py:596 gui.py:598 gui.py:601 gui.py:603 gui.py:610
+#: gui.py:615 gui.py:620
 msgid "Error"
 msgstr "Lỗi"
 
-#: gui.py:588
+#: gui.py:591
 msgid "Unsupported format"
 msgstr "Định dạng này không được hỗ trợ"
 
-#: gui.py:590
+#: gui.py:593
 #, python-brace-format
 msgid "Cannot write {path}"
 msgstr "Không thể ghi vào {path}"
 
-#: gui.py:607
+#: gui.py:610
 #, python-brace-format
 msgid ""
 "Cannot open README.md\n"
@@ -373,7 +413,7 @@ msgstr ""
 "Không thể mở README.md\n"
 "{error}"
 
-#: gui.py:612
+#: gui.py:615
 #, python-brace-format
 msgid ""
 "Cannot open CHANGELOG.md\n"
@@ -382,7 +422,7 @@ msgstr ""
 "Không thể mở CHANGELOG.md\n"
 "{error}"
 
-#: gui.py:617
+#: gui.py:620
 #, python-brace-format
 msgid ""
 "Cannot open LICENSE\n"
@@ -391,11 +431,11 @@ msgstr ""
 "Không thể mở GIẤY PHÉP\n"
 "{error}"
 
-#: gui.py:620
+#: gui.py:623
 msgid "About DiskInfo"
 msgstr "Về DiskInfo"
 
-#: gui.py:624
+#: gui.py:627
 #, python-brace-format
 msgid ""
 "\n"
@@ -418,15 +458,15 @@ msgstr ""
 "</a>\n"
 "</p>\n"
 
-#: gui.py:667
+#: gui.py:670
 msgid "Detailed"
 msgstr "Chi tiết"
 
-#: gui.py:667
+#: gui.py:670
 msgid "Simple"
 msgstr "Đơn giản"
 
-#: gui.py:677
+#: gui.py:680
 msgid ""
 "Language changed successfully.\n"
 "Please restart app to apply language change."

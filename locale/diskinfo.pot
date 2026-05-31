@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 16:18+0700\n"
+"POT-Creation-Date: 2026-05-31 17:12+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,12 +69,52 @@ msgstr ""
 msgid "status"
 msgstr ""
 
+#: constants.py:128
+msgid "Critical"
+msgstr ""
+
+#: constants.py:129
+msgid "Warning"
+msgstr ""
+
+#: constants.py:130
+msgid "Healthy"
+msgstr ""
+
+#: constants.py:133 gui.py:399 gui.py:405
+msgid "Unknown"
+msgstr ""
+
+#: constants.py:134
+msgid "No root directory"
+msgstr ""
+
+#: constants.py:135
+msgid "USB drive"
+msgstr ""
+
+#: constants.py:136
+msgid "Local disk drive"
+msgstr ""
+
+#: constants.py:137
+msgid "Network drive"
+msgstr ""
+
+#: constants.py:138
+msgid "CD/DVD drive"
+msgstr ""
+
+#: constants.py:139
+msgid "Ram disk drive"
+msgstr ""
+
 #: gui.py:31
 #, python-brace-format
 msgid "DiskInfo version {version}"
 msgstr ""
 
-#: gui.py:78 gui.py:578
+#: gui.py:78 gui.py:581
 msgid "Export"
 msgstr ""
 
@@ -218,49 +258,49 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: gui.py:295 gui.py:451
+#: gui.py:295 gui.py:454
 #, python-brace-format
 msgid "Drives: {drives}"
 msgstr ""
 
-#: gui.py:296 gui.py:454
+#: gui.py:296 gui.py:457
 #, python-brace-format
 msgid "Total: {total}"
 msgstr ""
 
-#: gui.py:297 gui.py:457
+#: gui.py:297 gui.py:460
 #, python-brace-format
 msgid "Used: {used}"
 msgstr ""
 
-#: gui.py:298 gui.py:460
+#: gui.py:298 gui.py:463
 #, python-brace-format
 msgid "Free: {free}"
 msgstr ""
 
-#: gui.py:299 gui.py:533
+#: gui.py:299 gui.py:536
 msgid "All"
 msgstr ""
 
-#: gui.py:299 gui.py:536
+#: gui.py:299 gui.py:539
 #, python-brace-format
 msgid "Filter: {filter}"
 msgstr ""
 
-#: gui.py:300 gui.py:569
+#: gui.py:300 gui.py:572
 msgid "Off"
 msgstr ""
 
-#: gui.py:300 gui.py:572
+#: gui.py:300 gui.py:575
 #, python-brace-format
 msgid "Auto refresh: {state}"
 msgstr ""
 
-#: gui.py:301 gui.py:576
+#: gui.py:301 gui.py:579
 msgid "Disabled"
 msgstr ""
 
-#: gui.py:301 gui.py:576
+#: gui.py:301 gui.py:579
 #, python-brace-format
 msgid "Timeout: {timeout}"
 msgstr ""
@@ -269,7 +309,7 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: gui.py:302 gui.py:499
+#: gui.py:302 gui.py:502
 #, python-brace-format
 msgid "Last refresh: {last_refresh}"
 msgstr ""
@@ -278,115 +318,115 @@ msgstr ""
 msgid "Drive info"
 msgstr ""
 
-#: gui.py:377 gui.py:593
+#: gui.py:377 gui.py:596
 msgid "Invalid drives"
 msgstr ""
 
-#: gui.py:379 gui.py:595
+#: gui.py:379 gui.py:598
 msgid "No drive information"
 msgstr ""
 
-#: gui.py:433 gui.py:546
+#: gui.py:436 gui.py:549
 msgid "Usage"
 msgstr ""
 
-#: gui.py:434
+#: gui.py:437
 #, python-brace-format
 msgid "{value} percent used"
 msgstr ""
 
-#: gui.py:502
+#: gui.py:505
 msgid "Copy &Cell"
 msgstr ""
 
-#: gui.py:503
+#: gui.py:506
 msgid "Copy &Row"
 msgstr ""
 
-#: gui.py:504
+#: gui.py:507
 msgid "Copy &Column"
 msgstr ""
 
-#: gui.py:538
+#: gui.py:541
 msgid "Top"
 msgstr ""
 
-#: gui.py:538
+#: gui.py:541
 msgid "Top drives:"
 msgstr ""
 
-#: gui.py:546
+#: gui.py:549
 msgid "Minimum usage %:"
 msgstr ""
 
-#: gui.py:554
+#: gui.py:557
 msgid "Auto refresh"
 msgstr ""
 
-#: gui.py:554
+#: gui.py:557
 msgid "Seconds:"
 msgstr ""
 
-#: gui.py:569
+#: gui.py:572
 msgid "On"
 msgstr ""
 
-#: gui.py:574
+#: gui.py:577
 #, python-brace-format
 msgid "Timeout: {timeout}s"
 msgstr ""
 
-#: gui.py:586 gui.py:677
+#: gui.py:589 gui.py:680
 msgid "Success"
 msgstr ""
 
-#: gui.py:586
+#: gui.py:589
 #, python-brace-format
 msgid ""
 "Export completed.\n"
 "Exported to {path}"
 msgstr ""
 
-#: gui.py:588 gui.py:590 gui.py:593 gui.py:595 gui.py:598 gui.py:600 gui.py:607
-#: gui.py:612 gui.py:617
+#: gui.py:591 gui.py:593 gui.py:596 gui.py:598 gui.py:601 gui.py:603 gui.py:610
+#: gui.py:615 gui.py:620
 msgid "Error"
 msgstr ""
 
-#: gui.py:588
+#: gui.py:591
 msgid "Unsupported format"
 msgstr ""
 
-#: gui.py:590
+#: gui.py:593
 #, python-brace-format
 msgid "Cannot write {path}"
 msgstr ""
 
-#: gui.py:607
+#: gui.py:610
 #, python-brace-format
 msgid ""
 "Cannot open README.md\n"
 "{error}"
 msgstr ""
 
-#: gui.py:612
+#: gui.py:615
 #, python-brace-format
 msgid ""
 "Cannot open CHANGELOG.md\n"
 "{error}"
 msgstr ""
 
-#: gui.py:617
+#: gui.py:620
 #, python-brace-format
 msgid ""
 "Cannot open LICENSE\n"
 "{error}"
 msgstr ""
 
-#: gui.py:620
+#: gui.py:623
 msgid "About DiskInfo"
 msgstr ""
 
-#: gui.py:624
+#: gui.py:627
 #, python-brace-format
 msgid ""
 "\n"
@@ -400,15 +440,15 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: gui.py:667
+#: gui.py:670
 msgid "Detailed"
 msgstr ""
 
-#: gui.py:667
+#: gui.py:670
 msgid "Simple"
 msgstr ""
 
-#: gui.py:677
+#: gui.py:680
 msgid ""
 "Language changed successfully.\n"
 "Please restart app to apply language change."
