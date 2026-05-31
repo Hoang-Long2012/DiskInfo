@@ -13,8 +13,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install WingetCreate
+        shell: pwsh
         run: |
-          dotnet tool install --global wingetcreate
+          Invoke-WebRequest `
+            https://aka.ms/wingetcreate/latest `
+            -OutFile wingetcreate.exe
 
       - name: Submit manifest
         env:
