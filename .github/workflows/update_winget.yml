@@ -27,8 +27,10 @@ jobs:
           $Tag = "${{ github.event.release.tag_name }}"
           $Url = "https://github.com/${{ github.repository }}/releases/download/$Tag/DiskInfo.zip"
 
-          .\wingetcreate.exe update HoangLong.DiskInfo `
-            --version $Tag `
+          .\wingetcreate.exe update `
             --urls $Url `
-            --release-note-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md `
-            --submit
+            --version $Tag `
+            --release-notes-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md `
+            --submit `
+            --token $env:WINGET_TOKEN `
+            HoangLong.DiskInfo
