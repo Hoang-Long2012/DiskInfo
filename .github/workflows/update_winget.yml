@@ -29,4 +29,5 @@ jobs:
           komac update HoangLong.DiskInfo \
             --version "$TAG" \
             --urls "$URL" \
+            --release-notes-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md
             --submit
