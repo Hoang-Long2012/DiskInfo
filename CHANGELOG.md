@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 3.1
+- Columns name, drive states and drive types can now be translated.
+
+---
+
 ## DiskInfo version 3.0
 - Added multi language for gui. There are currently two languages: en and vi.
 
