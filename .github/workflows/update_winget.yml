@@ -7,27 +7,25 @@ on:
 
 jobs:
   winget:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout current repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Komac
-        uses: taiki-e/install-action@v2
-        with:
-          tool: komac
+      - name: Install WingetCreate
+        run: |
+          dotnet tool install --global wingetcreate
 
       - name: Submit manifest
         env:
-          GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
+          WINGETCREATE_GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
+        shell: pwsh
         run: |
-          TAG="${{ github.event.release.tag_name }}"
+          $Tag = "${{ github.event.release.tag_name }}"
+          $Url = "https://github.com/${{ github.repository }}/releases/download/$Tag/DiskInfo.zip"
 
-          URL="https://github.com/${{ github.repository }}/releases/download/$TAG/DiskInfo.zip"
-
-          komac update HoangLong.DiskInfo \
-            --version "$TAG" \
-            --urls "$URL" \
-            --release-notes-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md
+          wingetcreate update HoangLong.DiskInfo `
+            --version $Tag `
+            --urls $Url `
+            --release-note-url https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md `
             --submit
