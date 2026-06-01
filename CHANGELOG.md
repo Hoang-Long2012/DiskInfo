@@ -148,3 +148,7 @@
 
 ## DiskInfo 1.0
 - First release version.
+
+---
+
+© Copyright (c) 2026 Hoang-Long2012
