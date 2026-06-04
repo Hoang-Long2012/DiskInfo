@@ -9,7 +9,7 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "3.1"
+	return "3.2"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
@@ -120,7 +120,7 @@ def normalizeWindowsArgs(argv):
 	return Normalized
 def parseArgs():
 	ArgsList = normalizeWindowsArgs(sys.argv[1:])
-	Parser = argparse.ArgumentParser(add_help=False)
+	Parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
 	Parser.add_argument("drives", nargs="*")
 	Parser.add_argument("--no-bytes", action="store_false", default=True)
 	Parser.add_argument("-j", "--json", action="store_true")

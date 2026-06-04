@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 3.2
+- Fix internal bug.
+
+---
+
 ## DiskInfo version 3.1
 - Columns name, drive states and drive types can now be translated.
 
