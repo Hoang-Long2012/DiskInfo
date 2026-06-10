@@ -112,4 +112,12 @@ You can read changelog in CHANGELOG.md or:
 
 ---
 
+## Translation:
+You can contribute translations to DiskInfo by forking this repo.  
+Translating the diskinfo.pot file located in locale.  
+Creating a directory representing your language inside locale which creates the LC_MESSAGES directory and dropping the .mo file from the .po file you translated into it.  
+Creating a pr to this repo.
+
+---
+
 © Copyright (c) 2026 Hoang-Long2012
