@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 3.3
+- Some internal API changes.
+
+---
+
 ## DiskInfo version 3.2
 - Fix internal bug.
 
