@@ -4,7 +4,7 @@ import utils
 import error
 def collectDriveInfo(AllDrive=True, Volumes=None):
 	if AllDrive:
-		Partitions = core.get_logical_drives() or []
+		Partitions = core.getDrivesList() or []
 	else:
 		Partitions = utils.parseVolumeList(Volumes)
 		if Partitions is None:

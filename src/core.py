@@ -1,4 +1,11 @@
 import ctypes
+def getLogicalDriveStrings():
+	Length = ctypes.windll.kernel32.GetLogicalDriveStringsW(0, None)
+	Buffer = ctypes.create_unicode_buffer(Length)
+	Result = ctypes.windll.kernel32.GetLogicalDriveStringsW(Length, Buffer)
+	if not Result:
+		return None
+	return Buffer[:].rstrip('\0').split('\0')
 def get_logical_drives():
 	Mask = ctypes.windll.kernel32.GetLogicalDrives()
 	if not Mask:
@@ -8,6 +15,14 @@ def get_logical_drives():
 		if Mask & (1 << I):
 			Drives.append(f"{chr(65 + I)}:\\")
 	return Drives
+def getDrivesList():
+	Drives = getLogicalDriveStrings()
+	if Drives:
+		return Drives
+	Drives = get_logical_drives()
+	if Drives:
+		return Drives
+	return None
 def getDriveUsage(Drive):
 	Free = ctypes.c_ulonglong()
 	Total = ctypes.c_ulonglong()

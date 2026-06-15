@@ -8,7 +8,7 @@ Console = console()
 def formatSize(N):
 	if N is None:
 		return "unknown"
-	Units = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"]
+	Units = ["Bytes" if N >= 1 else "Byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"]
 	Size = float(N)
 	for Unit in Units:
 		if Size < 1024 or Unit == Units[-1]:
