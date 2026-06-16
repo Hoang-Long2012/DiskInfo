@@ -1,6 +1,6 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 3.3  
+Version: 3.4  
 Platform: Windows  
 A small utility to check basic information about your drive
 
