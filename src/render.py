@@ -134,7 +134,7 @@ def renderDriveInfo(AllDrive=True, Volumes=None, Mode="normal", Sort=None, Rever
 		return renderTextDriveInfo(Data, Simple, Bytes, Beep)
 def showDriveLabel(AllDrive=True, Volumes=None, Label=False):
 	if AllDrive:
-		Partitions = core.get_logical_drives() or []
+		Partitions = core.getDrivesList() or []
 	else:
 		Partitions = utils.parseVolumeList(Volumes)
 		if Partitions is None:

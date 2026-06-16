@@ -75,6 +75,12 @@ def getUsageStyle(Value, Interface="cli"):
 				"status": Level["label"],
 				"key": Key
 			}
+	return {
+		"color": "white",
+		"icon": "❓",
+		"status": "unknown",
+		"key": "unknown"
+	}
 def getDriveIcon(Type, Interface="cli"):
 	if Interface == "cli":
 		return constants.CLI_Drive_Icons.get(Type) or "❓"
@@ -99,4 +105,7 @@ def getFilePath(Name):
 	Base = os.path.dirname(os.path.abspath(getBasePath()))
 	return os.path.join(Base, Name)
 def beep():
-	messageBeep(-1)
+	try:
+		messageBeep(-1)
+	except RuntimeError:
+		pass

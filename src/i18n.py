@@ -15,13 +15,17 @@ def loadLanguage():
 		with open(utils.getFilePath("lang.txt"), "w", encoding="utf-8") as File:
 			File.write("en")
 	with open(utils.getFilePath("lang.txt"), "r", encoding="utf-8") as File:
-		return File.read()
+		Lang = File.read().strip()
+	return Lang or "en"
 def saveLanguage(Lang):
 	with open(utils.getFilePath("lang.txt"), "w", encoding="utf-8") as File:
-		File.write(Lang)
+		File.write(Lang.strip())
 class InitTranslation:
 	def __init__(self, Lang):
-		self.Translation = gettext.translation(Domain, localedir=utils.getFilePath("locale"), languages=[Lang] if not isinstance(Lang, list) else Lang, fallback=True)
+		Locale_Dir = utils.getFilePath("locale")
+		if not os.path.isfile(os.path.join(Locale_Dir, Lang, "LC_MESSAGES", f"{Domain}.mo")):
+			saveLanguage("en")
+		self.Translation = gettext.translation(Domain, localedir=Locale_Dir, languages=[Lang] if not isinstance(Lang, list) else Lang, fallback=True)
 	def translate(self, Text, *args, **kwargs):
 		MSG = self.Translation.gettext(Text)
 		try:

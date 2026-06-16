@@ -1,12 +1,15 @@
 import ctypes
 def getLogicalDriveStrings():
 	Length = ctypes.windll.kernel32.GetLogicalDriveStringsW(0, None)
+	if not Length:
+		return None
+	Length += 1
 	Buffer = ctypes.create_unicode_buffer(Length)
 	Result = ctypes.windll.kernel32.GetLogicalDriveStringsW(Length, Buffer)
 	if not Result:
 		return None
 	return Buffer[:].rstrip('\0').split('\0')
-def get_logical_drives():
+def getLogicalDrives():
 	Mask = ctypes.windll.kernel32.GetLogicalDrives()
 	if not Mask:
 		return None
@@ -19,7 +22,7 @@ def getDrivesList():
 	Drives = getLogicalDriveStrings()
 	if Drives:
 		return Drives
-	Drives = get_logical_drives()
+	Drives = getLogicalDrives()
 	if Drives:
 		return Drives
 	return None
