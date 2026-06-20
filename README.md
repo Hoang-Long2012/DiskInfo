@@ -1,9 +1,10 @@
+![DiskInfo](asset/DiskInfo.png)
+
 # DiskInfo
-Name: DiskInfo  
 ![Version: 3.5](https://img.shields.io/github/v/release/Hoang-Long2012/DiskInfo)
 ![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue)
 
-A small utility to check basic information about your drive
+A small utility to check basic information about your drive.
 
 ---
 
@@ -22,6 +23,63 @@ A small utility to check basic information about your drive
 Usage:  
 ```
 diskinfo [option] [drive...]
+```
+
+---
+
+## Examples:
+
+- Show all drive information:
+```
+diskinfo
+```
+- Show only drive letters:
+```
+diskinfo --letter
+```
+- Show drives in table format:
+```
+diskinfo --table --simple
+```
+- Sort drives by used space:
+```
+diskinfo --sort used
+```
+- Show the most used drive:
+```
+diskinfo --sort usage --top 1
+```
+- Watch drives in real time:
+```
+diskinfo --watch 1
+```
+- Show drives with more than 90% usage:
+```
+diskinfo --usage 90
+```
+- Export drive information:
+```
+diskinfo --export report.json
+```
+- Show JSON output:
+```
+diskinfo --json
+```
+- Find full drives and export the result:
+```
+diskinfo --usage 90 --export full-drives.csv
+```
+- Monitor USB drives:
+```
+diskinfo --type usb --watch 5
+```
+- Show the largest drives:
+```
+diskinfo --sort total --top 3
+```
+- Show information about specific drives:
+```
+diskinfo C: D:
 ```
 
 ---
@@ -82,7 +140,7 @@ Exclude specific drives.
 Example: diskinfo --exclude C: D:
 - -e, /e, --export [FILE]  
 Export the output results to a file.  
-Supported formats: CSV, JSON, TXT, Markdown, INI, XML and Yaml.  
+Supported formats: CSV, JSON, TXT, Markdown, INI, XML, Toml, HTML, XLSX and YAML.  
 Example: diskinfo --export report.txt
 - -b, /b, --beep  
 Beep when have a drive almost full.  
@@ -118,6 +176,13 @@ You can contribute translations to DiskInfo by forking this repo.
 Translating the diskinfo.pot file located in locale.  
 Creating a directory representing your language inside locale which creates the LC_MESSAGES directory and dropping the .mo file from the .po file you translated into it.  
 Creating a pr to this repo.
+
+---
+
+## Contributing:
+
+Pull requests are welcome.  
+Feel free to open issues for bugs or feature requests.
 
 ---
 
