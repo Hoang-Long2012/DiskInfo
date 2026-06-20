@@ -125,7 +125,7 @@ def exportXLSX(Data, Path):
 			for Cell in Col:
 				try:
 					Max_Len = max(Max_Len, len(str(Cell.value)))
-				except:
+				except Exception:
 					pass
 			Worksheet.column_dimensions[Col_Letter].width = Max_Len + 2
 		Workbook.save(Path)
@@ -161,6 +161,7 @@ Formats = {
 	".ini": exportINI,
 	".xml": exportXML,
 	".yaml": exportYaml,
+	".yml": exportYaml,
 	".xlsx": exportXLSX,
 	".html": exportHTML,
 	".toml": exportTOML

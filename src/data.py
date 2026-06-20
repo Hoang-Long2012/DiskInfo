@@ -63,9 +63,9 @@ def filterPercent(Data, Percent=90):
 			Result.append(Item)
 	return Result
 def filterExclude(Data, Exclude=None):
-	Exclude = utils.parseVolumeList(Exclude)
 	if not Exclude:
 		return Data
+	Exclude = utils.parseVolumeList(Exclude)
 	Seen = set()
 	for Drive in Exclude:
 		if not isinstance(Drive, str):

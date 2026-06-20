@@ -2,6 +2,7 @@
 
 ## DiskInfo version 3.5
 - Improved help text.
+- Internal changes.
 
 ---
 
