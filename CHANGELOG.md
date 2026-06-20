@@ -1,5 +1,10 @@
 # Changelog
 
+## DiskInfo version 3.5
+- Improved help text.
+
+---
+
 ## DiskInfo version 3.4
 - Some internal code changes and improvements.
 
