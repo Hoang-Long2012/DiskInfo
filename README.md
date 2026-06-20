@@ -34,50 +34,62 @@ diskinfo [option] [drive...]
 ```
 diskinfo
 ```
+
 - Show only drive letters:
 ```
 diskinfo --letter
 ```
+
 - Show drives in table format:
 ```
 diskinfo --table --simple
 ```
+
 - Sort drives by used space:
 ```
 diskinfo --sort used
 ```
+
 - Show the drive using the most space:
 ```
 diskinfo --sort used --top 1
 ```
+
 - Watch drives in real time:
 ```
 diskinfo --watch 1
 ```
+
 - Show drives with more than 90% usage:
 ```
 diskinfo --usage 90
 ```
+
 - Export drive information:
 ```
 diskinfo --export report.json
 ```
+
 - Show JSON output:
 ```
 diskinfo --json
 ```
+
 - Find full drives and export the result:
 ```
 diskinfo --usage 90 --export full-drives.csv
 ```
+
 - Monitor USB drives:
 ```
 diskinfo --type usb --watch 5
 ```
+
 - Show the largest drives:
 ```
 diskinfo --sort total --top 3
 ```
+
 - Show information about specific drives:
 ```
 diskinfo C: D:
@@ -197,7 +209,7 @@ winget install HoangLong.DiskInfo
 Or download from:  
 [Release page](https://github.com/Hoang-Long2012/DiskInfo/releases/latest/)  
 You can read changelog in:  
-[CHANGELOG.md](https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md)  
+[CHANGELOG.md](CHANGELOG.md)  
 
 ---
 
