@@ -9,3 +9,6 @@ build/
 *.spec
 *.bat
 manifests/
+
+# Translation
+*.po

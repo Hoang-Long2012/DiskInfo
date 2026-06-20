@@ -1,6 +1,7 @@
 # DiskInfo
 Name: DiskInfo  
-Version: 3.4  
+![Version: 3.4](https://img.shields.io/github/v/release/Hoang-Long2012/DiskInfo)
+![License: MIT License](https://img.shields.io/github/license/Hoang-Long2012/DiskInfo)  
 Platform: Windows  
 A small utility to check basic information about your drive
 
