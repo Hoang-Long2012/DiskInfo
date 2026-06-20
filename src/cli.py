@@ -9,14 +9,14 @@ import argparse
 import time
 Console = console()
 def getVersion():
-	return "3.4"
+	return "3.5"
 def showVersion():
 	Console.print(f"DiskInfo version {getVersion()}")
 def showHelp():
 	Console.print(f"DiskInfo version {getVersion()} - Drive Information Tool")
 	Console.print("")
 	Console.print("Usage:")
-	Console.print(r"  diskinfo \[option] \[drive...]")
+	Console.print(r"  diskinfo \[options] \[drive...]")
 	Console.print("")
 	Console.print("Options:")
 	Console.print("  -l, /l, --letter")
@@ -32,11 +32,11 @@ def showHelp():
 	Console.print("    Example: diskinfo --no-bytes")
 	Console.print("")
 	Console.print("  -j, /j, --json")
-	Console.print("    Show drive info with format json.")
+	Console.print("    Show drive information in JSON format.")
 	Console.print("    Example: diskinfo --json")
 	Console.print("")
 	Console.print("  --table")
-	Console.print("    Show drive info with format table.")
+	Console.print("    Show drive information in table format.")
 	Console.print("    Example: diskinfo --table")
 	Console.print("")
 	Console.print("  --simple")
@@ -72,7 +72,7 @@ def showHelp():
 	Console.print("    Example: diskinfo --sort used --top 1")
 	Console.print("")
 	Console.print("  -u, /u, --usage [PERCENT]")
-	Console.print("    Show only drives with some usage.")
+	Console.print("    Show only drives above the specified usage percentage.")
 	Console.print("    Example: diskinfo --usage 90")
 	Console.print("")
 	Console.print("  --no-sort")
@@ -89,11 +89,11 @@ def showHelp():
 	Console.print("")
 	Console.print("  -e, /e, --export [FILE]")
 	Console.print("    Export the output results to a file.")
-	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML, Yaml, XLSX, HTML and TOML.")
+	Console.print("    Supported formats: CSV, JSON, TXT, Markdown, INI, XML, TOML, HTML, XLSX and YAML.")
 	Console.print("    Example: diskinfo --export report.txt")
 	Console.print("")
 	Console.print("  -b, /b, --beep")
-	Console.print("    Beep when have a drive almost full.")
+	Console.print("    Beep when a drive is almost full.")
 	Console.print("    Example: diskinfo --beep")
 	Console.print("")
 	Console.print("  -v, /v, --version")
@@ -106,7 +106,11 @@ def showHelp():
 	Console.print("  - If no option is provided, the program will display all drive information.")
 	Console.print("  - Valid drive format: C:\\, D:/ or E:.")
 	Console.print("  - By default, the drives are arranged in descending order.")
+	Console.print("  - The export format is detected from the file extension.")
+	Console.print("  - Some system drives may appear as \"No root directory\".")
 	Console.print("")
+	Console.print("See full documentation:")
+	Console.print("https://github.com/Hoang-Long2012/DiskInfo")
 def normalizeWindowsArgs(argv):
 	Normalized = []
 	for Arg in argv:
