@@ -3,6 +3,7 @@
 # DiskInfo
 ![Version: 3.5](https://img.shields.io/github/v/release/Hoang-Long2012/DiskInfo)
 ![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue)
+![License: MIT License](https://img.shields.io/github/license/Hoang-Long2012/DiskInfo)
 
 A small utility to check basic information about your drive.
 
@@ -12,8 +13,8 @@ A small utility to check basic information about your drive.
 - Drive usage.
 - Sort by used/free/total.
 - Filter by drive type.
-- Watch realtime.
-- JSON / Table output.
+- Watch drives in real time.
+- JSON and table output.
 - Top N drives.
 - Usage threshold filter.
 
@@ -45,9 +46,9 @@ diskinfo --table --simple
 ```
 diskinfo --sort used
 ```
-- Show the most used drive:
+- Show the drive using the most space:
 ```
-diskinfo --sort usage --top 1
+diskinfo --sort used --top 1
 ```
 - Watch drives in real time:
 ```
@@ -95,10 +96,10 @@ Example: diskinfo -n C:\
 Hide the bytes in output text mode.  
 Example: diskinfo --no-bytes
 - -j, /j, --json  
-Show drive info with format json.  
+Show drive information in JSON format.  
 Example: diskinfo --json
 - --table  
-Show drive info with format table.  
+Show drive information in table format.  
 Example: diskinfo --table
 - --simple  
 Show a compact/minimal view of drive information.  
@@ -127,23 +128,23 @@ Example: diskinfo --watch 0.5
 Show top N drives after sorting.  
 Example: diskinfo --sort used --top 1
 - -u, /u, --usage [PERCENT]  
-Show only drives with some usage.  
+Show only drives above the specified usage percentage.  
 Example: diskinfo --usage 90
 - --no-sort  
 Disable auto sorting of top and usage.  
 Example: diskinfo --usage 90 --no-sort
 - -S, /S, --summary  
-  Show summary information about drives.  
+Show summary information about drives.  
 Example: diskinfo --summary
 - -E, /E, --exclude [DRIVE...]  
 Exclude specific drives.  
 Example: diskinfo --exclude C: D:
 - -e, /e, --export [FILE]  
 Export the output results to a file.  
-Supported formats: CSV, JSON, TXT, Markdown, INI, XML, Toml, HTML, XLSX and YAML.  
+Supported formats: CSV, JSON, TXT, Markdown, INI, XML, TOML, HTML, XLSX and YAML.  
 Example: diskinfo --export report.txt
 - -b, /b, --beep  
-Beep when have a drive almost full.  
+Beep when a drive is almost full.  
 Example: diskinfo --beep
 - -v, /v, --version  
 Show program version  
@@ -152,10 +153,39 @@ Show help message
 
 ---
 
+## Drive Types:
+
+The `--type` option supports the following drive types:
+
+| Type | Aliases |
+| --- | --- |
+| USB drive | `usb`, `removable` |
+| Local disk drive | `local`, `disk`, `fixed` |
+| Network drive | `network`, `net` |
+| CD/DVD drive | `cd`, `dvd` |
+| RAM disk drive | `ram` |
+| Unknown | `unknown` |
+
+---
+
+## Usage Status:
+
+Drive usage is categorized as:
+
+| Usage | Status |
+| --- | --- |
+| 0-79% | 🟢 Healthy |
+| 80-89% | 🟡 Warning |
+| 90-100% | 🔴 Critical |
+
+---
+
 ## Notes:
 - If no option is provided, the program will display all drive information.
 - Valid drive format: C:\, D:/ or E:.
 - By default, the drives are arranged in descending order.
+- The export format is detected from the file extension.
+- Some system drives may appear as "No root directory".
 
 ---
 
@@ -172,10 +202,14 @@ You can read changelog in:
 ---
 
 ## Translation:
-You can contribute translations to DiskInfo by forking this repo.  
-Translating the diskinfo.pot file located in locale.  
-Creating a directory representing your language inside locale which creates the LC_MESSAGES directory and dropping the .mo file from the .po file you translated into it.  
-Creating a pr to this repo.
+
+You can contribute translations to DiskInfo by:
+
+1. Forking this repository.
+2. Translating the `diskinfo.pot` file located in `locale`.
+3. Creating a language directory inside `locale` with an `LC_MESSAGES` directory.
+4. Adding the generated `.mo` file.
+5. Creating a pull request.
 
 ---
 
@@ -187,7 +221,8 @@ Feel free to open issues for bugs or feature requests.
 ---
 
 ## License:
-[![MIT License](https://img.shields.io/github/license/Hoang-Long2012/DiskInfo)](LICENSE)
+This project is licensed under the:
+[MIT License](LICENSE)
 
 ---
 
