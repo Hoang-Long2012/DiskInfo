@@ -1,8 +1,8 @@
 # DiskInfo
 Name: DiskInfo  
-![Version: 3.4](https://img.shields.io/github/v/release/Hoang-Long2012/DiskInfo)
-![License: MIT License](https://img.shields.io/github/license/Hoang-Long2012/DiskInfo)  
-Platform: Windows  
+![Version: 3.5](https://img.shields.io/github/v/release/Hoang-Long2012/DiskInfo)
+![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue)
+
 A small utility to check basic information about your drive
 
 ---
@@ -106,10 +106,10 @@ You can install DiskInfo by:
 ```
 winget install HoangLong.DiskInfo
 ```
-Or download:  
-[At here](https://github.com/Hoang-Long2012/DiskInfo/releases/latest/)  
-You can read changelog in CHANGELOG.md or:  
-[Click to here](https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md)  
+Or download from:  
+[Release page](https://github.com/Hoang-Long2012/DiskInfo/releases/latest/)  
+You can read changelog in:  
+[CHANGELOG.md](https://github.com/Hoang-Long2012/DiskInfo/blob/main/CHANGELOG.md)  
 
 ---
 
@@ -118,6 +118,11 @@ You can contribute translations to DiskInfo by forking this repo.
 Translating the diskinfo.pot file located in locale.  
 Creating a directory representing your language inside locale which creates the LC_MESSAGES directory and dropping the .mo file from the .po file you translated into it.  
 Creating a pr to this repo.
+
+---
+
+## License:
+[![MIT License](https://img.shields.io/github/license/Hoang-Long2012/DiskInfo)](LICENSE)
 
 ---
 
