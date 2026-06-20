@@ -16,7 +16,7 @@ def showHelp():
 	Console.print(f"DiskInfo version {getVersion()} - Drive Information Tool")
 	Console.print("")
 	Console.print("Usage:")
-	Console.print("  diskinfo [option] [drive...]")
+	Console.print(r"  diskinfo \[option] \[drive...]")
 	Console.print("")
 	Console.print("Options:")
 	Console.print("  -l, /l, --letter")
