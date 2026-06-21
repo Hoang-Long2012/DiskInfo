@@ -98,25 +98,32 @@ diskinfo C: D:
 ---
 
 ### Options:  
+
 - -l, /l, --letter  
 List all available drives (drive letters only)  
 Example: diskinfo -l
+
 - -n, /n, --label  
 Show drive labels with drive letters  
 Example: diskinfo -n C:\
+
 - --no-bytes  
 Hide the bytes in output text mode.  
 Example: diskinfo --no-bytes
+
 - -j, /j, --json  
 Show drive information in JSON format.  
 Example: diskinfo --json
+
 - --table  
 Show drive information in table format.  
 Example: diskinfo --table
+
 - --simple  
 Show a compact/minimal view of drive information.  
 Works with normal and table display modes.  
 Example: diskinfo --table --simple
+
 - -s, /s, --sort  
 Sort drives by specified field:  
 + Usage  - Used percentage.  
@@ -125,41 +132,53 @@ Sort drives by specified field:
 + Total  - Total capacity.  
 Default order: Descending (largest/highest first).  
 Example: diskinfo --sort usage
+
 - -r, /r, --reverse  
 Reverse sort order (ascending instead of descending).  
 Example: diskinfo --sort usage --reverse
+
 - -t, /t, --type  
 Filter drives by type.  
 Example: diskinfo --type usb
+
 - -w, /w, --watch [SECONDS]  
 Watch drives in real time and auto-refresh display.  
 SECONDS defines update interval (default: 2).  
 Press Ctrl+C to exit watch mode.  
 Example: diskinfo --watch 0.5
+
 - -T, /T, --top [NUMBER_OF_DRIVES]  
 Show top N drives after sorting.  
 Example: diskinfo --sort used --top 1
+
 - -u, /u, --usage [PERCENT]  
 Show only drives above the specified usage percentage.  
 Example: diskinfo --usage 90
+
 - --no-sort  
 Disable auto sorting of top and usage.  
 Example: diskinfo --usage 90 --no-sort
+
 - -S, /S, --summary  
 Show summary information about drives.  
 Example: diskinfo --summary
+
 - -E, /E, --exclude [DRIVE...]  
 Exclude specific drives.  
 Example: diskinfo --exclude C: D:
+
 - -e, /e, --export [FILE]  
 Export the output results to a file.  
 Supported formats: CSV, JSON, TXT, Markdown, INI, XML, TOML, HTML, XLSX and YAML.  
 Example: diskinfo --export report.txt
+
 - -b, /b, --beep  
 Beep when a drive is almost full.  
 Example: diskinfo --beep
+
 - -v, /v, --version  
 Show program version  
+
 - -h, /h, --help  
 Show help message  
 
