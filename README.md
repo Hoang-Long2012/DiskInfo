@@ -4,6 +4,7 @@
 ![Version: 3.5](https://img.shields.io/github/v/release/Hoang-Long2012/DiskInfo)
 ![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue)
 ![License: MIT License](https://img.shields.io/github/license/Hoang-Long2012/DiskInfo)
+[![Author: Hoàng Long](https://img.shields.io/badge/Author-Hoàng%20Long-blue?logo=github)](https://github.com/Hoang-Long2012)
 
 A small utility to check basic information about your drive.
 
@@ -257,4 +258,4 @@ This project is licensed under the:
 
 ---
 
-© Copyright (c) 2026 Hoang-Long2012
+© Copyright (c) 2026 Hoàng Long
