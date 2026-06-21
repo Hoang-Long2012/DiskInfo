@@ -124,7 +124,7 @@ Show a compact/minimal view of drive information.
 Works with normal and table display modes.  
 Example: diskinfo --table --simple
 
-- -s, /s, --sort  
+- -s, /s, --sort [FIELD]  
 Sort drives by specified field:  
 + Usage  - Used percentage.  
 + Used   - Used space.  
@@ -137,7 +137,7 @@ Example: diskinfo --sort usage
 Reverse sort order (ascending instead of descending).  
 Example: diskinfo --sort usage --reverse
 
-- -t, /t, --type  
+- -t, /t, --type [TYPE]  
 Filter drives by type.  
 Example: diskinfo --type usb
 
