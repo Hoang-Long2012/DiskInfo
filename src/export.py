@@ -158,6 +158,7 @@ Formats = {
 	".json": exportJSON,
 	".txt": exportTXT,
 	".md": exportMarkdown,
+	".markdown": exportMarkdown,
 	".ini": exportINI,
 	".xml": exportXML,
 	".yaml": exportYaml,

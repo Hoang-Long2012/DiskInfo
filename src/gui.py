@@ -578,7 +578,7 @@ class MainWindow(QT.QMainWindow):
 		else:
 			self.Timeout_Label.setText(self._("Timeout: {timeout}", timeout=self._("Disabled")))
 	def exportFile(self):
-		Path, _ = QT.QFileDialog.getSaveFileName(self, self._("Export"), "report.csv", "CSV Files (*.csv);;Text Files (*.txt);;JSON Files (*.json);;Markdown Files (*.md);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml);;Excel Files (*.xlsx);;Web Files (*.html);;Toml Files (*.toml)", "CSV Files (*.csv)")
+		Path, _ = QT.QFileDialog.getSaveFileName(self, self._("Export"), "report.csv", "CSV Files (*.csv);;Text Files (*.txt);;JSON Files (*.json);;Markdown Files (*.md *.markdown);;INI Files (*.ini);;XML Files (*.xml);;Yaml Files (*.yaml *.yml);;Excel Files (*.xlsx);;Web Files (*.html);;Toml Files (*.toml)", "CSV Files (*.csv)")
 		if not Path:
 			return None
 		Ext = os.path.splitext(Path)[1]
@@ -615,7 +615,7 @@ class MainWindow(QT.QMainWindow):
 			QT.QMessageBox.critical(self, self._("Error"), self._("Cannot open CHANGELOG.md\n{error}", error=self._(str(Error))))
 	def license(self):
 		try:
-			os.startfile(utils.getFilePath("LICENSE"))
+			os.startfile(utils.getFilePath("LICENSE.txt"))
 		except Exception as Error:
 			QT.QMessageBox.critical(self, self._("Error"), self._("Cannot open LICENSE\n{error}", error=self._(str(Error))))
 	def about(self):
