@@ -12,3 +12,6 @@ manifests/
 
 # Translation
 *.po
+
+# Environment
+.venv/
